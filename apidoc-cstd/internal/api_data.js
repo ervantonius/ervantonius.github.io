@@ -1,0 +1,13435 @@
+define({ "api": [
+  {
+    "type": "post",
+    "url": "/v1/account/logout",
+    "title": "Logout",
+    "version": "1.0.0",
+    "name": "Logout",
+    "group": "AccountAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Log out of an admin session.</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the logout is successful.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"You have logged out\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/accountapi/logout.go",
+    "groupTitle": "Account API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/v1/account/profile/get",
+    "title": "Get Admin Profile",
+    "version": "1.0.0",
+    "name": "Profile_Get",
+    "group": "AccountAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Get the admin's profile.</p>",
+    "success": {
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"profile\": {\n      \"id\": 2,\n      \"fullName\": \"Jony\",\n      \"email\": \"jony@taptalk.io\",\n      \"countryID\": 0,\n      \"countryCallingCode\": \"\",\n      \"phone\": \"\",\n      \"phoneWithCode\": \"\",\n      \"use2FA\": false,\n      \"useGoogleSignIn\": false,\n      \"imageURL\": {\n        \"thumbnail\": \"\",\n        \"fullsize\": \"\"\n      },\n      \"lastLoginTime\": 1564121972641,\n      \"lastActivityTime\": 1564121972641,\n      \"requireChangePassword\": false,\n      \"createdTime\": 1563868799147,\n      \"updatedTime\": 1563880378559,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "profile",
+            "description": "<p>The admin's profile.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.id",
+            "description": "<p>The admin ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.fullName",
+            "description": "<p>The admin's full name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.email",
+            "description": "<p>The email address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "profile.countryID",
+            "description": "<p>The admin's country ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.countryCallingCode",
+            "description": "<p>The country calling code for phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.phone",
+            "description": "<p>The phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.phoneWithCode",
+            "description": "<p>The phone number with country calling code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "profile.use2FA",
+            "description": "<p>If 2-FA is enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "profile.useGoogleSignIn",
+            "description": "<p>If the admin is bound to a Google account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "profile.imageURL",
+            "description": "<p>The admin's picture image URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.imageURL.thumbnail",
+            "description": "<p>Image URL for thumbnail picture.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.imageURL.fullsize",
+            "description": "<p>Image URL for fullsize picture.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.lastLoginTime",
+            "description": "<p>The admin's last login, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.lastActivityTime",
+            "description": "<p>The admin's last activity, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "profile.requireChangePassword",
+            "description": "<p>If the admin is required to change password.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.createdTime",
+            "description": "<p>The time the admin account was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.updatedTime",
+            "description": "<p>The time the admin account was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.deletedTime",
+            "description": "<p>The time the admin account was deleted, in Unix milliseconds.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/accountapi/profile-get.go",
+    "groupTitle": "Account API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/v1/account/security/change_password",
+    "title": "Security - Change Password",
+    "version": "1.0.0",
+    "name": "Security_ChangePassword",
+    "group": "AccountAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Change the admin's password.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "password",
+            "description": "<p>The admin's current password, to verify the request.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "newPassword",
+            "description": "<p>The new password.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"password\": \"this_is_password\",\n  \"newPassword\": \"this_is_new_password\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the password is changed successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Password changed successfully\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "PasswordInvalid",
+            "description": "<p>The current password is invalid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NewPasswordFormatInvalid",
+            "description": "<p>The new password format is invalid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "PasswordInvalid:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Current password is invalid\",\n    \"field\": \"password\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "NewPasswordFormatInvalid:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Password must contain at least 1 lowercase, uppercase, and special characters and 1 number\",\n    \"field\": \"newPassword\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/accountapi/security-change-password.go",
+    "groupTitle": "Account API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/admin/email_domain_blacklist/add",
+    "title": "Email Domain Blacklist - Add",
+    "version": "1.28.0",
+    "name": "EmailDomainBlacklist_Add",
+    "group": "AdminAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Add an email domain to blacklist.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "domain",
+            "description": "<p>The email domain.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"domain\": \"mailinator.com\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the domain is added successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The created ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response (Added Successfully):",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Domain added successfully\",\n    \"id\": 1\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Success Response (Already Exists):",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": false,\n    \"message\": \"Domain already exists\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Domain is required\",\n    \"field\": \"domain\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/adminapi/email-domain-blacklist-add.go",
+    "groupTitle": "Admin API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/admin/email_domain_blacklist/delete",
+    "title": "Email Domain Blacklist - Delete",
+    "version": "1.28.0",
+    "name": "EmailDomainBlacklist_Delete",
+    "group": "AdminAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Delete an email domain from blacklist.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The ID to delete.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "domain",
+            "description": "<p>The email domain, to validate the request.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"id\": 1,\n  \"domain\": \"mailinator.com\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the domain is deleted successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Domain deleted successfully\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Please select domain to delete\",\n    \"field\": \"id\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/adminapi/email-domain-blacklist-delete.go",
+    "groupTitle": "Admin API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/admin/email_domain_blacklist/get_list",
+    "title": "Email Domain Blacklist - Get List",
+    "version": "1.28.0",
+    "name": "EmailDomainBlacklist_GetList",
+    "group": "AdminAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Get the list of email domains from blacklist.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "pageNumber",
+            "description": "<p>The page number.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "pageSize",
+            "defaultValue": "50",
+            "description": "<p>Number of items to be retrieved per page.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"pageNumber\": 1,\n  \"pageSize\": 50\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "domains",
+            "description": "<p>The list of blacklisted domains.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "domains.id",
+            "description": "<p>The ID of the record.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "domains.domain",
+            "description": "<p>The domain.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "domains.createdTime",
+            "description": "<p>The time the record was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "hasMore",
+            "description": "<p>If there are more items.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "totalItems",
+            "description": "<p>Total number of items.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "totalPages",
+            "description": "<p>Total number of pages.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"domains\": [\n      {\n        \"id\": 5,\n        \"domain\": \"alldotted.com\",\n        \"createdTime\": 1642319279504\n      },\n      {\n        \"id\": 2,\n        \"domain\": \"mailinator.com\",\n        \"createdTime\": 1642319279504\n      },\n      ...\n    ],\n    \"hasMore\": true,\n    \"totalItems\": 60,\n    \"totalPages\": 2\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Page number is invalid\",\n    \"field\": \"pageNumber\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/adminapi/email-domain-blacklist-get-list.go",
+    "groupTitle": "Admin API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/admin/system/build_config",
+    "title": "System - Build Configurations",
+    "version": "1.26.4",
+    "name": "System_BuildConfig",
+    "group": "AdminAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Get build config.</p>",
+    "success": {
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    ...\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/adminapi/system-build-config.go",
+    "groupTitle": "Admin API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/v1/admin/whatsapp/chatapicom/insert_instances",
+    "title": "WhatsApp - Chat-API.com - Insert Instances",
+    "version": "1.15.0",
+    "name": "WhatsAppChatAPICom_InsertInstances",
+    "group": "AdminAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Insert a list of WhatsApp chat-api.com instances.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "items",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "items.instanceID",
+            "description": "<p>The instance ID from chat-api.com, must be unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "items.apiToken",
+            "description": "<p>The API token from chat-api.com.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "items.instanceCreatedTime",
+            "description": "<p>The instance created time, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"items\": [\n    {\n      \"instanceID\": \"107186\",\n      \"apiToken\": \"p60oy1159rvdkoj9\",\n      \"instanceCreatedTime\": 1590684108168\n    },\n    ...\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the instances are inserted successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Instances inserted successfully\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Please specify items to insert\",\n    \"field\": \"items\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/adminapi/whatsapp-chatapicom-insert-instances.go",
+    "groupTitle": "Admin API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/admin/whatsapp/maytapi/insert_instances",
+    "title": "WhatsApp - Maytapi - Insert Instances",
+    "version": "1.16.0",
+    "name": "WhatsAppMaytapi_InsertInstances",
+    "group": "AdminAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Insert a list of WhatsApp Maytapi instances.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "items",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "items.productID",
+            "description": "<p>The product ID from Maytapi.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "items.instanceID",
+            "description": "<p>The instance ID from Maytapi, must be unique.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"items\": [\n    {\n      \"productID\": \"0d03b46c-8013-4615-90da-77f063c57205\",\n      \"instanceID\": \"8085\"\n    },\n    ...\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the instances are inserted successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Instances inserted successfully\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Please specify items to insert\",\n    \"field\": \"items\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/adminapi/whatsapp-maytapi-insert-instances.go",
+    "groupTitle": "Admin API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/admin/whatsapp/whatsTalk/insert_instances",
+    "title": "WhatsApp - WhatsTalk - Insert Instances",
+    "version": "1.26.0",
+    "name": "WhatsAppWhatsTalk_InsertInstances",
+    "group": "AdminAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Insert a list of WhatsApp WhatsTalk instances.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "items",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "items.instanceID",
+            "description": "<p>The instance ID from WhatsTalk, must be unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "items.apiToken",
+            "description": "<p>The API token from WhatsTalk.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"items\": [\n    {\n      \"instanceID\": \"107186\",\n      \"apiToken\": \"p60oy1159rvdkoj9\"\n    },\n    ...\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the instances are inserted successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Instances inserted successfully\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Please specify items to insert\",\n    \"field\": \"items\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/adminapi/whatsapp-whatstalk-insert-instances.go",
+    "groupTitle": "Admin API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/auth/access_token/refresh",
+    "title": "Refresh Access Token",
+    "version": "1.0.0",
+    "name": "AccessToken_Refresh",
+    "group": "AuthAPI",
+    "permission": [
+      {
+        "name": "client"
+      }
+    ],
+    "description": "<p>Request a new access token using a refresh token.</p> <p>The refresh token is passed via request header <code>Authorization</code> using the following format:</p> <pre class=\"prettyprint\">Authorization: Bearer <refresh_token> </code></pre> <p>A new refresh token will be generated and returned along with the new access token. An access token is valid for 24 hours, after which it must be refreshed using a refresh token. The old access token and refresh token will no longer be usable.</p> <p>This API has the same response structure as API <a href=\"#api-AuthAPI-AccessToken_Request\">Request Access Token</a>.</p>",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request Header Example:",
+          "content": "Content-Type: application/json\nAPI-Key: YjQzYjQ4NzQ1ZGZhMGU0NGsxOk16STVYekV1TVYvOWhjSEJmYTJWNVgybGtYMkZ1WkQvb3hOVE0yT1RrM09EYzNNakkwTnpJNA==\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0a24iOiJkMjlhNTIzZWZjNzQwNzYzNDdmM2FlOGIwOTdhNTUwM2RiZWU1YjA2ZGYxNjAwYWU2NTY4N2Y5NmFkOGNiYWRlODYzYTNlOTk0MzFiMDkxNzc0YjE1ZTNhODk1ZDkzM2Y0NDQ2NzNkNmJlNWRhZDA5M2EwYjAyMWMyMWNiNTdhNSIsInRpZCI6Mywic2lkIjozLCJ1aWQiOjgsImV4cCI6MTU2NjcxMzk3MiwianRpIjoiMTU2NDEyMTk3MnIzIiwiaWF0IjoxNTY0MTIxOTcyLCJpc3MiOiJjb25zb2xlIn0.ip_Uf2rMfgrwUB6oLJ2TVI-NT-9IpxxibdUittg3CKU\nDevice-Identifier: aaaa-bbbb-cccc-dddd\nDevice-Model: Google Chrome\nDevice-Platform: web\nUser-Agent: Google Chrome/12.1.14",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0a24iOiI3OWFlMmIzZmVlZGYyOTM1ZDNjODdkYWE5OGE0YjJjNTU1NmUyNjBjZDAxNjk3M2EyMjczMDA1MjhlZGQ4MGQyOTgxNWYzNWRhODk1ZTNiZDk3NTBlYWE5NTk0NGVlNWU0OGMwZGQ0NzE2MzY5OTkyYmM5MjE5Y2UzM2ExNmQwOCIsInRpZCI6Nywic2lkIjo0LCJ1aWQiOjgsImV4cCI6MTU2NDMwNTA1NiwianRpIjoiMTU2NDIxODY1NmE3IiwiaWF0IjoxNTY0MjE4NjU2LCJpc3MiOiJjb25zb2xlIn0.lLEwnoIDuAzGASvnLlZE581ljShXYPbWxtl6If1NXlc\",\n    \"accessTokenExpiry\": 1564305056000,\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0a24iOiI4MjJmMDAxMDhkYzE4NmM1NzI3ZWI2OGExZTY5NGE2MWUxMTc2MTBkZDkzYTg0NDUwNWI5NDg4MmU2OGE5YzljMmVlNWFiMDRiODBmZDZkYjY4ZDUzMzVlNmFhNjJjM2UxNzA4NjViOTEwMzE4ODU1MTdhZmM5OGQ0YmJiZDg2YyIsInRpZCI6Nywic2lkIjo0LCJ1aWQiOjgsImV4cCI6MTU2NjgxMDY1NiwianRpIjoiMTU2NDIxODY1NnI3IiwiaWF0IjoxNTY0MjE4NjU2LCJpc3MiOiJjb25zb2xlIn0.tn5HHwENMmNUj4KwLXW3KPkMFljfsvBaTmy82vsMoeY\",\n    \"refreshTokenExpiry\": 1566810656000,\n    \"profile\": {\n      \"id\": 2,\n      \"fullName\": \"Jony\",\n      \"email\": \"jony@taptalk.io\",\n      \"countryID\": 0,\n      \"countryCallingCode\": \"\",\n      \"phone\": \"\",\n      \"phoneWithCode\": \"\",\n      \"use2FA\": false,\n      \"useGoogleSignIn\": false,\n      \"imageURL\": {\n        \"thumbnail\": \"\",\n        \"fullsize\": \"\"\n      },\n      \"lastLoginTime\": 1564121972641,\n      \"lastActivityTime\": 1564121972641,\n      \"requireChangePassword\": false,\n      \"createdTime\": 1563868799147,\n      \"updatedTime\": 1563880378559,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "accessToken",
+            "description": "<p>The access token.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "accessTokenExpiry",
+            "description": "<p>The access token's expiry time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "refreshToken",
+            "description": "<p>The refresh token.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "refreshTokenExpiry",
+            "description": "<p>The refresh token's expiry time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "profile",
+            "description": "<p>The admin's profile.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.id",
+            "description": "<p>The admin ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.fullName",
+            "description": "<p>The admin's full name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.email",
+            "description": "<p>The email address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "profile.countryID",
+            "description": "<p>The admin's country ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.countryCallingCode",
+            "description": "<p>The country calling code for phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.phone",
+            "description": "<p>The phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.phoneWithCode",
+            "description": "<p>The phone number with country calling code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "profile.use2FA",
+            "description": "<p>If 2-FA is enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "profile.useGoogleSignIn",
+            "description": "<p>If the admin is bound to a Google account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "profile.imageURL",
+            "description": "<p>The admin's picture image URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.imageURL.thumbnail",
+            "description": "<p>Image URL for thumbnail picture.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.imageURL.fullsize",
+            "description": "<p>Image URL for fullsize picture.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.lastLoginTime",
+            "description": "<p>The admin's last login, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.lastActivityTime",
+            "description": "<p>The admin's last activity, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "profile.requireChangePassword",
+            "description": "<p>If the admin is required to change password.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.createdTime",
+            "description": "<p>The time the admin account was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.updatedTime",
+            "description": "<p>The time the admin account was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.deletedTime",
+            "description": "<p>The time the admin account was deleted, in Unix milliseconds.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AuthorizationFormatInvalid",
+            "description": "<p>The header <code>Authorization</code> format is invalid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "RefreshTokenInvalid",
+            "description": "<p>The refresh token is invalid, or has already been used.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "RefreshTokenExpired",
+            "description": "<p>The refresh token has expired.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "DeviceInvalid",
+            "description": "<p>The refresh token does not belong to the device.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AccountNotFound",
+            "description": "<p>The refresh token is valid, but the associated admin account is not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "AuthorizationFormatInvalid:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 401,\n  \"error\": {\n    \"code\": \"40102\",\n    \"message\": \"Authorization type is invalid or not supported\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "RefreshTokenInvalid:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 401,\n  \"error\": {\n    \"code\": \"40103\",\n    \"message\": \"Token is not found\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "RefreshTokenExpired:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 401,\n  \"error\": {\n    \"code\": \"40104\",\n    \"message\": \"Refresh token is expired\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "DeviceInvalid:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 401,\n  \"error\": {\n    \"code\": \"40105\",\n    \"message\": \"Refresh token does not belong to the device\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/authapi/access-token-refresh.go",
+    "groupTitle": "Authentication API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Authorization type and credentials, e.g.: basic credentials or refresh token to request new access token.<br>Format: <code><i>&lt;type&gt; &lt;credentials&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/auth/access_token/request",
+    "title": "Request Access Token",
+    "version": "1.0.0",
+    "name": "AccessToken_Request",
+    "group": "AuthAPI",
+    "permission": [
+      {
+        "name": "client"
+      }
+    ],
+    "description": "<p>Request access token using the provided credentials.</p> <p>The credential is passed via request header <code>Authorization</code> using the following format:</p> <pre class=\"prettyprint\">Authorization: <type> <credentials> </code></pre> <p>The following authorization types are supported:</p> <table> <thead> <tr> <th>type</th> <th>credentials</th> </tr> </thead> <tbody> <tr> <td>Basic</td> <td><code>base64(email:password)</code></td> </tr> </tbody> </table> <p>The user session starts from the time the access token is generated. An access token is valid for 24 hours, after which it must be refreshed using a refresh token.</p> <blockquote> <p><strong>Note</strong></p> <p>Each user can only have 1 active session per device (defined by header <code>Device-Identifier</code>).<br></p> </blockquote>",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request Header Example:",
+          "content": "Content-Type: application/json\nAPI-Key: YjQzYjQ4NzQ1ZGZhMGU0NGsxOk16STVYekV1TVYvOWhjSEJmYTJWNVgybGtYMkZ1WkQvb3hOVE0yT1RrM09EYzNNakkwTnpJNA==\nAuthorization: Basic am9obkBkb2UuY29tOnNlY3JldA==\nDevice-Identifier: aaaa-bbbb-cccc-dddd\nDevice-Model: Google Chrome\nDevice-Platform: web\nUser-Agent: Google Chrome/12.1.14",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0a24iOiIxYWM2NzI3ZjVjMGY2YTUwNTBhZWYzOWE2NDM5ZWMzOTllMWI0M2I1YTMyZGUwM2FhNjU2MGE2NTczMWM1ZDgzZmZiMzEzMjM5MjkxY2FmZDRiZjAzZGJhNjY1NTUwNzk0MzE0MWMxYjNhOTk3OTRlMjgxYzA4NTZmZjNhYjc4OSIsInRpZCI6Mywic2lkIjozLCJ1aWQiOjgsImV4cCI6MTU2NDIwODM3MiwianRpIjoiMTU2NDEyMTk3MmEzIiwiaWF0IjoxNTY0MTIxOTcyLCJpc3MiOiJjb25zb2xlIn0.ENmon7QaarCoPP3cP74kpwWNSkyXBV486VSTLwrmNCo\",\n    \"accessTokenExpiry\": 1564208372000,\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0a24iOiJkMjlhNTIzZWZjNzQwNzYzNDdmM2FlOGIwOTdhNTUwM2RiZWU1YjA2ZGYxNjAwYWU2NTY4N2Y5NmFkOGNiYWRlODYzYTNlOTk0MzFiMDkxNzc0YjE1ZTNhODk1ZDkzM2Y0NDQ2NzNkNmJlNWRhZDA5M2EwYjAyMWMyMWNiNTdhNSIsInRpZCI6Mywic2lkIjozLCJ1aWQiOjgsImV4cCI6MTU2NjcxMzk3MiwianRpIjoiMTU2NDEyMTk3MnIzIiwiaWF0IjoxNTY0MTIxOTcyLCJpc3MiOiJjb25zb2xlIn0.ip_Uf2rMfgrwUB6oLJ2TVI-NT-9IpxxibdUittg3CKU\",\n    \"refreshTokenExpiry\": 1566713972000,\n    \"profile\": {\n      \"id\": 2,\n      \"fullName\": \"Jony\",\n      \"email\": \"jony@taptalk.io\",\n      \"countryID\": 0,\n      \"countryCallingCode\": \"\",\n      \"phone\": \"\",\n      \"phoneWithCode\": \"\",\n      \"use2FA\": false,\n      \"useGoogleSignIn\": false,\n      \"imageURL\": {\n        \"thumbnail\": \"\",\n        \"fullsize\": \"\"\n      },\n      \"lastLoginTime\": 1564121972641,\n      \"lastActivityTime\": 1564121972641,\n      \"requireChangePassword\": false,\n      \"createdTime\": 1563868799147,\n      \"updatedTime\": 1563880378559,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "accessToken",
+            "description": "<p>The access token.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "accessTokenExpiry",
+            "description": "<p>The access token's expiry time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "refreshToken",
+            "description": "<p>The refresh token.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "refreshTokenExpiry",
+            "description": "<p>The refresh token's expiry time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "profile",
+            "description": "<p>The admin's profile.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.id",
+            "description": "<p>The admin ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.fullName",
+            "description": "<p>The admin's full name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.email",
+            "description": "<p>The email address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "profile.countryID",
+            "description": "<p>The admin's country ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.countryCallingCode",
+            "description": "<p>The country calling code for phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.phone",
+            "description": "<p>The phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.phoneWithCode",
+            "description": "<p>The phone number with country calling code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "profile.use2FA",
+            "description": "<p>If 2-FA is enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "profile.useGoogleSignIn",
+            "description": "<p>If the admin is bound to a Google account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "profile.imageURL",
+            "description": "<p>The admin's picture image URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.imageURL.thumbnail",
+            "description": "<p>Image URL for thumbnail picture.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "profile.imageURL.fullsize",
+            "description": "<p>Image URL for fullsize picture.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.lastLoginTime",
+            "description": "<p>The admin's last login, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.lastActivityTime",
+            "description": "<p>The admin's last activity, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "profile.requireChangePassword",
+            "description": "<p>If the admin is required to change password.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.createdTime",
+            "description": "<p>The time the admin account was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.updatedTime",
+            "description": "<p>The time the admin account was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "profile.deletedTime",
+            "description": "<p>The time the admin account was deleted, in Unix milliseconds.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AuthorizationFormatInvalid",
+            "description": "<p>The header <code>Authorization</code> format is invalid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "CredentialsInvalid",
+            "description": "<p>The credentials is invalid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "AccountNotFound",
+            "description": "<p>The admin account is not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "AuthorizationFormatInvalid:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 401,\n  \"error\": {\n    \"code\": \"40102\",\n    \"message\": \"Authorization type is invalid or not supported\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "CredentialsInvalid:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 401,\n  \"error\": {\n    \"code\": \"40103\",\n    \"message\": \"The email and password does not match\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "AccountNotFound:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 401,\n  \"error\": {\n    \"code\": \"40106\",\n    \"message\": \"Admin account is not found\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/authapi/access-token-request.go",
+    "groupTitle": "Authentication API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Authorization type and credentials, e.g.: basic credentials or refresh token to request new access token.<br>Format: <code><i>&lt;type&gt; &lt;credentials&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/client/server_time",
+    "title": "Get Server Time",
+    "version": "1.0.0",
+    "name": "ServerTime",
+    "group": "ClientAPI",
+    "permission": [
+      {
+        "name": "client"
+      }
+    ],
+    "description": "<p>Get the server's current timestamp.</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "timestamp",
+            "description": "<p>The server's current timestamp.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "timestamp.seconds",
+            "description": "<p>The timestamp in seconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "timestamp.milliseconds",
+            "description": "<p>The timestamp in milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "timestamp.nanoseconds",
+            "description": "<p>The timestamp in nanoseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"timestamp\": {\n      \"seconds\": 1551841641,\n      \"milliseconds\": 1551841641095,\n      \"nanoseconds\": 1551841641095244400\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/clientapi/server-time.go",
+    "groupTitle": "Client API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\"></td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/billing/balance/add",
+    "title": "Billing - Add Balance",
+    "version": "1.21.1",
+    "name": "Billing_Balance_Add",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Add an organization's balance.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "currency",
+            "description": "<p>The currency.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "amount",
+            "description": "<p>Amount to be added.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "remark",
+            "description": "<p>Remark for the added balance.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "\"free\"",
+              "\"topup\""
+            ],
+            "optional": false,
+            "field": "source",
+            "description": "<p>The added balance's source.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "topUp",
+            "description": "<p>The top-up transaction, required if source is &quot;topup&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "topUp.paymentTime",
+            "description": "<p>The time the payment was made, in RFC3339 format (example: &quot;2020-10-03T11:58:47+07:00&quot;).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"organizationID\": 1,\n  \"currency\": \"IDR\",\n  \"amount\": 10000,\n  \"remark\": \"\",\n  \"source\": \"topup\",\n  \"topup\": {\n    \"paymentTime\": \"2021-03-04T15:30:00+07:00\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "balances",
+            "description": "<p>The organization's current balance.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "balances.currency",
+            "description": "<p>The currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "balances.amount",
+            "description": "<p>The amount.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": true,
+            "field": "topUp",
+            "description": "<p>The top-up transaction's details, only for source &quot;topup&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "topUp.id",
+            "description": "<p>The top-up transaction numeric ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "topUp.stringID",
+            "description": "<p>The top-up transaction string ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "topUp.currency",
+            "description": "<p>The currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "topUp.amount",
+            "description": "<p>The top-up amount.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "topUp.paymentTime",
+            "description": "<p>The payment time, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"balances\": [\n      {\n        \"currency\": \"IDR\",\n        \"amount\": 50000\n      }\n    ],\n    \"topUp\": {\n      \"id\": 1,\n      \"stringID\": \"8018af47-1763-4403-877a-1309972eb7dc\",\n      \"currency\": \"IDR\",\n      \"amount\": 10000,\n      \"paymentTime\": 1614846600000\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"The selected organization is not found\",\n    \"field\": \"organizationID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/billing-balance-add.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/billing/invoice/get_details",
+    "title": "Billing - Invoice - Get Details",
+    "version": "1.13.2",
+    "name": "Billing_Invoice_GetDetails",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Get the details of an invoice.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The invoice ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "html",
+            "description": "<p>Request HTML page.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"id\": 4\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "invoice",
+            "description": "<p>The invoice's details.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "skuItems",
+            "description": "<p>The invoice's SKU item list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "footerItems",
+            "description": "<p>The invoice's footer item list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "lastPayment",
+            "description": "<p>The invoice's last payment.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.id",
+            "description": "<p>The invoice ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.invoiceNo",
+            "description": "<p>The invoice number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.paidInvoiceNo",
+            "description": "<p>The paid invoice number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.organizationID",
+            "description": "<p>The ID of the organization which the invoice belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.organizationName",
+            "description": "<p>The name of the organization which the invoice belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.affiliateID",
+            "description": "<p>The ID of the organization's affiliate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.affiliateName",
+            "description": "<p>The name of the organization's affiliate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.issueTime",
+            "description": "<p>The time the invoice was issued, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.dueTime",
+            "description": "<p>The invoice's due time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.currency",
+            "description": "<p>The currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.totalAmount",
+            "description": "<p>The total amount.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.note",
+            "description": "<p>Invoice note.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.terms",
+            "description": "<p>The terms.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.isAutoCharge",
+            "description": "<p>If the invoice was auto charged.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.isPaid",
+            "description": "<p>If the invoice was paid.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.paymentTime",
+            "description": "<p>The time the invoice was paid, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.isCompleted",
+            "description": "<p>If the invoice was completed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.completedTime",
+            "description": "<p>The time the invoice was completed, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.createdTime",
+            "description": "<p>The time the invoice was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.updatedTime",
+            "description": "<p>The time the invoice was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.deletedTime",
+            "description": "<p>The time the invoice was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "skuItems.sequence",
+            "description": "<p>The item's sequence in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "skuItems.subscriptionID",
+            "description": "<p>The ID of the subscription.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "skuItems.skuID",
+            "description": "<p>The SKU ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "skuItems.skuString",
+            "description": "<p>The SKU string/code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "skuItems.skuName",
+            "description": "<p>The SKU's name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "skuItems.skuItemGroup",
+            "description": "<p>The SKU's item group</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "skuItems.skuItemType",
+            "description": "<p>The SKU's item type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "skuItems.skuValidityType",
+            "description": "<p>The SKU's validity type (&quot;day&quot;, &quot;month&quot;, or &quot;year&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "skuItems.skuValidityAmount",
+            "description": "<p>The SKU's validity amount.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "skuItems.skuUnitPrice",
+            "description": "<p>The SKU's unit price.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "skuItems.quantity",
+            "description": "<p>The quantity of the item.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "skuItems.discountAmount",
+            "description": "<p>The item's discount amount.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "skuItems.subtotalAmount",
+            "description": "<p>The item's subtotal amount.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "skuItems.note",
+            "description": "<p>The item's note</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "footerItems.sequence",
+            "description": "<p>The item's sequence in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "footerItems.itemID",
+            "description": "<p>The item ID (&quot;subtotal_amount&quot;, &quot;discount_amount&quot;, or &quot;tax_amount&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "footerItems.itemName",
+            "description": "<p>The item's name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "footerItems.amount",
+            "description": "<p>The item's amount.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "footerItems.note",
+            "description": "<p>The item's note.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.id",
+            "description": "<p>The payment ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.organizationID",
+            "description": "<p>The ID of the organization.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.invoiceID",
+            "description": "<p>The invoice ID which the payment was made for.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.tapBillPaymentID",
+            "description": "<p>The payment ID from TapBill.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.channelCategory",
+            "description": "<p>The payment channel category.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.channelCode",
+            "description": "<p>The payment channel code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.channelName",
+            "description": "<p>The payment channel name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.paymentGatewayCode",
+            "description": "<p>The payment gateway code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "lastPayment.isAutoCharge",
+            "description": "<p>If the payment was auto charge.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.status",
+            "description": "<p>The payment status.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "lastPayment.isPending",
+            "description": "<p>If the payment is pending.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "lastPayment.isPaid",
+            "description": "<p>If the payment has been paid.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.paidTime",
+            "description": "<p>The time the payment was made.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "lastPayment.isError",
+            "description": "<p>If the payment failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.errorCode",
+            "description": "<p>The error code, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.errorMessage",
+            "description": "<p>The error message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.createdTime",
+            "description": "<p>The payment record's created time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.updatedTime",
+            "description": "<p>The payment record's last updated time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.deletedTime",
+            "description": "<p>The payment record's deleted time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "lastPayment.card",
+            "description": "<p>The card which the payment was charged to, if any.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.cardID",
+            "description": "<p>The ID of the saved card.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.maskedCardNumber",
+            "description": "<p>The card's masked number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.cardBrand",
+            "description": "<p>The card's brand.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.cardType",
+            "description": "<p>The card's type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.status",
+            "description": "<p>The card's payment charge status.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.failureReason",
+            "description": "<p>The failure reason code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.failureReasonDescription",
+            "description": "<p>Description of the failure reason.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response (no payment):",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"invoice\": {\n      \"id\": 4,\n      \"invoiceNo\": \"TTT/NT/PF-INV/2020/X/001\",\n      \"paidInvoiceNo\": \"\",\n      \"organizationID\": 1,\n      \"organizationName\": \"TapTalk.io\",\n      \"affiliateID\": 0,\n      \"affiliateName\": \"\",\n      \"issueTime\": 1601398800000,\n      \"dueTime\": 1602003600000,\n      \"currency\": \"IDR\",\n      \"totalAmount\": 749000,\n      \"note\": \"\",\n      \"terms\": \"\",\n      \"isAutoCharge\": false,\n      \"isPaid\": false,\n      \"paymentTime\": 0,\n      \"isCompleted\": false,\n      \"completedTime\": 0,\n      \"createdTime\": 1601398800000,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    },\n    \"skuItems\": [\n      {\n        \"sequence\": 1,\n        \"subscriptionID\": 26,\n        \"skuID\": 1,\n        \"skuString\": \"t1.r-silver-1.m1.1\",\n        \"skuName\": \"OneTalk Silver Tier (monthly)\",\n        \"skuItemGroup\": \"onetalk\",\n        \"skuItemType\": \"tier\",\n        \"skuValidityType\": \"month\",\n        \"skuValidityAmount\": 1,\n        \"skuUnitPrice\": 399000,\n        \"quantity\": 1,\n        \"discountAmount\": 0,\n        \"subtotalAmount\": 399000,\n        \"note\": \"New subscription\"\n      }\n    ],\n    \"footerItems\": [\n      {\n        \"sequence\": 1,\n        \"itemID\": \"subtotal_amount\",\n        \"itemName\": \"Subtotal\",\n        \"amount\": 399000,\n        \"note\": \"\"\n      },\n      {\n        \"sequence\": 2,\n        \"itemID\": \"discount_amount\",\n        \"itemName\": \"Discount Amount\",\n        \"amount\": 0,\n        \"note\": \"\"\n      },\n      {\n        \"sequence\": 3,\n        \"itemID\": \"tax_amount\",\n        \"itemName\": \"Tax Amount\",\n        \"amount\": 0,\n        \"note\": \"\"\n      }\n    ],\n    \"lastPayment\": {\n      \"id\": \"\",\n      \"organizationID\": 0,\n      \"invoiceID\": 0,\n      \"tapBillPaymentID\": \"\",\n      \"channelCategory\": \"\",\n      \"channelCode\": \"\",\n      \"channelName\": \"\",\n      \"paymentGatewayCode\": \"\",\n      \"isAutoCharge\": false,\n      \"status\": \"\",\n      \"isPending\": false,\n      \"isPaid\": false,\n      \"paidTime\": 0,\n      \"isError\": false,\n      \"errorCode\": \"\",\n      \"errorMessage\": \"\",\n      \"createdTime\": 0,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Success Response (with failed payment):",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"invoice\": {\n      \"id\": 4,\n      \"invoiceNo\": \"TTT/NT/PF-INV/2020/X/001\",\n      \"paidInvoiceNo\": \"\",\n      \"organizationID\": 1,\n      \"organizationName\": \"TapTalk.io\",\n      \"affiliateID\": 0,\n      \"affiliateName\": \"\",\n      \"issueTime\": 1601398800000,\n      \"dueTime\": 1602003600000,\n      \"currency\": \"IDR\",\n      \"totalAmount\": 749000,\n      \"note\": \"\",\n      \"terms\": \"\",\n      \"isAutoCharge\": true,\n      \"isPaid\": false,\n      \"paymentTime\": 0,\n      \"isCompleted\": false,\n      \"completedTime\": 0,\n      \"createdTime\": 1601398800000,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    },\n    \"skuItems\": [\n      {\n        \"sequence\": 1,\n        \"subscriptionID\": 26,\n        \"skuID\": 1,\n        \"skuString\": \"t1.r-silver-1.m1.1\",\n        \"skuName\": \"OneTalk Silver Tier (monthly)\",\n        \"skuItemGroup\": \"onetalk\",\n        \"skuItemType\": \"tier\",\n        \"skuValidityType\": \"month\",\n        \"skuValidityAmount\": 1,\n        \"skuUnitPrice\": 399000,\n        \"quantity\": 1,\n        \"discountAmount\": 0,\n        \"subtotalAmount\": 399000,\n        \"note\": \"New subscription\"\n      }\n    ],\n    \"footerItems\": [\n      {\n        \"sequence\": 1,\n        \"itemID\": \"subtotal_amount\",\n        \"itemName\": \"Subtotal\",\n        \"amount\": 399000,\n        \"note\": \"\"\n      },\n      {\n        \"sequence\": 2,\n        \"itemID\": \"discount_amount\",\n        \"itemName\": \"Discount Amount\",\n        \"amount\": 0,\n        \"note\": \"\"\n      },\n      {\n        \"sequence\": 3,\n        \"itemID\": \"tax_amount\",\n        \"itemName\": \"Tax Amount\",\n        \"amount\": 0,\n        \"note\": \"\"\n      }\n    ],\n    \"lastPayment\": {\n      \"id\": \"1220261238360001-7f9352f3-f2c9-45bd-9ce3-dcd9954f5506\",\n      \"organizationID\": 1,\n      \"invoiceID\": 4,\n      \"tapBillPaymentID\": \"1220261238360001-6ba6f844-3ce5-4e70-8cb5-b525e1a221d7\",\n      \"channelCategory\": \"card\",\n      \"channelCode\": \"visa\",\n      \"channelName\": \"VISA\",\n      \"paymentGatewayCode\": \"xendit\",\n      \"isAutoCharge\": true,\n      \"status\": \"failed\",\n      \"isPending\": false,\n      \"isPaid\": false,\n      \"paidTime\": 0,\n      \"isError\": false,\n      \"errorCode\": \"\",\n      \"errorMessage\": \"\",\n      \"createdTime\": 1601398800000,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0,\n      \"card\": {\n        \"cardID\": \"0002202285441503\",\n        \"maskedCardNumber\": \"400000XXXXXX0002\",\n        \"cardBrand\": \"visa\",\n        \"cardType\": \"credit\",\n        \"status\": \"FAILED\",\n        \"failureReason\": \"CARD_DECLINED\",\n        \"failureReasonDesciption\": \"Card is declined\"\n      }\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InvoiceNotFound",
+            "description": "<p>The invoice ID is not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Invoice ID is required\",\n    \"field\": \"id\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "InvoiceNotFound:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 404,\n  \"error\": {\n    \"code\": \"40401\",\n    \"message\": \"The selected invoice is not found\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/billing-invoice-get-details.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/billing/invoice/get_unpaid_list_by_organization_id",
+    "title": "Billing - Invoice - Get Unpaid List by Organization ID",
+    "version": "1.13.2",
+    "name": "Billing_Invoice_GetUnpaidListByOrganizationID",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Get an organization's list of unpaid invoices.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"organizationID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "invoices",
+            "description": "<p>The invoice's details.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.id",
+            "description": "<p>The invoice ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoices.invoiceNo",
+            "description": "<p>The invoice number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoices.paidInvoiceNo",
+            "description": "<p>The paid invoice number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.organizationID",
+            "description": "<p>The ID of the organization which the invoice belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.organizationName",
+            "description": "<p>The name of the organization which the invoice belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoices.affiliateID",
+            "description": "<p>The ID of the organization's affiliate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.affiliateName",
+            "description": "<p>The name of the organization's affiliate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.issueTime",
+            "description": "<p>The time the invoice was issued, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.dueTime",
+            "description": "<p>The invoice's due time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoices.currency",
+            "description": "<p>The currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.totalAmount",
+            "description": "<p>The total amount.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.note",
+            "description": "<p>Invoice note.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.terms",
+            "description": "<p>The terms.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.isAutoCharge",
+            "description": "<p>If the invoice was auto charged.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.isPaid",
+            "description": "<p>If the invoice was paid.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoices.paymentTime",
+            "description": "<p>The time the invoice was paid, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.isCompleted",
+            "description": "<p>If the invoice was completed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.completedTime",
+            "description": "<p>The time the invoice was completed, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.createdTime",
+            "description": "<p>The time the invoice was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoices.updatedTime",
+            "description": "<p>The time the invoice was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoices.deletedTime",
+            "description": "<p>The time the invoice was deleted, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"invoices\": [\n      {\n        \"id\": 4,\n        \"invoiceNo\": \"TTT/NT/PF-INV/2020/X/001\",\n        \"paidInvoiceNo\": \"\",\n        \"organizationID\": 1,\n        \"organizationName\": \"TapTalk.io\",\n        \"affiliateID\": 0,\n        \"affiliateName\": \"\",\n        \"issueTime\": 1601398800000,\n        \"dueTime\": 1602003600000,\n        \"currency\": \"IDR\",\n        \"totalAmount\": 749000,\n        \"note\": \"\",\n        \"terms\": \"\",\n        \"isAutoCharge\": false,\n        \"isPaid\": false,\n        \"paymentTime\": 0,\n        \"isCompleted\": false,\n        \"completedTime\": 0,\n        \"createdTime\": 1601398800000,\n        \"updatedTime\": 0,\n        \"deletedTime\": 0\n      },\n      ...\n    ]\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Organization ID is required\",\n    \"field\": \"organizationID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/billing-invoice-get-unpaid-list-by-organization-id.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/billing/invoice/insert_manual_payment",
+    "title": "Billing - Invoice - Insert Manual Payment",
+    "version": "1.25.0",
+    "name": "Billing_Invoice_InsertManualPayment",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Insert manual payment transaction for an invoice and update the invoice's status to paid.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The invoice ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "createdTime",
+            "description": "<p>The invoice's created time, to validate the request.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelCategory",
+            "description": "<p>The payment channel category.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelCode",
+            "description": "<p>The payment channel code.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "paymentTime",
+            "description": "<p>The time the payment was made, in RFC3339 format (example: &quot;2020-10-03T11:58:47+07:00&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "paidInvoiceNo",
+            "description": "<p>The paid invoice number, leave empty to auto generate.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "ignoreFreeTrial",
+            "description": "<p>The paid invoice number, leave empty to auto generate.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"id\": 4,\n  \"createdTime\": 1601398800000,\n  \"channelCategory\": \"bank_transfer\",\n  \"channelCode\": \"mandiri\",\n  \"paymentTime\": \"2020-10-03T11:58:47+07:00\",\n  \"paidInvoiceNo\": \"\",\n  \"ignoreFreeTrial\": false\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the payment is inserted and processed successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "invoice",
+            "description": "<p>The invoice's details.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "lastPayment",
+            "description": "<p>The invoice's last payment.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.id",
+            "description": "<p>The invoice ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.invoiceNo",
+            "description": "<p>The invoice number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.paidInvoiceNo",
+            "description": "<p>The paid invoice number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.organizationID",
+            "description": "<p>The ID of the organization which the invoice belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.organizationName",
+            "description": "<p>The name of the organization which the invoice belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.affiliateID",
+            "description": "<p>The ID of the organization's affiliate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.affiliateName",
+            "description": "<p>The name of the organization's affiliate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.issueTime",
+            "description": "<p>The time the invoice was issued, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.dueTime",
+            "description": "<p>The invoice's due time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.currency",
+            "description": "<p>The currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.totalAmount",
+            "description": "<p>The total amount.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.note",
+            "description": "<p>Invoice note.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.terms",
+            "description": "<p>The terms.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.isAutoCharge",
+            "description": "<p>If the invoice was auto charged.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.isPaid",
+            "description": "<p>If the invoice was paid.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.paymentTime",
+            "description": "<p>The time the invoice was paid, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.isCompleted",
+            "description": "<p>If the invoice was completed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.completedTime",
+            "description": "<p>The time the invoice was completed, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.createdTime",
+            "description": "<p>The time the invoice was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.updatedTime",
+            "description": "<p>The time the invoice was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.deletedTime",
+            "description": "<p>The time the invoice was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.id",
+            "description": "<p>The payment ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.organizationID",
+            "description": "<p>The ID of the organization.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.invoiceID",
+            "description": "<p>The invoice ID which the payment was made for.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.tapBillPaymentID",
+            "description": "<p>The payment ID from TapBill.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.channelCategory",
+            "description": "<p>The payment channel category.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.channelCode",
+            "description": "<p>The payment channel code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.channelName",
+            "description": "<p>The payment channel name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.paymentGatewayCode",
+            "description": "<p>The payment gateway code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "lastPayment.isAutoCharge",
+            "description": "<p>If the payment was auto charge.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.status",
+            "description": "<p>The payment status.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "lastPayment.isPending",
+            "description": "<p>If the payment is pending.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "lastPayment.isPaid",
+            "description": "<p>If the payment has been paid.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.paidTime",
+            "description": "<p>The time the payment was made.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "lastPayment.isError",
+            "description": "<p>If the payment failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.errorCode",
+            "description": "<p>The error code, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.errorMessage",
+            "description": "<p>The error message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.createdTime",
+            "description": "<p>The payment record's created time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.updatedTime",
+            "description": "<p>The payment record's last updated time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.deletedTime",
+            "description": "<p>The payment record's deleted time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "lastPayment.card",
+            "description": "<p>The card which the payment was charged to, if any.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.cardID",
+            "description": "<p>The ID of the saved card.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.maskedCardNumber",
+            "description": "<p>The card's masked number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.cardBrand",
+            "description": "<p>The card's brand.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.cardType",
+            "description": "<p>The card's type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.status",
+            "description": "<p>The card's payment charge status.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.failureReason",
+            "description": "<p>The failure reason code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.failureReasonDescription",
+            "description": "<p>Description of the failure reason.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"invoice\": {\n      \"id\": 4,\n      \"invoiceNo\": \"TTT/NT/PF-INV/2020/X/001\",\n      \"paidInvoiceNo\": \"TTT/NT/INV/2020/X/001\",\n      \"organizationID\": 1,\n      \"organizationName\": \"TapTalk.io\",\n      \"affiliateID\": 0,\n      \"affiliateName\": \"\",\n      \"issueTime\": 1601398800000,\n      \"dueTime\": 1602003600000,\n      \"currency\": \"IDR\",\n      \"totalAmount\": 749000,\n      \"note\": \"\",\n      \"terms\": \"\",\n      \"isAutoCharge\": false,\n      \"isPaid\": true,\n      \"paymentTime\": 1601701127000,\n      \"isCompleted\": true,\n      \"completedTime\": 1601706695000,\n      \"createdTime\": 1601398800000,\n      \"updatedTime\": 1601706695000,\n      \"deletedTime\": 0\n    },\n    \"lastPayment\": {\n      \"id\": \"1120223203030-c1fbde7a-cfea-4b59-b3c3-8f016b4487f6\",\n      \"organizationID\": 1,\n      \"invoiceID\": 4,\n      \"tapBillPaymentID\": \"\",\n      \"channelCategory\": \"bank_transfer\",\n      \"channelCode\": \"mandiri\",\n      \"channelName\": \"Mandiri bank transfer\",\n      \"paymentGatewayCode\": \"\",\n      \"isAutoCharge\": false,\n      \"status\": \"paid\",\n      \"isPending\": false,\n      \"isPaid\": true,\n      \"paidTime\": 1601701127000,\n      \"isError\": false,\n      \"errorCode\": \"\",\n      \"errorMessage\": \"\",\n      \"createdTime\": 1601706695000,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Invoice ID is required\",\n    \"field\": \"id\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/billing-invoice-insert-payment.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/billing/invoice/insert_manual_payment",
+    "title": "Billing - Invoice - Insert Manual Payment",
+    "version": "1.13.2",
+    "name": "Billing_Invoice_InsertManualPayment",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Insert manual payment transaction for an invoice and update the invoice's status to paid.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The invoice ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelCategory",
+            "description": "<p>The payment channel category.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelCode",
+            "description": "<p>The payment channel code.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "paymentTime",
+            "description": "<p>The time the payment was made, in RFC3339 format (example: &quot;2020-10-03T11:58:47+07:00&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "paidInvoiceNo",
+            "description": "<p>The paid invoice number, leave empty to auto generate.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "ignoreFreeTrial",
+            "description": "<p>The paid invoice number, leave empty to auto generate.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"id\": 4,\n  \"channelCategory\": \"bank_transfer\",\n  \"channelCode\": \"mandiri\",\n  \"paymentTime\": \"2020-10-03T11:58:47+07:00\",\n  \"paidInvoiceNo\": \"\",\n  \"ignoreFreeTrial\": false\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the payment is inserted and processed successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "invoice",
+            "description": "<p>The invoice's details.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "lastPayment",
+            "description": "<p>The invoice's last payment.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.id",
+            "description": "<p>The invoice ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.invoiceNo",
+            "description": "<p>The invoice number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.paidInvoiceNo",
+            "description": "<p>The paid invoice number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.organizationID",
+            "description": "<p>The ID of the organization which the invoice belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.organizationName",
+            "description": "<p>The name of the organization which the invoice belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.affiliateID",
+            "description": "<p>The ID of the organization's affiliate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.affiliateName",
+            "description": "<p>The name of the organization's affiliate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.issueTime",
+            "description": "<p>The time the invoice was issued, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.dueTime",
+            "description": "<p>The invoice's due time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.currency",
+            "description": "<p>The currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.totalAmount",
+            "description": "<p>The total amount.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.note",
+            "description": "<p>Invoice note.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.terms",
+            "description": "<p>The terms.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.isAutoCharge",
+            "description": "<p>If the invoice was auto charged.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.isPaid",
+            "description": "<p>If the invoice was paid.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.paymentTime",
+            "description": "<p>The time the invoice was paid, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.isCompleted",
+            "description": "<p>If the invoice was completed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.completedTime",
+            "description": "<p>The time the invoice was completed, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.createdTime",
+            "description": "<p>The time the invoice was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoice.updatedTime",
+            "description": "<p>The time the invoice was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "invoice.deletedTime",
+            "description": "<p>The time the invoice was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.id",
+            "description": "<p>The payment ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.organizationID",
+            "description": "<p>The ID of the organization.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.invoiceID",
+            "description": "<p>The invoice ID which the payment was made for.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.tapBillPaymentID",
+            "description": "<p>The payment ID from TapBill.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.channelCategory",
+            "description": "<p>The payment channel category.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.channelCode",
+            "description": "<p>The payment channel code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.channelName",
+            "description": "<p>The payment channel name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.paymentGatewayCode",
+            "description": "<p>The payment gateway code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "lastPayment.isAutoCharge",
+            "description": "<p>If the payment was auto charge.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.status",
+            "description": "<p>The payment status.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "lastPayment.isPending",
+            "description": "<p>If the payment is pending.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "lastPayment.isPaid",
+            "description": "<p>If the payment has been paid.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.paidTime",
+            "description": "<p>The time the payment was made.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "lastPayment.isError",
+            "description": "<p>If the payment failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.errorCode",
+            "description": "<p>The error code, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.errorMessage",
+            "description": "<p>The error message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.createdTime",
+            "description": "<p>The payment record's created time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.updatedTime",
+            "description": "<p>The payment record's last updated time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastPayment.deletedTime",
+            "description": "<p>The payment record's deleted time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "lastPayment.card",
+            "description": "<p>The card which the payment was charged to, if any.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.cardID",
+            "description": "<p>The ID of the saved card.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.maskedCardNumber",
+            "description": "<p>The card's masked number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.cardBrand",
+            "description": "<p>The card's brand.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.cardType",
+            "description": "<p>The card's type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.status",
+            "description": "<p>The card's payment charge status.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.failureReason",
+            "description": "<p>The failure reason code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastPayment.card.failureReasonDescription",
+            "description": "<p>Description of the failure reason.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"invoice\": {\n      \"id\": 4,\n      \"invoiceNo\": \"TTT/NT/PF-INV/2020/X/001\",\n      \"paidInvoiceNo\": \"TTT/NT/INV/2020/X/001\",\n      \"organizationID\": 1,\n      \"organizationName\": \"TapTalk.io\",\n      \"affiliateID\": 0,\n      \"affiliateName\": \"\",\n      \"issueTime\": 1601398800000,\n      \"dueTime\": 1602003600000,\n      \"currency\": \"IDR\",\n      \"totalAmount\": 749000,\n      \"note\": \"\",\n      \"terms\": \"\",\n      \"isAutoCharge\": false,\n      \"isPaid\": true,\n      \"paymentTime\": 1601701127000,\n      \"isCompleted\": true,\n      \"completedTime\": 1601706695000,\n      \"createdTime\": 1601398800000,\n      \"updatedTime\": 1601706695000,\n      \"deletedTime\": 0\n    },\n    \"lastPayment\": {\n      \"id\": \"1120223203030-c1fbde7a-cfea-4b59-b3c3-8f016b4487f6\",\n      \"organizationID\": 1,\n      \"invoiceID\": 4,\n      \"tapBillPaymentID\": \"\",\n      \"channelCategory\": \"bank_transfer\",\n      \"channelCode\": \"mandiri\",\n      \"channelName\": \"Mandiri bank transfer\",\n      \"paymentGatewayCode\": \"\",\n      \"isAutoCharge\": false,\n      \"status\": \"paid\",\n      \"isPending\": false,\n      \"isPaid\": true,\n      \"paidTime\": 1601701127000,\n      \"isError\": false,\n      \"errorCode\": \"\",\n      \"errorMessage\": \"\",\n      \"createdTime\": 1601706695000,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Invoice ID is required\",\n    \"field\": \"id\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/billing-invoice-insert-payment.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/billing/subscription/get_list_by_organization_id",
+    "title": "Billing - Subscription - Get List by Organization ID",
+    "version": "1.13.2",
+    "name": "Billing_Subscription_GetListByOrganizationID",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Get an organization's list of subscriptions.</p> <p>The returned subscription list are grouped by products (OneTalk, WhatsApp, etc.).</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"organizationID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "groups",
+            "description": "<p>The subscription groups.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "groups.code",
+            "description": "<p>The subscription group's code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "groups.name",
+            "description": "<p>The subscription group's name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "groups.items",
+            "description": "<p>The list of subscription item in the group.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int64",
+            "optional": false,
+            "field": "groups.items.id",
+            "description": "<p>The subscription ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "groups.items.description",
+            "description": "<p>The description.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "groups.items.currency",
+            "description": "<p>The currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int64",
+            "optional": false,
+            "field": "groups.items.amount",
+            "description": "<p>The amount.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int64",
+            "optional": false,
+            "field": "groups.items.paidUntil",
+            "description": "<p>The time the subscription has been paid until, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int64",
+            "optional": false,
+            "field": "groups.items.nextBillingTime",
+            "description": "<p>The subscription's next billing time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "groups.items.status",
+            "description": "<p>The subscription's status (&quot;active&quot;, &quot;pending&quot;, &quot;stopped&quot;, &quot;suspended&quot;, &quot;waiting_setup&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "groups.items.statusText",
+            "description": "<p>The subscription's status text.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n      \"message\": \"\",\n      \"field\": \"\"\n  },\n  \"data\": {\n    \"groups\": [\n      {\n        \"code\": \"onetalk\",\n        \"name\": \"OneTalk\",\n        \"items\": [\n          {\n            \"id\": 1,\n            \"description\": \"OneTalk Silver Tier (monthly)\",\n            \"currency\": \"IDR\",\n            \"amount\": 399000,\n            \"paidUntil\": 1601398800000,\n            \"nextBillingTime\": 1601398800000,\n            \"status\": \"active\",\n            \"statusText\": \"Active\"\n          }\n        ]\n      },\n      {\n        \"code\": \"whatsapp\",\n        \"name\": \"WhatsApp for SME\",\n        \"items\": [\n          {\n            \"id\": 46,\n            \"description\": \"WhatsApp for SME - Silver (monthly) - TapTalk.io Support\",\n            \"currency\": \"IDR\",\n            \"amount\": 499000,\n            \"paidUntil\": 1601398800000,\n            \"nextBillingTime\": 1601398800000,\n            \"status\": \"suspended\",\n            \"statusText\": \"Suspended\"\n          },\n          ...\n        ]\n      }\n    ]\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Organization ID is required\",\n    \"field\": \"organizationID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/billing-subscription-get-list-by-organization-id.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/tokopedia/update_channel_status",
+    "title": "Channel - Tokopedia - Update Channel Status",
+    "version": "1.42.1",
+    "name": "Channel_Tokopedia_UpdateChannelStatus",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Update a channel status Tokopedia on behalf of a customer organization.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID to be updated.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "status",
+            "description": "<p>The new channel status.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "reason",
+            "description": "<p>The reason, required if status is &quot;canceled&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "shopID",
+            "description": "<p>The Tokopedia shop ID, required if status is &quot;active&quot;.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"organizationID\": 1,\n  \"channelID\": 1,\n  \"status\": \"active\",\n  \"shopID\": 12345678\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel status is updated successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": true,
+            "field": "channel",
+            "description": "<p>The channel's details, if successful.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "channel.id",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.stringID",
+            "description": "<p>The channel's string ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "channel.topicID",
+            "description": "<p>The channel's assigned topic ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.topicName",
+            "description": "<p>The channel's assigned topic name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.shopDomain",
+            "description": "<p>The Tokopedia shop domain.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.shopID",
+            "description": "<p>The Tokopedia shop ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.shopName",
+            "description": "<p>The Tokopedia shop name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.shopURL",
+            "description": "<p>The Tokopedia shop URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.shopLogo",
+            "description": "<p>The Tokopedia shop logo.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isEnabled",
+            "description": "<p>If the channel is currently enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isSuspended",
+            "description": "<p>If the channel is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.suspendedTime",
+            "description": "<p>The time the channel was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.suspendedReason",
+            "description": "<p>The reason of suspension.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.status",
+            "description": "<p>The channel's status.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.statusText",
+            "description": "<p>The channel's status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.reason",
+            "description": "<p>Reason if status is &quot;canceled&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.createdTime",
+            "description": "<p>The time the channel was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.updatedTime",
+            "description": "<p>The time the channel was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.deletedTime",
+            "description": "<p>The time the channel was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "channel.topics",
+            "description": "<p>The channel's list of assigned topics.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Status updated successfully\",\n    \"channel\": {\n      \"id\": 1,\n      \"stringID\": \"2011785873\",\n      \"topicID\": 1,\n      \"topicName\": \"Finance\",\n      \"shopDomain\": \"taptalk-io\",\n      \"shopID\": 12345678,\n      \"shopName\": \"TapTalk.io\",\n      \"shopURL\": \"https://www.tokopedia.com/taptalk-io\",\n      \"shopLogo\": \"https://images.tokopedia.net/img/seller_no_logo_3.png\",\n      \"isEnabled\": true,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"suspendedReason\": \"\",\n      \"status\": \"active\",\n      \"statusText\": \"Active\",\n      \"reason\": \"\",\n      \"createdTime\": 1692190398685,\n      \"updatedTime\": 1692193584897,\n      \"deletedTime\": 0,\n      \"topics\": [\n        {\n          \"id\": 1,\n          \"name\": \"Finance\"\n        }\n      ]\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Status is required\",\n    \"field\": \"Status\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-tokopedia-update-channel-status.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/tokopedia/update_channel_status",
+    "title": "Channel - Tokopedia - Update Channel Status",
+    "version": "1.42.0",
+    "name": "Channel_Tokopedia_UpdateChannelStatus",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Update a channel status Tokopedia on behalf of a customer organization.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID to be updated.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "status",
+            "description": "<p>The new channel status.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "reason",
+            "description": "<p>The reason, required if status is &quot;canceled&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "shopID",
+            "description": "<p>The Tokopedia shop ID, required if status is &quot;active&quot;.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"organizationID\": 1,\n  \"channelID\": 1,\n  \"status\": \"active\",\n  \"shopID\": 12345678\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel status is updated successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": true,
+            "field": "channel",
+            "description": "<p>The channel's details, if successful.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "channel.id",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.stringID",
+            "description": "<p>The channel's string ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "channel.topicID",
+            "description": "<p>The channel's assigned topic ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.topicName",
+            "description": "<p>The channel's assigned topic name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.shopDomain",
+            "description": "<p>The Tokopedia shop domain.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.shopID",
+            "description": "<p>The Tokopedia shop ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.shopName",
+            "description": "<p>The Tokopedia shop name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.shopURL",
+            "description": "<p>The Tokopedia shop URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isEnabled",
+            "description": "<p>If the channel is currently enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isSuspended",
+            "description": "<p>If the channel is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.suspendedTime",
+            "description": "<p>The time the channel was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.suspendedReason",
+            "description": "<p>The reason of suspension.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.status",
+            "description": "<p>The channel's status.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.statusText",
+            "description": "<p>The channel's status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.reason",
+            "description": "<p>Reason if status is &quot;canceled&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.createdTime",
+            "description": "<p>The time the channel was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.updatedTime",
+            "description": "<p>The time the channel was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.deletedTime",
+            "description": "<p>The time the channel was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "channel.topics",
+            "description": "<p>The channel's list of assigned topics.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Status updated successfully\",\n    \"channel\": {\n      \"id\": 1,\n      \"stringID\": \"2011785873\",\n      \"topicID\": 1,\n      \"topicName\": \"Finance\",\n      \"shopDomain\": \"taptalk-io\",\n      \"shopID\": 12345678,\n      \"shopName\": \"TapTalk.io\",\n      \"shopURL\": \"https://www.tokopedia.com/taptalk-io\",\n      \"isEnabled\": true,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"suspendedReason\": \"\",\n      \"status\": \"active\",\n      \"statusText\": \"Active\",\n      \"reason\": \"\",\n      \"createdTime\": 1692190398685,\n      \"updatedTime\": 1692193584897,\n      \"deletedTime\": 0,\n      \"topics\": [\n        {\n          \"id\": 1,\n          \"name\": \"Finance\"\n        }\n      ]\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Status is required\",\n    \"field\": \"Status\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-tokopedia-update-channel-status.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/create_subscription",
+    "title": "Channel - WhatsApp BA - Create Channel & Subscription",
+    "version": "1.59.1",
+    "name": "Channel_WhatsAppBA_CreateSubscription",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Create a new channel for WhatsApp Business API on behalf of a customer organization and create subscription for the billing.</p> <p>Supported vendors: &quot;meta&quot;, &quot;kataai&quot;, &quot;wappin-v2&quot;.</p> <p>If param <code>createSubscription</code> is true, the params <code>skuID</code>, <code>skuString</code>, <code>currency</code>, and <code>unitPrice</code> must match any of the available SKU items.</p> <p>The param <code>unitPrice</code> will be used if <code>overrideUnitPrice</code> is true. Otherwise, it must match the selected SKU item's price.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "accountName",
+            "description": "<p>The account name for the instance.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "topicID",
+            "description": "<p>The topic ID for chats sent to this channel. Required if the organization has more than 1 topic.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "showFAQ",
+            "description": "<p>If should show FAQ in the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelStatus",
+            "description": "<p>The channel's status (&quot;not_paid&quot;, &quot;waiting_setup&quot;, &quot;active&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "vendor",
+            "description": "<p>The WhatsApp Business API's vendor name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "messageTemplateNamespace",
+            "description": "<p>The message template namespace.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "tierID",
+            "description": "<p>The WhatsApp Business API tier ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": false,
+            "field": "createSubscription",
+            "description": "<p>If should create subscription for the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "subscription",
+            "description": "<p>The subscription's details, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "subscription.skuID",
+            "description": "<p>The SKU ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "subscription.skuString",
+            "description": "<p>The SKU string/code.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "subscription.currency",
+            "description": "<p>The currency.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "subscription.unitPrice",
+            "description": "<p>The unit price.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "subscription.unitDiscountAmount",
+            "description": "<p>The unit discount amount.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "subscription.overrideUnitPrice",
+            "defaultValue": "false",
+            "description": "<p>If should override the SKU's unit price.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "wappinInstance",
+            "description": "<p>The instance's details, required for vendor &quot;wappin&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinInstance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinInstance.password",
+            "description": "<p>The instance's password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "metaInstance",
+            "description": "<p>The instance's details, required for vendor &quot;meta&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "metaInstance.isEmbeddedSignup",
+            "description": "<p>If the WhatsApp Business Account was created via Embedded Signup.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "metaInstance.fbApp",
+            "description": "<p>The FB App's details connected to the WhatsApp Business API, if not using Embedded Signup.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.appID",
+            "description": "<p>The FB App ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.appSecret",
+            "description": "<p>The Fb App's secret.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.fbApp.appName",
+            "description": "<p>The FB App's name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.fbApp.ownerName",
+            "description": "<p>The FB App's owner name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.graphAPIVersion",
+            "description": "<p>The Graph API version.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "metaInstance.embeddedSignup",
+            "description": "<p>The Embedded Signup's info.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "metaInstance.embeddedSignup.fbAppID",
+            "description": "<p>The FB App ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "metaInstance.embeddedSignup.partnerSolutionID",
+            "description": "<p>ID of the partner solution.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.embeddedSignup.pin",
+            "description": "<p>The business phone's two-step verification PIN.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.wabaID",
+            "description": "<p>The WhatsApp Business Account ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.dataLocalizationRegion",
+            "description": "<p>If included, enables local storage on the business phone number. Value must be a 2-letter ISO 3166 country code (e.g. &quot;ID&quot;) indicating the country where you want data-at-rest to be stored.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.accessToken",
+            "description": "<p>The System User access token or Business Integration System User access token.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "metaInstance.ignoreDebugTokenFBAppID",
+            "description": "<p>If should ignore FB App ID returned by debug token.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "kataAIInstance",
+            "description": "<p>The instance's details, required for vendor &quot;kataai&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.password",
+            "description": "<p>The instance's password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.phoneNumber",
+            "description": "<p>The instance's waba phone number.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.isCloud",
+            "description": "<p>If the instance is using WABA Cloud.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "wappinV2Instance",
+            "description": "<p>The instance's details, required for vendor &quot;wappin-v2&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinV2Instance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinV2Instance.password",
+            "description": "<p>The instance's password.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (not paid):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"TapTalk\",\n  \"topicID\": 0,\n  \"showFAQ\": false,\n  \"channelStatus\": \"not_paid\",\n  \"vendor\": \"\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"subscription\": {\n    \"skuID\": 37,\n    \"skuString\": \"wb-mau-3k.c12.m1.1\",\n    \"currency\": \"IDR\",\n    \"unitPrice\": 5100000,\n    \"unitDiscountAmount\": 0,\n    \"overrideUnitPrice\": false\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (BSP):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"Customer Order\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"channelStatus\": \"active\",\n  \"vendor\": \"wappin\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"subscription\": {\n    \"skuID\": 37,\n    \"skuString\": \"wb-mau-3k.c12.m1.1\",\n    \"currency\": \"IDR\",\n    \"unitPrice\": 5100000,\n    \"unitDiscountAmount\": 0,\n    \"overrideUnitPrice\": false\n  },\n  \"wappinInstance\": {\n    \"instanceUsername\": \"taptalk.io\",\n    \"instancePassword\": \"abc123\"\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Meta - Direct):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"TapTalk\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"channelStatus\": \"active\",\n  \"vendor\": \"meta\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"subscription\": {\n    \"skuID\": 37,\n    \"skuString\": \"wb-mau-3k.c12.m1.1\",\n    \"currency\": \"IDR\",\n    \"unitPrice\": 5100000,\n    \"unitDiscountAmount\": 0,\n    \"overrideUnitPrice\": false\n  },\n  \"metaInstance\": {\n    \"isEmbeddedSignup\": false,\n    \"fbApp\": {\n      \"appID\": \"799421327736988\",\n      \"appSecret\": \"0c03128e3928ca08ce96f18bc1234abc\",\n      \"appName\": \"WABA x TapTalk\",\n      \"ownerName\": \"\",\n      \"graphAPIVersion\": \"\"\n    },\n    \"wabaID\": \"103160009175628\",\n    \"accessToken\": \"EAALXEchEAJwBAB3cwoZCxfYRSzxMfQTGP8nWEvMuwHsQkcZ...\"\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Meta - Embedded Signup):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"TapTalk\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"channelStatus\": \"active\",\n  \"vendor\": \"meta\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"subscription\": {\n    \"skuID\": 37,\n    \"skuString\": \"wb-mau-3k.c12.m1.1\",\n    \"currency\": \"IDR\",\n    \"unitPrice\": 5100000,\n    \"unitDiscountAmount\": 0,\n    \"overrideUnitPrice\": false\n  },\n  \"metaInstance\": {\n    \"isEmbeddedSignup\": true,\n    \"embeddedSignup\": {\n      \"fbAppID\": 1,\n      \"partnerSolutionID\": 1,\n      \"pin\": \"\"\n    },\n    \"wabaID\": \"103160009175628\",\n    \"accessToken\": \"EAALXEchEAJwBAB3cwoZCxfYRSzxMfQTGP8nWEvMuwHsQkcZ...\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel and subscription is created successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The newly created channel ID, if successful.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "webhookURL",
+            "description": "<p>The channel's generated webhook URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoiceID",
+            "description": "<p>The generated invoice ID, if any and unpaid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel created successfully\",\n    \"id\": 1,\n    \"webhookURL\": \"https://onetalk-api.taptalk.io/webhook/whatsappba/1/1?token=abc123\",\n    \"invoiceID\": 100\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MaxChannelReached",
+            "description": "<p>The organization's maximum number of allowed channels has been reached.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"The selected topic is not found\",\n    \"field\": \"topicID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "MaxChannelReached:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49902\",\n    \"message\": \"Maximum number of allowed channels has been reached\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-create-subscription.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/create_subscription",
+    "title": "Channel - WhatsApp BA - Create Channel & Subscription",
+    "version": "1.57.2",
+    "name": "Channel_WhatsAppBA_CreateSubscription",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Create a new channel for WhatsApp Business API on behalf of a customer organization and create subscription for the billing.</p> <p>Supported vendors: &quot;meta&quot;, &quot;kataai&quot;, &quot;wappin-v2&quot;.</p> <p>If param <code>createSubscription</code> is true, the params <code>skuID</code>, <code>skuString</code>, <code>currency</code>, and <code>unitPrice</code> must match any of the available SKU items.</p> <p>The param <code>unitPrice</code> will be used if <code>overrideUnitPrice</code> is true. Otherwise, it must match the selected SKU item's price.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "accountName",
+            "description": "<p>The account name for the instance.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "topicID",
+            "description": "<p>The topic ID for chats sent to this channel. Required if the organization has more than 1 topic.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "showFAQ",
+            "description": "<p>If should show FAQ in the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelStatus",
+            "description": "<p>The channel's status (&quot;not_paid&quot;, &quot;waiting_setup&quot;, &quot;active&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "vendor",
+            "description": "<p>The WhatsApp Business API's vendor name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "messageTemplateNamespace",
+            "description": "<p>The message template namespace.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "tierID",
+            "description": "<p>The WhatsApp Business API tier ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": false,
+            "field": "createSubscription",
+            "description": "<p>If should create subscription for the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "subscription",
+            "description": "<p>The subscription's details, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "subscription.skuID",
+            "description": "<p>The SKU ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "subscription.skuString",
+            "description": "<p>The SKU string/code.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "subscription.currency",
+            "description": "<p>The currency.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "subscription.unitPrice",
+            "description": "<p>The unit price.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "subscription.unitDiscountAmount",
+            "description": "<p>The unit discount amount.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "subscription.overrideUnitPrice",
+            "defaultValue": "false",
+            "description": "<p>If should override the SKU's unit price.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "wappinInstance",
+            "description": "<p>The instance's details, required for vendor &quot;wappin&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinInstance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinInstance.password",
+            "description": "<p>The instance's password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "metaInstance",
+            "description": "<p>The instance's details, required for vendor &quot;meta&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "metaInstance.isEmbeddedSignup",
+            "description": "<p>If the WhatsApp Business Account was created via Embedded Signup.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "metaInstance.fbApp",
+            "description": "<p>The FB App's details connected to the WhatsApp Business API, if not using Embedded Signup.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.appID",
+            "description": "<p>The FB App ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.appSecret",
+            "description": "<p>The Fb App's secret.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.fbApp.appName",
+            "description": "<p>The FB App's name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.fbApp.ownerName",
+            "description": "<p>The FB App's owner name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.graphAPIVersion",
+            "description": "<p>The Graph API version.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "metaInstance.embeddedSignup",
+            "description": "<p>The Embedded Signup's info.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "metaInstance.embeddedSignup.fbAppID",
+            "description": "<p>The FB App ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "metaInstance.embeddedSignup.partnerSolutionID",
+            "description": "<p>ID of the partner solution.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.embeddedSignup.pin",
+            "description": "<p>The business phone's two-step verification PIN.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.wabaID",
+            "description": "<p>The WhatsApp Business Account ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.dataLocalizationRegion",
+            "description": "<p>If included, enables local storage on the business phone number. Value must be a 2-letter ISO 3166 country code (e.g. &quot;ID&quot;) indicating the country where you want data-at-rest to be stored.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.accessToken",
+            "description": "<p>The System User access token or Business Integration System User access token.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "kataAIInstance",
+            "description": "<p>The instance's details, required for vendor &quot;kataai&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.password",
+            "description": "<p>The instance's password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.phoneNumber",
+            "description": "<p>The instance's waba phone number.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.isCloud",
+            "description": "<p>If the instance is using WABA Cloud.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "wappinV2Instance",
+            "description": "<p>The instance's details, required for vendor &quot;wappin-v2&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinV2Instance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinV2Instance.password",
+            "description": "<p>The instance's password.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (not paid):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"TapTalk\",\n  \"topicID\": 0,\n  \"showFAQ\": false,\n  \"channelStatus\": \"not_paid\",\n  \"vendor\": \"\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"subscription\": {\n    \"skuID\": 37,\n    \"skuString\": \"wb-mau-3k.c12.m1.1\",\n    \"currency\": \"IDR\",\n    \"unitPrice\": 5100000,\n    \"unitDiscountAmount\": 0,\n    \"overrideUnitPrice\": false\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (BSP):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"Customer Order\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"channelStatus\": \"active\",\n  \"vendor\": \"wappin\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"subscription\": {\n    \"skuID\": 37,\n    \"skuString\": \"wb-mau-3k.c12.m1.1\",\n    \"currency\": \"IDR\",\n    \"unitPrice\": 5100000,\n    \"unitDiscountAmount\": 0,\n    \"overrideUnitPrice\": false\n  },\n  \"wappinInstance\": {\n    \"instanceUsername\": \"taptalk.io\",\n    \"instancePassword\": \"abc123\"\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Meta - Direct):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"TapTalk\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"channelStatus\": \"active\",\n  \"vendor\": \"meta\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"subscription\": {\n    \"skuID\": 37,\n    \"skuString\": \"wb-mau-3k.c12.m1.1\",\n    \"currency\": \"IDR\",\n    \"unitPrice\": 5100000,\n    \"unitDiscountAmount\": 0,\n    \"overrideUnitPrice\": false\n  },\n  \"metaInstance\": {\n    \"isEmbeddedSignup\": false,\n    \"fbApp\": {\n      \"appID\": \"799421327736988\",\n      \"appSecret\": \"0c03128e3928ca08ce96f18bc1234abc\",\n      \"appName\": \"WABA x TapTalk\",\n      \"ownerName\": \"\",\n      \"graphAPIVersion\": \"\"\n    },\n    \"wabaID\": \"103160009175628\",\n    \"accessToken\": \"EAALXEchEAJwBAB3cwoZCxfYRSzxMfQTGP8nWEvMuwHsQkcZ...\"\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Meta - Embedded Signup):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"TapTalk\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"channelStatus\": \"active\",\n  \"vendor\": \"meta\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"subscription\": {\n    \"skuID\": 37,\n    \"skuString\": \"wb-mau-3k.c12.m1.1\",\n    \"currency\": \"IDR\",\n    \"unitPrice\": 5100000,\n    \"unitDiscountAmount\": 0,\n    \"overrideUnitPrice\": false\n  },\n  \"metaInstance\": {\n    \"isEmbeddedSignup\": true,\n    \"embeddedSignup\": {\n      \"fbAppID\": 1,\n      \"partnerSolutionID\": 1,\n      \"pin\": \"\"\n    },\n    \"wabaID\": \"103160009175628\",\n    \"accessToken\": \"EAALXEchEAJwBAB3cwoZCxfYRSzxMfQTGP8nWEvMuwHsQkcZ...\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel and subscription is created successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The newly created channel ID, if successful.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "webhookURL",
+            "description": "<p>The channel's generated webhook URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoiceID",
+            "description": "<p>The generated invoice ID, if any and unpaid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel created successfully\",\n    \"id\": 1,\n    \"webhookURL\": \"https://onetalk-api.taptalk.io/webhook/whatsappba/1/1?token=abc123\",\n    \"invoiceID\": 100\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MaxChannelReached",
+            "description": "<p>The organization's maximum number of allowed channels has been reached.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"The selected topic is not found\",\n    \"field\": \"topicID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "MaxChannelReached:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49902\",\n    \"message\": \"Maximum number of allowed channels has been reached\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-create-subscription.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/create_subscription",
+    "title": "Channel - WhatsApp BA - Create Channel & Subscription",
+    "version": "1.47.0",
+    "name": "Channel_WhatsAppBA_CreateSubscription",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Create a new channel for WhatsApp Business API on behalf of a customer organization and create subscription for the billing.</p> <p>Supported vendors: &quot;meta&quot;, &quot;kataai&quot;, &quot;wappin-v2&quot;.</p> <p>If param <code>createSubscription</code> is true, the params <code>skuID</code>, <code>skuString</code>, <code>currency</code>, and <code>unitPrice</code> must match any of the available SKU items.</p> <p>The param <code>unitPrice</code> will be used if <code>overrideUnitPrice</code> is true. Otherwise, it must match the selected SKU item's price.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "accountName",
+            "description": "<p>The account name for the instance.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "topicID",
+            "description": "<p>The topic ID for chats sent to this channel. Required if the organization has more than 1 topic.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "showFAQ",
+            "description": "<p>If should show FAQ in the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelStatus",
+            "description": "<p>The channel's status (&quot;not_paid&quot;, &quot;waiting_setup&quot;, &quot;active&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "vendor",
+            "description": "<p>The WhatsApp Business API's vendor name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "messageTemplateNamespace",
+            "description": "<p>The message template namespace.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "tierID",
+            "description": "<p>The WhatsApp Business API tier ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": false,
+            "field": "createSubscription",
+            "description": "<p>If should create subscription for the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "subscription",
+            "description": "<p>The subscription's details, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "subscription.skuID",
+            "description": "<p>The SKU ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "subscription.skuString",
+            "description": "<p>The SKU string/code.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "subscription.currency",
+            "description": "<p>The currency.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "subscription.unitPrice",
+            "description": "<p>The unit price.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "subscription.unitDiscountAmount",
+            "description": "<p>The unit discount amount.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "subscription.overrideUnitPrice",
+            "defaultValue": "false",
+            "description": "<p>If should override the SKU's unit price.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "wappinInstance",
+            "description": "<p>The instance's details, required for vendor &quot;wappin&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinInstance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinInstance.password",
+            "description": "<p>The instance's password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "metaInstance",
+            "description": "<p>The instance's details, required for vendor &quot;meta&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "metaInstance.isEmbeddedSignup",
+            "description": "<p>If the WhatsApp Business Account was created via Embedded Signup.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "metaInstance.fbApp",
+            "description": "<p>The FB App's details connected to the WhatsApp Business API, if not using Embedded Signup.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.appID",
+            "description": "<p>The FB App ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.appSecret",
+            "description": "<p>The Fb App's secret.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.fbApp.appName",
+            "description": "<p>The FB App's name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.fbApp.ownerName",
+            "description": "<p>The FB App's owner name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.graphAPIVersion",
+            "description": "<p>The Graph API version.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "metaInstance.embeddedSignup",
+            "description": "<p>The Embedded Signup's info.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "metaInstance.embeddedSignup.fbAppID",
+            "description": "<p>The FB App ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "metaInstance.embeddedSignup.partnerSolutionID",
+            "description": "<p>ID of the partner solution.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.embeddedSignup.pin",
+            "description": "<p>The business phone's two-step verification PIN.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.wabaID",
+            "description": "<p>The WhatsApp Business Account ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.accessToken",
+            "description": "<p>The System User access token or Business Integration System User access token.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "kataAIInstance",
+            "description": "<p>The instance's details, required for vendor &quot;kataai&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.password",
+            "description": "<p>The instance's password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.phoneNumber",
+            "description": "<p>The instance's waba phone number.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.isCloud",
+            "description": "<p>If the instance is using WABA Cloud.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "wappinV2Instance",
+            "description": "<p>The instance's details, required for vendor &quot;wappin-v2&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinV2Instance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinV2Instance.password",
+            "description": "<p>The instance's password.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (not paid):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"TapTalk\",\n  \"topicID\": 0,\n  \"showFAQ\": false,\n  \"channelStatus\": \"not_paid\",\n  \"vendor\": \"\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"subscription\": {\n    \"skuID\": 37,\n    \"skuString\": \"wb-mau-3k.c12.m1.1\",\n    \"currency\": \"IDR\",\n    \"unitPrice\": 5100000,\n    \"unitDiscountAmount\": 0,\n    \"overrideUnitPrice\": false\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (BSP):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"Customer Order\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"channelStatus\": \"active\",\n  \"vendor\": \"wappin\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"subscription\": {\n    \"skuID\": 37,\n    \"skuString\": \"wb-mau-3k.c12.m1.1\",\n    \"currency\": \"IDR\",\n    \"unitPrice\": 5100000,\n    \"unitDiscountAmount\": 0,\n    \"overrideUnitPrice\": false\n  },\n  \"wappinInstance\": {\n    \"instanceUsername\": \"taptalk.io\",\n    \"instancePassword\": \"abc123\"\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Meta - Direct):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"TapTalk\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"channelStatus\": \"active\",\n  \"vendor\": \"meta\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"subscription\": {\n    \"skuID\": 37,\n    \"skuString\": \"wb-mau-3k.c12.m1.1\",\n    \"currency\": \"IDR\",\n    \"unitPrice\": 5100000,\n    \"unitDiscountAmount\": 0,\n    \"overrideUnitPrice\": false\n  },\n  \"metaInstance\": {\n    \"isEmbeddedSignup\": false,\n    \"fbApp\": {\n      \"appID\": \"799421327736988\",\n      \"appSecret\": \"0c03128e3928ca08ce96f18bc1234abc\",\n      \"appName\": \"WABA x TapTalk\",\n      \"ownerName\": \"\",\n      \"graphAPIVersion\": \"\"\n    },\n    \"wabaID\": \"103160009175628\",\n    \"accessToken\": \"EAALXEchEAJwBAB3cwoZCxfYRSzxMfQTGP8nWEvMuwHsQkcZ...\"\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Meta - Embedded Signup):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"TapTalk\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"channelStatus\": \"active\",\n  \"vendor\": \"meta\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"subscription\": {\n    \"skuID\": 37,\n    \"skuString\": \"wb-mau-3k.c12.m1.1\",\n    \"currency\": \"IDR\",\n    \"unitPrice\": 5100000,\n    \"unitDiscountAmount\": 0,\n    \"overrideUnitPrice\": false\n  },\n  \"metaInstance\": {\n    \"isEmbeddedSignup\": true,\n    \"embeddedSignup\": {\n      \"fbAppID\": 1,\n      \"partnerSolutionID\": 1,\n      \"pin\": \"\"\n    },\n    \"wabaID\": \"103160009175628\",\n    \"accessToken\": \"EAALXEchEAJwBAB3cwoZCxfYRSzxMfQTGP8nWEvMuwHsQkcZ...\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel and subscription is created successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The newly created channel ID, if successful.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "webhookURL",
+            "description": "<p>The channel's generated webhook URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoiceID",
+            "description": "<p>The generated invoice ID, if any and unpaid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel created successfully\",\n    \"id\": 1,\n    \"webhookURL\": \"https://onetalk-api.taptalk.io/webhook/whatsappba/1/1?token=abc123\",\n    \"invoiceID\": 100\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MaxChannelReached",
+            "description": "<p>The organization's maximum number of allowed channels has been reached.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"The selected topic is not found\",\n    \"field\": \"topicID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "MaxChannelReached:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49902\",\n    \"message\": \"Maximum number of allowed channels has been reached\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-create-subscription.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/create_subscription",
+    "title": "Channel - WhatsApp BA - Create Channel & Subscription",
+    "version": "1.40.0",
+    "name": "Channel_WhatsAppBA_CreateSubscription",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Create a new channel for WhatsApp Business API on behalf of a customer organization and create subscription for the billing.</p> <p>Supported vendors: &quot;meta&quot;, &quot;wappin&quot;, &quot;kataai&quot;, &quot;wappin-v2&quot;.</p> <p>If param <code>createSubscription</code> is true, the params <code>skuID</code>, <code>skuString</code>, <code>currency</code>, and <code>unitPrice</code> must match any of the available SKU items.</p> <p>The param <code>unitPrice</code> will be used if <code>overrideUnitPrice</code> is true. Otherwise, it must match the selected SKU item's price.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "accountName",
+            "description": "<p>The account name for the instance.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "topicID",
+            "description": "<p>The topic ID for chats sent to this channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "showFAQ",
+            "description": "<p>If should show FAQ in the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "vendor",
+            "description": "<p>The WhatsApp Business API's vendor name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "messageTemplateNamespace",
+            "description": "<p>The message template namespace.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "tierID",
+            "description": "<p>The WhatsApp Business API tier ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": false,
+            "field": "createSubscription",
+            "description": "<p>If should create subscription for the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "skuID",
+            "description": "<p>The SKU ID, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "skuString",
+            "description": "<p>The SKU string/code, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "currency",
+            "description": "<p>The currency, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "unitPrice",
+            "description": "<p>The unit price, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "overrideUnitPrice",
+            "description": "<p>If should override the SKU's unit price, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "wappinInstance",
+            "description": "<p>The instance's details, required for vendor &quot;wappin&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinInstance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinInstance.password",
+            "description": "<p>The instance's password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "metaInstance",
+            "description": "<p>The instance's details, required for vendor &quot;meta&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "metaInstance.fbApp",
+            "description": "<p>The FB App's details connected to the WhatsApp Business API.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.appID",
+            "description": "<p>The FB App ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.appSecret",
+            "description": "<p>The Fb App's secret.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.fbApp.appName",
+            "description": "<p>The FB App's name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.fbApp.ownerName",
+            "description": "<p>The FB App's owner name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.graphAPIVersion",
+            "description": "<p>The Graph API version.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.wabaID",
+            "description": "<p>The WhatsApp Business Account ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.accessToken",
+            "description": "<p>The system user access token.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "kataAIInstance",
+            "description": "<p>The instance's details, required for vendor &quot;kataai&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.password",
+            "description": "<p>The instance's password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.phoneNumber",
+            "description": "<p>The instance's waba phone number.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.isCloud",
+            "description": "<p>If the instance is using WABA Cloud.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "wappinV2Instance",
+            "description": "<p>The instance's details, required for vendor &quot;wappin-v2&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinV2Instance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinV2Instance.password",
+            "description": "<p>The instance's password.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (On-Premises):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"Customer Order\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"vendor\": \"wappin\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"skuID\": 37,\n  \"skuString\": \"wb-mau-3k.c12.m1.1\",\n  \"currency\": \"IDR\",\n  \"unitPrice\": 5100000,\n  \"overrideUnitPrice\": false,\n  \"wappinInstance\": {\n    \"instanceUsername\": \"taptalk.io\",\n    \"instancePassword\": \"abc123\"\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Cloud):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"TapTalk\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"vendor\": \"meta\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"skuID\": 37,\n  \"skuString\": \"wb-mau-3k.c12.m1.1\",\n  \"currency\": \"IDR\",\n  \"unitPrice\": 5100000,\n  \"overrideUnitPrice\": false,\n  \"metaInstance\": {\n    \"fbApp\": {\n      \"appID\": \"799421327736988\",\n      \"appSecret\": \"0c03128e3928ca08ce96f18bc1234abc\",\n      \"appName\": \"WABA x TapTalk\",\n      \"ownerName\": \"\",\n      \"graphAPIVersion\": \"\"\n    },\n    \"wabaID\": \"103160009175628\",\n    \"accessToken\": \"EAALXEchEAJwBAB3cwoZCxfYRSzxMfQTGP8nWEvMuwHsQkcZ...\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel and subscription is created successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The newly created channel ID, if successful.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "webhookURL",
+            "description": "<p>The channel's generated webhook URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoiceID",
+            "description": "<p>The generated invoice ID, if any and unpaid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel created successfully\",\n    \"id\": 1,\n    \"webhookURL\": \"https://onetalk-api.taptalk.io/webhook/whatsappba/1/1?token=abc123\",\n    \"invoiceID\": 100\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MaxChannelReached",
+            "description": "<p>The organization's maximum number of allowed channels has been reached.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"The selected topic is not found\",\n    \"field\": \"topicID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "MaxChannelReached:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49902\",\n    \"message\": \"Maximum number of allowed channels has been reached\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-create-subscription.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/create_subscription",
+    "title": "Channel - WhatsApp BA - Create Channel & Subscription",
+    "version": "1.35.0",
+    "name": "Channel_WhatsAppBA_CreateSubscription",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Create a new channel for WhatsApp Business API on behalf of a customer organization and create subscription for the billing.</p> <p>Supported vendors: &quot;meta&quot;, &quot;wappin&quot;, &quot;kataai&quot;.</p> <p>If param <code>createSubscription</code> is true, the params <code>skuID</code>, <code>skuString</code>, <code>currency</code>, and <code>unitPrice</code> must match any of the available SKU items.</p> <p>The param <code>unitPrice</code> will be used if <code>overrideUnitPrice</code> is true. Otherwise, it must match the selected SKU item's price.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "accountName",
+            "description": "<p>The account name for the instance.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "topicID",
+            "description": "<p>The topic ID for chats sent to this channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "showFAQ",
+            "description": "<p>If should show FAQ in the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "vendor",
+            "description": "<p>The WhatsApp Business API's vendor name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "messageTemplateNamespace",
+            "description": "<p>The message template namespace.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "tierID",
+            "description": "<p>The WhatsApp Business API tier ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": false,
+            "field": "createSubscription",
+            "description": "<p>If should create subscription for the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "skuID",
+            "description": "<p>The SKU ID, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "skuString",
+            "description": "<p>The SKU string/code, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "currency",
+            "description": "<p>The currency, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "unitPrice",
+            "description": "<p>The unit price, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "overrideUnitPrice",
+            "description": "<p>If should override the SKU's unit price, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "wappinInstance",
+            "description": "<p>The instance's details, required for vendor &quot;wappin&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinInstance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinInstance.password",
+            "description": "<p>The instance's password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "metaInstance",
+            "description": "<p>The instance's details, required for vendor &quot;meta&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "metaInstance.fbApp",
+            "description": "<p>The FB App's details connected to the WhatsApp Business API.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.appID",
+            "description": "<p>The FB App ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.appSecret",
+            "description": "<p>The Fb App's secret.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.fbApp.appName",
+            "description": "<p>The FB App's name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.fbApp.ownerName",
+            "description": "<p>The FB App's owner name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.graphAPIVersion",
+            "description": "<p>The Graph API version.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.wabaID",
+            "description": "<p>The WhatsApp Business Account ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.accessToken",
+            "description": "<p>The system user access token.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "kataAIInstance",
+            "description": "<p>The instance's details, required for vendor &quot;kataai&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.password",
+            "description": "<p>The instance's password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.phoneNumber",
+            "description": "<p>The instance's waba phone number.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "kataAIInstance.isCloud",
+            "description": "<p>If the instance is using WABA Cloud.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (On-Premises):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"Customer Order\",\n  \"phone\": \"\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"vendor\": \"wappin\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"skuID\": 37,\n  \"skuString\": \"wb-mau-3k.c12.m1.1\",\n  \"currency\": \"IDR\",\n  \"unitPrice\": 5100000,\n  \"overrideUnitPrice\": false,\n  \"wappinInstance\": {\n    \"instanceUsername\": \"taptalk.io\",\n    \"instancePassword\": \"abc123\"\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Cloud):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"TapTalk\",\n  \"phone\": \"\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"vendor\": \"meta\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"skuID\": 37,\n  \"skuString\": \"wb-mau-3k.c12.m1.1\",\n  \"currency\": \"IDR\",\n  \"unitPrice\": 5100000,\n  \"overrideUnitPrice\": false,\n  \"metaInstance\": {\n    \"fbApp\": {\n      \"appID\": \"799421327736988\",\n      \"appSecret\": \"0c03128e3928ca08ce96f18bc1234abc\",\n      \"appName\": \"WABA x TapTalk\",\n      \"ownerName\": \"\",\n      \"graphAPIVersion\": \"\"\n    },\n    \"wabaID\": \"103160009175628\",\n    \"accessToken\": \"EAALXEchEAJwBAB3cwoZCxfYRSzxMfQTGP8nWEvMuwHsQkcZ...\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel and subscription is created successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The newly created channel ID, if successful.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "webhookURL",
+            "description": "<p>The channel's generated webhook URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoiceID",
+            "description": "<p>The generated invoice ID, if any and unpaid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel created successfully\",\n    \"id\": 1,\n    \"webhookURL\": \"https://onetalk-api.taptalk.io/webhook/whatsappba/1/1?token=abc123\",\n    \"invoiceID\": 100\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MaxChannelReached",
+            "description": "<p>The organization's maximum number of allowed channels has been reached.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"The selected topic is not found\",\n    \"field\": \"topicID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "MaxChannelReached:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49902\",\n    \"message\": \"Maximum number of allowed channels has been reached\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-create-subscription.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/create_subscription",
+    "title": "Channel - WhatsApp BA - Create Channel & Subscription",
+    "version": "1.30.0",
+    "name": "Channel_WhatsAppBA_CreateSubscription",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Create a new channel for WhatsApp Business API on behalf of a customer organization and create subscription for the billing.</p> <p>Supported vendors: &quot;meta&quot;, &quot;wappin&quot;.</p> <p>If param <code>createSubscription</code> is true, the params <code>skuID</code>, <code>skuString</code>, <code>currency</code>, and <code>unitPrice</code> must match any of the available SKU items.</p> <p>The param <code>unitPrice</code> will be used if <code>overrideUnitPrice</code> is true. Otherwise, it must match the selected SKU item's price.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "accountName",
+            "description": "<p>The account name for the instance.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "topicID",
+            "description": "<p>The topic ID for chats sent to this channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "showFAQ",
+            "description": "<p>If should show FAQ in the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "vendor",
+            "description": "<p>The WhatsApp Business API's vendor name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "messageTemplateNamespace",
+            "description": "<p>The message template namespace.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "tierID",
+            "description": "<p>The WhatsApp Business API tier ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": false,
+            "field": "createSubscription",
+            "description": "<p>If should create subscription for the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "skuID",
+            "description": "<p>The SKU ID, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "skuString",
+            "description": "<p>The SKU string/code, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "currency",
+            "description": "<p>The currency, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "unitPrice",
+            "description": "<p>The unit price, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "overrideUnitPrice",
+            "description": "<p>If should override the SKU's unit price, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "wappinInstance",
+            "description": "<p>The instance's details, required for vendor &quot;wappin&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinInstance.username",
+            "description": "<p>The instance's username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wappinInstance.password",
+            "description": "<p>The instance's password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": true,
+            "field": "metaInstance",
+            "description": "<p>The instance's details, required for vendor &quot;meta&quot;.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "metaInstance.fbApp",
+            "description": "<p>The FB App's details connected to the WhatsApp Business API.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.appID",
+            "description": "<p>The FB App ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.appSecret",
+            "description": "<p>The Fb App's secret.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.fbApp.appName",
+            "description": "<p>The FB App's name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "metaInstance.fbApp.ownerName",
+            "description": "<p>The FB App's owner name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.fbApp.graphAPIVersion",
+            "description": "<p>The Graph API version.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.wabaID",
+            "description": "<p>The WhatsApp Business Account ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "metaInstance.accessToken",
+            "description": "<p>The system user access token.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (On-Premises):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"Customer Order\",\n  \"phone\": \"\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"vendor\": \"wappin\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"skuID\": 37,\n  \"skuString\": \"wb-mau-3k.c12.m1.1\",\n  \"currency\": \"IDR\",\n  \"unitPrice\": 5100000,\n  \"overrideUnitPrice\": false,\n  \"wappinInstance\": {\n    \"instanceUsername\": \"taptalk.io\",\n    \"instancePassword\": \"abc123\"\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Cloud):",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"TapTalk\",\n  \"phone\": \"\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"vendor\": \"meta\",\n  \"messageTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"skuID\": 37,\n  \"skuString\": \"wb-mau-3k.c12.m1.1\",\n  \"currency\": \"IDR\",\n  \"unitPrice\": 5100000,\n  \"overrideUnitPrice\": false,\n  \"metaInstance\": {\n    \"fbApp\": {\n      \"appID\": \"799421327736988\",\n      \"appSecret\": \"0c03128e3928ca08ce96f18bc1234abc\",\n      \"appName\": \"WABA x TapTalk\",\n      \"ownerName\": \"\",\n      \"graphAPIVersion\": \"\"\n    },\n    \"wabaID\": \"103160009175628\",\n    \"accessToken\": \"EAALXEchEAJwBAB3cwoZCxfYRSzxMfQTGP8nWEvMuwHsQkcZ...\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel and subscription is created successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The newly created channel ID, if successful.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoiceID",
+            "description": "<p>The generated invoice ID, if any and unpaid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel created successfully\",\n    \"id\": 1,\n    \"invoiceID\": 100\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MaxChannelReached",
+            "description": "<p>The organization's maximum number of allowed channels has been reached.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"The selected topic is not found\",\n    \"field\": \"topicID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "MaxChannelReached:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49902\",\n    \"message\": \"Maximum number of allowed channels has been reached\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-create-subscription.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/create_subscription",
+    "title": "Channel - WhatsApp BA - Create Channel & Subscription",
+    "version": "1.18.0",
+    "name": "Channel_WhatsAppBA_CreateSubscription",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Create a new channel for WhatsApp Business API on behalf of a customer organization and create subscription for the billing.</p> <p>If param <code>createSubscription</code> is true, the params <code>skuID</code>, <code>skuString</code>, <code>currency</code>, and <code>unitPrice</code> must match any of the available SKU items.</p> <p>The param <code>unitPrice</code> will be used if <code>overrideUnitPrice</code> is true. Otherwise, it must match the selected SKU item's price.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "accountName",
+            "description": "<p>The account name for the instance.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "phone",
+            "description": "<p>The WhatsApp account's phone number.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "topicID",
+            "description": "<p>The topic ID for chats sent to this channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "showFAQ",
+            "description": "<p>If should show FAQ in the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "vendor",
+            "description": "<p>The WhatsApp Business API's vendor name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "instanceUsername",
+            "description": "<p>The WhatsApp Business API's instance username.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "instancePassword",
+            "description": "<p>The WhatsApp Business API's instance password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "instanceURL",
+            "description": "<p>The WhatsApp Business API's instance URL.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "instanceTemplateNamespace",
+            "description": "<p>The WhatsApp Business API's message template namespace.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "tierID",
+            "description": "<p>The WhatsApp Business API tier ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": false,
+            "field": "createSubscription",
+            "description": "<p>If should create subscription for the channel.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "skuID",
+            "description": "<p>The SKU ID, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "skuString",
+            "description": "<p>The SKU string/code, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "currency",
+            "description": "<p>The currency, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": true,
+            "field": "unitPrice",
+            "description": "<p>The unit price, required if should create subscription.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "overrideUnitPrice",
+            "description": "<p>If should override the SKU's unit price, required if should create subscription.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"Customer Order\",\n  \"phone\": \"\",\n  \"topicID\": 1,\n  \"showFAQ\": false,\n  \"vendor\": \"wappin\",\n  \"instanceUsername\": \"taptalk.io\",\n  \"instancePassword\": \"abc123\",\n  \"instanceURL\": \"\",\n  \"instanceTemplateNamespace\": \"\",\n  \"tierID\": 2,\n  \"createSubscription\": true,\n  \"skuID\": 37,\n  \"skuString\": \"wb-mau-3k.c12.m1.1\",\n  \"currency\": \"IDR\",\n  \"unitPrice\": 5100000,\n  \"overrideUnitPrice\": false\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel and subscription is created successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The newly created channel ID, if successful.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "invoiceID",
+            "description": "<p>The generated invoice ID, if any and unpaid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel created successfully\",\n    \"id\": 1,\n    \"invoiceID\": 100\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MaxChannelReached",
+            "description": "<p>The organization's maximum number of allowed channels has been reached.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"The selected topic is not found\",\n    \"field\": \"topicID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "MaxChannelReached:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49902\",\n    \"message\": \"Maximum number of allowed channels has been reached\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-create-subscription.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/migrate_to_wappinv2",
+    "title": "Channel - WhatsApp BA - Migrate to Wappin v2",
+    "version": "1.40.0",
+    "name": "Channel_WhatsAppBA_MigrateToWappinV2",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Update a WhatsApp Business API channel's vendor to Wappin-v2. The current instance username &amp; password will be used.</p> <p>Channels currently in Meta can't be migrated.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The ID of the organization which the channel belongs to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The ID of the WhatsApp Business API channel to migrate.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n  \"organizationID\": 1,\n  \"channelID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If migrated successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "webhookURL",
+            "description": "<p>The channel's generated webhook URL.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel migrated successfully\",\n    \"webhookURL\": \"https://onetalk-api.taptalk.io/webhook/whatsappba_wappinv2/1/1?token=abc123\",\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Channel ID is required\",\n    \"field\": \"channelID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-migrate-to-wappin-v2.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/template/get_request_details",
+    "title": "Channel - WhatsApp BA - Template - Get Request Details",
+    "version": "1.63.0",
+    "name": "Channel_WhatsAppBA_Template_GetRequestDetails",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Get a WhatsApp Business API message template request's details.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "requestID",
+            "description": "<p>The message template request ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"requestID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "template",
+            "description": "<p>The message template's details.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "template.id",
+            "description": "<p>The template ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.name",
+            "description": "<p>The template name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryCode",
+            "description": "<p>The category code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryName",
+            "description": "<p>The category name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.templateType",
+            "description": "<p>The template type (&quot;text&quot; or &quot;media&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.status",
+            "description": "<p>The request status (&quot;new&quot;, &quot;on_process&quot;, &quot;approved&quot;, &quot;rejected&quot;, or &quot;resubmit&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.statusText",
+            "description": "<p>The request status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.reason",
+            "description": "<p>Reason if the template was rejected.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.approvedTime",
+            "description": "<p>The template's approved time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.createdTime",
+            "description": "<p>The time the template was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.updatedTime",
+            "description": "<p>The time the template was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.deletedTime",
+            "description": "<p>The time the template was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages",
+            "description": "<p>The message template's available languages.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageCode",
+            "description": "<p>The language code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageName",
+            "description": "<p>The language name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.variant",
+            "description": "<p>The template variant (&quot;custom&quot; or &quot;carousel&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.variantText",
+            "description": "<p>The template variant text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerFormat",
+            "description": "<p>The header format, only if template type is &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextNamed",
+            "description": "<p>The header text if template type is &quot;text&quot; or file URL if &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextIndexed",
+            "description": "<p>The header text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.headerParamCount",
+            "description": "<p>Number of parameters for the header text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextNamed",
+            "description": "<p>The body text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextIndexed",
+            "description": "<p>The body text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.bodyParamCount",
+            "description": "<p>Number of parameters for the body text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextNamed",
+            "description": "<p>The footer text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextIndexed",
+            "description": "<p>The footer text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.footerParamCount",
+            "description": "<p>Number of parameters for the footer text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttonType",
+            "description": "<p>The type of buttons, if any (&quot;call_to_action&quot;, &quot;quick_reply&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.buttonParamCount",
+            "description": "<p>Number of parameters for the buttons component.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.buttons",
+            "description": "<p>The template's list of buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.buttons.index",
+            "description": "<p>The button's position in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.subType",
+            "description": "<p>The button subtype (&quot;quick_reply&quot;, &quot;phone_number&quot;, &quot;url&quot;, &quot;otp&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.text",
+            "description": "<p>The button text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.otpType",
+            "description": "<p>The button's OTP type (&quot;copy_code&quot;, &quot;one_tap&quot;), if subtype is &quot;otp&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.phoneNumber",
+            "description": "<p>The phone number, if subtype is &quot;phone_number&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.urlNamed",
+            "description": "<p>The URL with named variables, if subtype is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.urlIndexed",
+            "description": "<p>The URL with indexed variables, if subtype is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": true,
+            "field": "languages.cards",
+            "description": "<p>The template's list of cards, if template variant is &quot;carousel&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.cards.index",
+            "description": "<p>The card's position in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.headerFormat",
+            "description": "<p>The card's header format.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.headerFileURL",
+            "description": "<p>The card's header file URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.bodyTextNamed",
+            "description": "<p>The card's body text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.bodyTextIndexed",
+            "description": "<p>The card's body text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.cards.bodyParamCount",
+            "description": "<p>Number of parameters for the card's body text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.cards.buttonParamCount",
+            "description": "<p>Number of parameters for the card's buttons component.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.cards.buttons",
+            "description": "<p>The card's list of buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.cards.buttons.index",
+            "description": "<p>The button's position in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.buttons.type",
+            "description": "<p>The button type (&quot;quick_reply&quot;, &quot;phone_number&quot;, &quot;url&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.buttons.text",
+            "description": "<p>The button text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.buttons.phoneNumber",
+            "description": "<p>The phone number, if type is &quot;phone_number&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.buttons.urlNamed",
+            "description": "<p>The URL with named variables, if type is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.buttons.urlIndexed",
+            "description": "<p>The URL with indexed variables, if type is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.createdTime",
+            "description": "<p>The created time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.updatedTime",
+            "description": "<p>The last updated time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages.sampleParameters",
+            "description": "<p>Sample parameters for the message template.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.sampleParameters.header",
+            "description": "<p>Sample parameters for header.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.sampleParameters.header.number",
+            "description": "<p>The variable number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.header.name",
+            "description": "<p>The variable name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.header.value",
+            "description": "<p>The variable value.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.sampleParameters.body",
+            "description": "<p>Sample parameters for body.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.sampleParameters.body.number",
+            "description": "<p>The variable number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.body.name",
+            "description": "<p>The variable name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.body.value",
+            "description": "<p>The variable value.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.sampleParameters.button",
+            "description": "<p>Sample parameters for buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.sampleParameters.button.number",
+            "description": "<p>The variable number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.button.name",
+            "description": "<p>The variable name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.button.value",
+            "description": "<p>The variable value.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": true,
+            "field": "languages.sampleParameters.cards",
+            "description": "<p>Sample parameters for cards.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": true,
+            "field": "languages.sampleParameters.cards.body",
+            "description": "<p>Sample parameters for card body.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.sampleParameters.cards.body.number",
+            "description": "<p>The variable number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.cards.body.name",
+            "description": "<p>The variable name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.cards.body.value",
+            "description": "<p>The variable value.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": true,
+            "field": "languages.sampleParameters.cards.button",
+            "description": "<p>Sample parameters for card buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.sampleParameters.cards.button.number",
+            "description": "<p>The variable number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.cards.button.name",
+            "description": "<p>The variable name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.cards.button.value",
+            "description": "<p>The variable value.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "channel",
+            "description": "<p>The WhatsApp Business API channel which the template belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "channel.id",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.stringID",
+            "description": "<p>The channel's string ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.accountName",
+            "description": "<p>The channel's account name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.phone",
+            "description": "<p>The channel's WhatsApp phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.channelStatus",
+            "description": "<p>The channel's status (&quot;not_paid&quot;, &quot;waiting_setup&quot;, &quot;active&quot;, &quot;error&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.channelStatusText",
+            "description": "<p>The channel's status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isEnabled",
+            "description": "<p>If the channel is currently enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isSuspended",
+            "description": "<p>If the channel is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.suspendedTime",
+            "description": "<p>The time the channel was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.suspendedReason",
+            "description": "<p>The reason of suspension.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.createdTime",
+            "description": "<p>The time the channel was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "organization",
+            "description": "<p>The organization's profile.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.id",
+            "description": "<p>The organization ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.name",
+            "description": "<p>The organization's name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.timeZone",
+            "description": "<p>The organization's time zone.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "organization.countryID",
+            "description": "<p>The organization's country ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.regionName",
+            "description": "<p>The organization's region name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.cityName",
+            "description": "<p>The organization's city name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.fullAddress",
+            "description": "<p>The organization's full address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.postalCode",
+            "description": "<p>The organization's postal code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.prefCurrency",
+            "description": "<p>The organization's preferred currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.isActive",
+            "description": "<p>If the organization is currently active.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "organization.use2FA",
+            "description": "<p>If 2-FA is required to access the organization.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "organization.isSuspended",
+            "description": "<p>If the organization is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.suspendedTime",
+            "description": "<p>The time the organization was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.createdTime",
+            "description": "<p>The time the organization was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.updatedTime",
+            "description": "<p>The time the organization was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.deletedTime",
+            "description": "<p>The time the organization was deleted, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"template\": {\n      \"id\": 1,\n      \"name\": \"greetings_v1\",\n      \"categoryCode\": \"MARKETING\",\n      \"categoryName\": \"Marketing\",\n      \"templateType\": \"text\",\n      \"status\": \"new\",\n      \"statusText\": \"New\",\n      \"reason\": \"\",\n      \"approvedTime\": 0,\n      \"createdTime\": 1611496973940,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    },\n    \"languages\": [\n      {\n        \"languageCode\": \"en\",\n        \"languageName\": \"English\",\n        \"headerFormat\": \"text\",\n        \"headerTextNamed\": \"\",\n        \"headerTextIndexed\": \"\",\n        \"headerParamCount\": 0,\n        \"bodyText\": \"Hi, {{name}}! It looks like you have contacted us outside office hours ({{office_hours}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyTextIndexed\": \"Hi, {{1}}! It looks like you have contacted us outside office hours ({{2}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyParamCount\": 2,\n        \"footerTextNamed\": \"\",\n        \"footerTextIndexed\": \"\",\n        \"footerParamCount\": 0,\n        \"buttonType\": \"\",\n        \"buttonParamCount\": 0,\n        \"buttons\": [],\n        \"createdTime\": 1611496973940,\n        \"updatedTime\": 0,\n        \"sampleParameters\": {\n          \"body\": [\n            {\n              \"number\": 1,\n              \"name\": \"name\",\n              \"value\": \"John\"\n            },\n            {\n              \"number\": 1,\n              \"name\": \"office_hours\",\n              \"value\": \"09:00 - 17:00\"\n            }\n          ]\n        }\n      }\n    ],\n    \"channel\": {\n      \"id\": 1,\n      \"stringID\": \"2100480937\",\n      \"accountName\": \"TapTalk.io\",\n      \"phone\": \"6281234567890\",\n      \"channelStatus\": \"active\",\n      \"channelStatusText\": \"Active\",\n      \"isEnabled\": true,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"suspendedReason\": \"\",\n      \"createdTime\": 1609940137184,\n      \"updatedTime\": 1610905069595,\n      \"deletedTime\": 0\n    },\n    \"organization\": {\n      \"id\": 1,\n      \"name\": \"TapTalk.io\",\n      \"timeZone\": \"Asia/Jakarta\",\n      \"countryID\": 0,\n      \"regionName\": \"\",\n      \"cityName\": \"\",\n      \"fullAddress\": \"\",\n      \"postalCode\": \"\",\n      \"prefCurrency\": \"IDR\",\n      \"isActive\": true,\n      \"use2FA\": false,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"createdTime\": 1566452967522,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TemplateNotFound",
+            "description": "<p>The selected template request is not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Please select a template request\",\n    \"field\": \"requestID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TemplateNotFound:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 404,\n  \"error\": {\n    \"code\": \"40401\",\n    \"message\": \"Template request is not found\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-template-get-request-details.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/template/get_request_details",
+    "title": "Channel - WhatsApp BA - Template - Get Request Details",
+    "version": "1.52.0",
+    "name": "Channel_WhatsAppBA_Template_GetRequestDetails",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Get a WhatsApp Business API message template request's details.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "requestID",
+            "description": "<p>The message template request ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"requestID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "template",
+            "description": "<p>The message template's details.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "template.id",
+            "description": "<p>The template ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.name",
+            "description": "<p>The template name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryCode",
+            "description": "<p>The category code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryName",
+            "description": "<p>The category name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.templateType",
+            "description": "<p>The template type (&quot;text&quot; or &quot;media&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.status",
+            "description": "<p>The request status (&quot;new&quot;, &quot;on_process&quot;, &quot;approved&quot;, &quot;rejected&quot;, or &quot;resubmit&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.statusText",
+            "description": "<p>The request status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.reason",
+            "description": "<p>Reason if the template was rejected.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.approvedTime",
+            "description": "<p>The template's approved time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.createdTime",
+            "description": "<p>The time the template was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.updatedTime",
+            "description": "<p>The time the template was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.deletedTime",
+            "description": "<p>The time the template was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages",
+            "description": "<p>The message template's available languages.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageCode",
+            "description": "<p>The language code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageName",
+            "description": "<p>The language name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerFormat",
+            "description": "<p>The header format, only if template type is &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextNamed",
+            "description": "<p>The header's text if template type is &quot;text&quot; or file URL if &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextIndexed",
+            "description": "<p>The header's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.headerParamCount",
+            "description": "<p>Number of parameters for the header's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextNamed",
+            "description": "<p>The body's text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextIndexed",
+            "description": "<p>The body's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.bodyParamCount",
+            "description": "<p>Number of parameters for the body's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextNamed",
+            "description": "<p>The footer's text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextIndexed",
+            "description": "<p>The footer's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.footerParamCount",
+            "description": "<p>Number of parameters for the footer's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttonType",
+            "description": "<p>The type of buttons, if any (&quot;call_to_action&quot;, &quot;quick_reply&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.buttonParamCount",
+            "description": "<p>Number of parameters for the buttons component.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.buttons",
+            "description": "<p>The template's list of buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.buttons.index",
+            "description": "<p>The button's position in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.subType",
+            "description": "<p>The button's subtype (&quot;quick_reply&quot;, &quot;phone_number&quot;, &quot;url&quot;, &quot;otp&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.text",
+            "description": "<p>The button's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.otpType",
+            "description": "<p>The button's OTP type (&quot;copy_code&quot;, &quot;one_tap&quot;), if subtype is &quot;otp&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.phoneNumber",
+            "description": "<p>The phone number, if subtype is &quot;phone_number&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.urlNamed",
+            "description": "<p>The URL with named variables, if subtype is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.urlIndexed",
+            "description": "<p>The URL with indexed variables, if subtype is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.createdTime",
+            "description": "<p>The created time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.updatedTime",
+            "description": "<p>The last updated time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages.sampleParameters",
+            "description": "<p>Sample parameters for the message template.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.sampleParameters.header",
+            "description": "<p>Sample parameters for header.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.sampleParameters.header.number",
+            "description": "<p>The variable number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.header.name",
+            "description": "<p>The variable name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.header.value",
+            "description": "<p>The variable value.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.sampleParameters.body",
+            "description": "<p>Sample parameters for body.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.sampleParameters.body.number",
+            "description": "<p>The variable number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.body.name",
+            "description": "<p>The variable name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.body.value",
+            "description": "<p>The variable value.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.sampleParameters.button",
+            "description": "<p>Sample parameters for buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.sampleParameters.button.number",
+            "description": "<p>The variable number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.button.name",
+            "description": "<p>The variable name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.button.value",
+            "description": "<p>The variable value.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "channel",
+            "description": "<p>The WhatsApp Business API channel which the template belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "channel.id",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.stringID",
+            "description": "<p>The channel's string ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.accountName",
+            "description": "<p>The channel's account name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.phone",
+            "description": "<p>The channel's WhatsApp phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.channelStatus",
+            "description": "<p>The channel's status (&quot;not_paid&quot;, &quot;waiting_setup&quot;, &quot;active&quot;, &quot;error&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.channelStatusText",
+            "description": "<p>The channel's status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isEnabled",
+            "description": "<p>If the channel is currently enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isSuspended",
+            "description": "<p>If the channel is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.suspendedTime",
+            "description": "<p>The time the channel was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.suspendedReason",
+            "description": "<p>The reason of suspension.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.createdTime",
+            "description": "<p>The time the channel was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "organization",
+            "description": "<p>The organization's profile.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.id",
+            "description": "<p>The organization ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.name",
+            "description": "<p>The organization's name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.timeZone",
+            "description": "<p>The organization's time zone.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "organization.countryID",
+            "description": "<p>The organization's country ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.regionName",
+            "description": "<p>The organization's region name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.cityName",
+            "description": "<p>The organization's city name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.fullAddress",
+            "description": "<p>The organization's full address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.postalCode",
+            "description": "<p>The organization's postal code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.prefCurrency",
+            "description": "<p>The organization's preferred currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.isActive",
+            "description": "<p>If the organization is currently active.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "organization.use2FA",
+            "description": "<p>If 2-FA is required to access the organization.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "organization.isSuspended",
+            "description": "<p>If the organization is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.suspendedTime",
+            "description": "<p>The time the organization was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.createdTime",
+            "description": "<p>The time the organization was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.updatedTime",
+            "description": "<p>The time the organization was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.deletedTime",
+            "description": "<p>The time the organization was deleted, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"template\": {\n      \"id\": 1,\n      \"name\": \"greetings_v1\",\n      \"categoryCode\": \"MARKETING\",\n      \"categoryName\": \"Marketing\",\n      \"templateType\": \"text\",\n      \"status\": \"new\",\n      \"statusText\": \"New\",\n      \"reason\": \"\",\n      \"approvedTime\": 0,\n      \"createdTime\": 1611496973940,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    },\n    \"languages\": [\n      {\n        \"languageCode\": \"en\",\n        \"languageName\": \"English\",\n        \"headerFormat\": \"text\",\n        \"headerTextNamed\": \"\",\n        \"headerTextIndexed\": \"\",\n        \"headerParamCount\": 0,\n        \"bodyText\": \"Hi, {{name}}! It looks like you have contacted us outside office hours ({{office_hours}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyTextIndexed\": \"Hi, {{1}}! It looks like you have contacted us outside office hours ({{2}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyParamCount\": 2,\n        \"footerTextNamed\": \"\",\n        \"footerTextIndexed\": \"\",\n        \"footerParamCount\": 0,\n        \"buttonType\": \"\",\n        \"buttonParamCount\": 0,\n        \"buttons\": [],\n        \"createdTime\": 1611496973940,\n        \"updatedTime\": 0\n      }\n    ],\n    \"channel\": {\n      \"id\": 1,\n      \"stringID\": \"2100480937\",\n      \"accountName\": \"TapTalk.io\",\n      \"phone\": \"6281234567890\",\n      \"channelStatus\": \"active\",\n      \"channelStatusText\": \"Active\",\n      \"isEnabled\": true,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"suspendedReason\": \"\",\n      \"createdTime\": 1609940137184,\n      \"updatedTime\": 1610905069595,\n      \"deletedTime\": 0\n    },\n    \"organization\": {\n      \"id\": 1,\n      \"name\": \"TapTalk.io\",\n      \"timeZone\": \"Asia/Jakarta\",\n      \"countryID\": 0,\n      \"regionName\": \"\",\n      \"cityName\": \"\",\n      \"fullAddress\": \"\",\n      \"postalCode\": \"\",\n      \"prefCurrency\": \"IDR\",\n      \"isActive\": true,\n      \"use2FA\": false,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"createdTime\": 1566452967522,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TemplateNotFound",
+            "description": "<p>The selected template request is not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Please select a template request\",\n    \"field\": \"requestID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TemplateNotFound:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 404,\n  \"error\": {\n    \"code\": \"40401\",\n    \"message\": \"Template request is not found\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-template-get-request-details.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/template/get_request_details",
+    "title": "Channel - WhatsApp BA - Template - Get Request Details",
+    "version": "1.37.0",
+    "name": "Channel_WhatsAppBA_Template_GetRequestDetails",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Get a WhatsApp Business API message template request's details.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "requestID",
+            "description": "<p>The message template request ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"requestID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "template",
+            "description": "<p>The message template's details.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "template.id",
+            "description": "<p>The template ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.name",
+            "description": "<p>The template name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryCode",
+            "description": "<p>The category code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryName",
+            "description": "<p>The category name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.templateType",
+            "description": "<p>The template type (&quot;text&quot; or &quot;media&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.status",
+            "description": "<p>The request status (&quot;new&quot;, &quot;on_process&quot;, &quot;approved&quot;, &quot;rejected&quot;, or &quot;resubmit&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.statusText",
+            "description": "<p>The request status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.approvedTime",
+            "description": "<p>The template's approved time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.createdTime",
+            "description": "<p>The time the template was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.updatedTime",
+            "description": "<p>The time the template was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.deletedTime",
+            "description": "<p>The time the template was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages",
+            "description": "<p>The message template's available languages.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageCode",
+            "description": "<p>The language code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageName",
+            "description": "<p>The language name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerFormat",
+            "description": "<p>The header format, only if template type is &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextNamed",
+            "description": "<p>The header's text if template type is &quot;text&quot; or file URL if &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextIndexed",
+            "description": "<p>The header's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.headerParamCount",
+            "description": "<p>Number of parameters for the header's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextNamed",
+            "description": "<p>The body's text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextIndexed",
+            "description": "<p>The body's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.bodyParamCount",
+            "description": "<p>Number of parameters for the body's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextNamed",
+            "description": "<p>The footer's text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextIndexed",
+            "description": "<p>The footer's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.footerParamCount",
+            "description": "<p>Number of parameters for the footer's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttonType",
+            "description": "<p>The type of buttons, if any (&quot;call_to_action&quot;, &quot;quick_reply&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.buttonParamCount",
+            "description": "<p>Number of parameters for the buttons component.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.buttons",
+            "description": "<p>The template's list of buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.buttons.index",
+            "description": "<p>The button's position in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.subType",
+            "description": "<p>The button's subtype (&quot;quick_reply&quot;, &quot;phone_number&quot;, &quot;url&quot;, &quot;otp&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.text",
+            "description": "<p>The button's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.otpType",
+            "description": "<p>The button's OTP type (&quot;copy_code&quot;, &quot;one_tap&quot;), if subtype is &quot;otp&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.phoneNumber",
+            "description": "<p>The phone number, if subtype is &quot;phone_number&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.urlNamed",
+            "description": "<p>The URL with named variables, if subtype is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.urlIndexed",
+            "description": "<p>The URL with indexed variables, if subtype is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.createdTime",
+            "description": "<p>The created time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.updatedTime",
+            "description": "<p>The last updated time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages.sampleParameters",
+            "description": "<p>Sample parameters for the message template.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.sampleParameters.header",
+            "description": "<p>Sample parameters for header.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.sampleParameters.header.number",
+            "description": "<p>The variable number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.header.name",
+            "description": "<p>The variable name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.header.value",
+            "description": "<p>The variable value.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.sampleParameters.body",
+            "description": "<p>Sample parameters for body.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.sampleParameters.body.number",
+            "description": "<p>The variable number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.body.name",
+            "description": "<p>The variable name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.body.value",
+            "description": "<p>The variable value.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.sampleParameters.button",
+            "description": "<p>Sample parameters for buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.sampleParameters.button.number",
+            "description": "<p>The variable number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.button.name",
+            "description": "<p>The variable name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.sampleParameters.button.value",
+            "description": "<p>The variable value.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "channel",
+            "description": "<p>The WhatsApp Business API channel which the template belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "channel.id",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.stringID",
+            "description": "<p>The channel's string ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.accountName",
+            "description": "<p>The channel's account name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.phone",
+            "description": "<p>The channel's WhatsApp phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.channelStatus",
+            "description": "<p>The channel's status (&quot;not_paid&quot;, &quot;waiting_setup&quot;, &quot;active&quot;, &quot;error&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.channelStatusText",
+            "description": "<p>The channel's status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isEnabled",
+            "description": "<p>If the channel is currently enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isSuspended",
+            "description": "<p>If the channel is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.suspendedTime",
+            "description": "<p>The time the channel was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.suspendedReason",
+            "description": "<p>The reason of suspension.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.createdTime",
+            "description": "<p>The time the channel was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "organization",
+            "description": "<p>The organization's profile.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.id",
+            "description": "<p>The organization ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.name",
+            "description": "<p>The organization's name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.timeZone",
+            "description": "<p>The organization's time zone.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "organization.countryID",
+            "description": "<p>The organization's country ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.regionName",
+            "description": "<p>The organization's region name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.cityName",
+            "description": "<p>The organization's city name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.fullAddress",
+            "description": "<p>The organization's full address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.postalCode",
+            "description": "<p>The organization's postal code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.prefCurrency",
+            "description": "<p>The organization's preferred currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.isActive",
+            "description": "<p>If the organization is currently active.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "organization.use2FA",
+            "description": "<p>If 2-FA is required to access the organization.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "organization.isSuspended",
+            "description": "<p>If the organization is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.suspendedTime",
+            "description": "<p>The time the organization was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.createdTime",
+            "description": "<p>The time the organization was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.updatedTime",
+            "description": "<p>The time the organization was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.deletedTime",
+            "description": "<p>The time the organization was deleted, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"template\": {\n      \"id\": 1,\n      \"name\": \"greetings_v1\",\n      \"categoryCode\": \"MARKETING\",\n      \"categoryName\": \"Marketing\",\n      \"templateType\": \"text\",\n      \"status\": \"new\",\n      \"statusText\": \"New\",\n      \"createdTime\": 1611496973940,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    },\n    \"languages\": [\n      {\n        \"languageCode\": \"en\",\n        \"languageName\": \"English\",\n        \"headerFormat\": \"text\",\n        \"headerTextNamed\": \"\",\n        \"headerTextIndexed\": \"\",\n        \"headerParamCount\": 0,\n        \"bodyText\": \"Hi, {{name}}! It looks like you have contacted us outside office hours ({{office_hours}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyTextIndexed\": \"Hi, {{1}}! It looks like you have contacted us outside office hours ({{2}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyParamCount\": 2,\n        \"footerTextNamed\": \"\",\n        \"footerTextIndexed\": \"\",\n        \"footerParamCount\": 0,\n        \"buttonType\": \"\",\n        \"buttonParamCount\": 0,\n        \"buttons\": [],\n        \"createdTime\": 1611496973940,\n        \"updatedTime\": 0\n      }\n    ],\n    \"channel\": {\n      \"id\": 1,\n      \"stringID\": \"2100480937\",\n      \"accountName\": \"TapTalk.io\",\n      \"phone\": \"6281234567890\",\n      \"channelStatus\": \"active\",\n      \"channelStatusText\": \"Active\",\n      \"isEnabled\": true,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"suspendedReason\": \"\",\n      \"createdTime\": 1609940137184,\n      \"updatedTime\": 1610905069595,\n      \"deletedTime\": 0\n    },\n    \"organization\": {\n      \"id\": 1,\n      \"name\": \"TapTalk.io\",\n      \"timeZone\": \"Asia/Jakarta\",\n      \"countryID\": 0,\n      \"regionName\": \"\",\n      \"cityName\": \"\",\n      \"fullAddress\": \"\",\n      \"postalCode\": \"\",\n      \"prefCurrency\": \"IDR\",\n      \"isActive\": true,\n      \"use2FA\": false,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"createdTime\": 1566452967522,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TemplateNotFound",
+            "description": "<p>The selected template request is not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Please select a template request\",\n    \"field\": \"requestID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TemplateNotFound:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 404,\n  \"error\": {\n    \"code\": \"40401\",\n    \"message\": \"Template request is not found\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-template-get-request-details.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/template/get_request_details",
+    "title": "Channel - WhatsApp BA - Template - Get Request Details",
+    "version": "1.18.0",
+    "name": "Channel_WhatsAppBA_Template_GetRequestDetails",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Get a WhatsApp Business API message template request's details.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "requestID",
+            "description": "<p>The message template request ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"requestID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "template",
+            "description": "<p>The message template's details.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "template.id",
+            "description": "<p>The template ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.name",
+            "description": "<p>The template name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryCode",
+            "description": "<p>The category code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryName",
+            "description": "<p>The category name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.templateType",
+            "description": "<p>The template type (&quot;text&quot; or &quot;media&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.status",
+            "description": "<p>The request status (&quot;new&quot;, &quot;on_process&quot;, &quot;approved&quot;, &quot;rejected&quot;, or &quot;resubmit&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.statusText",
+            "description": "<p>The request status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.approvedTime",
+            "description": "<p>The template's approved time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.createdTime",
+            "description": "<p>The time the template was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.updatedTime",
+            "description": "<p>The time the template was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.deletedTime",
+            "description": "<p>The time the template was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages",
+            "description": "<p>The message template's available languages.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageCode",
+            "description": "<p>The language code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageName",
+            "description": "<p>The language name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerFormat",
+            "description": "<p>The header format, only if template type is &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextNamed",
+            "description": "<p>The header's text if template type is &quot;text&quot; or file URL if &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextIndexed",
+            "description": "<p>The header's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.headerParamCount",
+            "description": "<p>Number of parameters for the header's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextNamed",
+            "description": "<p>The body's text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextIndexed",
+            "description": "<p>The body's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.bodyParamCount",
+            "description": "<p>Number of parameters for the body's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextNamed",
+            "description": "<p>The footer's text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextIndexed",
+            "description": "<p>The footer's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.footerParamCount",
+            "description": "<p>Number of parameters for the footer's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.createdTime",
+            "description": "<p>The created time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.updatedTime",
+            "description": "<p>The last updated time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "channel",
+            "description": "<p>The WhatsApp Business API channel which the template belongs to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "channel.id",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.stringID",
+            "description": "<p>The channel's string ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.accountName",
+            "description": "<p>The channel's account name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.phone",
+            "description": "<p>The channel's WhatsApp phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.channelStatus",
+            "description": "<p>The channel's status (&quot;not_paid&quot;, &quot;waiting_setup&quot;, &quot;active&quot;, &quot;error&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.channelStatusText",
+            "description": "<p>The channel's status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isEnabled",
+            "description": "<p>If the channel is currently enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isSuspended",
+            "description": "<p>If the channel is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.suspendedTime",
+            "description": "<p>The time the channel was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.suspendedReason",
+            "description": "<p>The reason of suspension.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.createdTime",
+            "description": "<p>The time the channel was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "organization",
+            "description": "<p>The organization's profile.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.id",
+            "description": "<p>The organization ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.name",
+            "description": "<p>The organization's name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.timeZone",
+            "description": "<p>The organization's time zone.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "organization.countryID",
+            "description": "<p>The organization's country ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.regionName",
+            "description": "<p>The organization's region name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.cityName",
+            "description": "<p>The organization's city name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.fullAddress",
+            "description": "<p>The organization's full address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.postalCode",
+            "description": "<p>The organization's postal code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.prefCurrency",
+            "description": "<p>The organization's preferred currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.isActive",
+            "description": "<p>If the organization is currently active.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "organization.use2FA",
+            "description": "<p>If 2-FA is required to access the organization.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "organization.isSuspended",
+            "description": "<p>If the organization is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.suspendedTime",
+            "description": "<p>The time the organization was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.createdTime",
+            "description": "<p>The time the organization was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.updatedTime",
+            "description": "<p>The time the organization was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.deletedTime",
+            "description": "<p>The time the organization was deleted, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"template\": {\n      \"id\": 1,\n      \"name\": \"greetings_v1\",\n      \"categoryCode\": \"ISSUE_RESOLUTION\",\n      \"categoryName\": \"Issue Resolution\",\n      \"templateType\": \"text\",\n      \"status\": \"new\",\n      \"statusText\": \"New\",\n      \"createdTime\": 1611496973940,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    },\n    \"languages\": [\n      {\n        \"languageCode\": \"en\",\n        \"languageName\": \"English\",\n        \"headerFormat\": \"text\",\n        \"headerTextNamed\": \"\",\n        \"headerTextIndexed\": \"\",\n        \"headerParamCount\": 0,\n        \"bodyText\": \"Hi, {{name}}! It looks like you have contacted us outside office hours ({{office_hours}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyTextIndexed\": \"Hi, {{1}}! It looks like you have contacted us outside office hours ({{2}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyParamCount\": 2,\n        \"footerTextNamed\": \"\",\n        \"footerTextIndexed\": \"\",\n        \"footerParamCount\": 0,\n        \"createdTime\": 1611496973940,\n        \"updatedTime\": 0\n      }\n    ],\n    \"channel\": {\n      \"id\": 1,\n      \"stringID\": \"2100480937\",\n      \"accountName\": \"TapTalk.io\",\n      \"phone\": \"6281234567890\",\n      \"channelStatus\": \"active\",\n      \"channelStatusText\": \"Active\",\n      \"isEnabled\": true,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"suspendedReason\": \"\",\n      \"createdTime\": 1609940137184,\n      \"updatedTime\": 1610905069595,\n      \"deletedTime\": 0\n    },\n    \"organization\": {\n      \"id\": 1,\n      \"name\": \"TapTalk.io\",\n      \"timeZone\": \"Asia/Jakarta\",\n      \"countryID\": 0,\n      \"regionName\": \"\",\n      \"cityName\": \"\",\n      \"fullAddress\": \"\",\n      \"postalCode\": \"\",\n      \"prefCurrency\": \"IDR\",\n      \"isActive\": true,\n      \"use2FA\": false,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"createdTime\": 1566452967522,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TemplateNotFound",
+            "description": "<p>The selected template request is not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Please select a template request\",\n    \"field\": \"requestID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TemplateNotFound:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 404,\n  \"error\": {\n    \"code\": \"40401\",\n    \"message\": \"Template request is not found\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-template-get-request-details.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/template/update_request_status",
+    "title": "Channel - WhatsApp BA - Template - Update Request Status",
+    "version": "1.63.0",
+    "name": "Channel_WhatsAppBA_Template_UpdateRequestStatus",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Update status of a WhatsApp Business API message template request.</p> <p>The response data <code>template</code> and <code>languages</code> are returned only if the template request is approved.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "requestID",
+            "description": "<p>The message template request ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The ID of the WhatsApp Business API channel which the message template request belongs to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The ID of the organization which the message template request and channel belongs to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "status",
+            "description": "<p>New status of the template request.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "reason",
+            "description": "<p>Reason if the template request is rejected.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"requestID\": 1,\n  \"channelID\": 1,\n  \"organizationID\": 1,\n  \"status\": \"approved\",\n  \"reason\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the status is updated successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "template",
+            "description": "<p>The approved message template's details (only if approved).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "template.id",
+            "description": "<p>The template ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.name",
+            "description": "<p>The template name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryCode",
+            "description": "<p>The category code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryName",
+            "description": "<p>The category name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.templateType",
+            "description": "<p>The template type (&quot;text&quot; or &quot;media&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "template.isEnabled",
+            "description": "<p>If the message template is enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.createdTime",
+            "description": "<p>The time the template was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.updatedTime",
+            "description": "<p>The time the template was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.deletedTime",
+            "description": "<p>The time the template was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages",
+            "description": "<p>The approved message template's available languages.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageCode",
+            "description": "<p>The language code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageName",
+            "description": "<p>The language name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.variant",
+            "description": "<p>The template variant (&quot;custom&quot; or &quot;carousel&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.variantText",
+            "description": "<p>The template variant text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerFormat",
+            "description": "<p>The header format, only if template type is &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextNamed",
+            "description": "<p>The header text if template type is &quot;text&quot; or file URL if &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextIndexed",
+            "description": "<p>The header text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.headerParamCount",
+            "description": "<p>Number of parameters for the header text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextNamed",
+            "description": "<p>The body text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextIndexed",
+            "description": "<p>The body text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.bodyParamCount",
+            "description": "<p>Number of parameters for the body text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextNamed",
+            "description": "<p>The footer text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextIndexed",
+            "description": "<p>The footer text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.footerParamCount",
+            "description": "<p>Number of parameters for the footer text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttonType",
+            "description": "<p>The type of buttons, if any (&quot;call_to_action&quot;, &quot;quick_reply&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.buttonParamCount",
+            "description": "<p>Number of parameters for the buttons component.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.buttons",
+            "description": "<p>The template's list of buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.buttons.index",
+            "description": "<p>The button's position in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.subType",
+            "description": "<p>The button subtype (&quot;quick_reply&quot;, &quot;phone_number&quot;, &quot;url&quot;, &quot;otp&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.text",
+            "description": "<p>The button text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.otpType",
+            "description": "<p>The button's OTP type (&quot;copy_code&quot;, &quot;one_tap&quot;), if subtype is &quot;otp&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.phoneNumber",
+            "description": "<p>The phone number, if subtype is &quot;phone_number&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.urlNamed",
+            "description": "<p>The URL with named variables, if subtype is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.urlIndexed",
+            "description": "<p>The URL with indexed variables, if subtype is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": true,
+            "field": "languages.cards",
+            "description": "<p>The template's list of cards, if template variant is &quot;carousel&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.cards.index",
+            "description": "<p>The card's position in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.headerFormat",
+            "description": "<p>The card's header format.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.headerFileURL",
+            "description": "<p>The card's header file URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.bodyTextNamed",
+            "description": "<p>The card's body text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.bodyTextIndexed",
+            "description": "<p>The card's body text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.cards.bodyParamCount",
+            "description": "<p>Number of parameters for the card's body text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.cards.buttonParamCount",
+            "description": "<p>Number of parameters for the card's buttons component.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.cards.buttons",
+            "description": "<p>The card's list of buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.cards.buttons.index",
+            "description": "<p>The button's position in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.buttons.type",
+            "description": "<p>The button type (&quot;quick_reply&quot;, &quot;phone_number&quot;, &quot;url&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.buttons.text",
+            "description": "<p>The button text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.buttons.phoneNumber",
+            "description": "<p>The phone number, if type is &quot;phone_number&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.buttons.urlNamed",
+            "description": "<p>The URL with named variables, if type is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cards.buttons.urlIndexed",
+            "description": "<p>The URL with indexed variables, if type is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.createdTime",
+            "description": "<p>The created time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.updatedTime",
+            "description": "<p>The last updated time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages.parameters",
+            "description": "<p>Template parameters for the language.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.header",
+            "description": "<p>List of parameters for header text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.header.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.header.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.header.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.header.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.body",
+            "description": "<p>List of parameters for body text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.body.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.body.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.body.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.body.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.footer",
+            "description": "<p>List of parameters for footer text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.footer.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.footer.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.footer.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.footer.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.buttons",
+            "description": "<p>List of parameters for buttons component.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.buttons.number",
+            "description": "<p>The button's position in the template.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.buttons.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.buttons.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.buttons.type",
+            "description": "<p>The parameter type (&quot;text&quot; only).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.buttons.componentSubType",
+            "description": "<p>The button subtype (&quot;quick_reply&quot;, &quot;phone_number&quot;, &quot;url&quot;, &quot;otp&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": true,
+            "field": "languages.cardParameters",
+            "description": "<p>Template parameters of cards for the language, if template variant is &quot;carousel&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": true,
+            "field": "languages.cardParameters.body",
+            "description": "<p>List of parameters for the card's body text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cardParameters.body.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cardParameters.body.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cardParameters.body.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cardParameters.body.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": true,
+            "field": "languages.cardParameters.buttons",
+            "description": "<p>List of parameters for the card's buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cardParameters.buttons.number",
+            "description": "<p>The button's position in the template.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cardParameters.buttons.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cardParameters.buttons.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cardParameters.buttons.type",
+            "description": "<p>The parameter type (&quot;text&quot; only).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.cardParameters.buttons.componentSubType",
+            "description": "<p>The button subtype (&quot;quick_reply&quot;, &quot;phone_number&quot;, &quot;url&quot;).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response (approved):",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Template approved successfully\",\n    \"template\": {\n      \"id\": 1,\n      \"name\": \"greetings_v1\",\n      \"categoryCode\": \"MARKETING\",\n      \"categoryName\": \"Marketing\",\n      \"templateType\": \"text\",\n      \"isEnabled\": true,\n      \"createdTime\": 1611496973940,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    },\n    \"languages\": [\n      {\n        \"languageCode\": \"en\",\n        \"languageName\": \"English\",\n        \"headerFormat\": \"text\",\n        \"headerTextNamed\": \"\",\n        \"headerTextIndexed\": \"\",\n        \"headerParamCount\": 0,\n        \"bodyText\": \"Hi, {{name}}! It looks like you have contacted us outside office hours ({{office_hours}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyTextIndexed\": \"Hi, {{1}}! It looks like you have contacted us outside office hours ({{2}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyParamCount\": 2,\n        \"footerTextNamed\": \"\",\n        \"footerTextIndexed\": \"\",\n        \"footerParamCount\": 0,\n        \"buttonType\": \"\",\n        \"buttonParamCount\": 0,\n        \"buttons\": [],\n        \"createdTime\": 1611496973940,\n        \"updatedTime\": 0,\n        \"parameters\": {\n          \"header\": [],\n          \"body\": [\n            {\n              \"number\": 1,\n              \"name\": \"name\",\n              \"isPredefined\": false,\n              \"type\": \"text\"\n            },\n            {\n              \"number\": 2,\n              \"name\": \"office_hours\",\n              \"isPredefined\": false,\n              \"type\": \"text\"\n            }\n          ],\n          \"footer\": [],\n          \"buttons\": []\n        }\n      }\n    ]\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Template request ID is required\",\n    \"field\": \"requestID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-template-update-request-status.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/template/update_request_status",
+    "title": "Channel - WhatsApp BA - Template - Update Request Status",
+    "version": "1.52.0",
+    "name": "Channel_WhatsAppBA_Template_UpdateRequestStatus",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Update status of a WhatsApp Business API message template request.</p> <p>The response data <code>template</code> and <code>languages</code> are returned only if the template request is approved.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "requestID",
+            "description": "<p>The message template request ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The ID of the WhatsApp Business API channel which the message template request belongs to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The ID of the organization which the message template request and channel belongs to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "status",
+            "description": "<p>New status of the template request.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "reason",
+            "description": "<p>Reason if the template request is rejected.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"requestID\": 1,\n  \"channelID\": 1,\n  \"organizationID\": 1,\n  \"status\": \"approved\",\n  \"reason\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the status is updated successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "template",
+            "description": "<p>The approved message template's details (only if approved).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "template.id",
+            "description": "<p>The template ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.name",
+            "description": "<p>The template name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryCode",
+            "description": "<p>The category code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryName",
+            "description": "<p>The category name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.templateType",
+            "description": "<p>The template type (&quot;text&quot; or &quot;media&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "template.isEnabled",
+            "description": "<p>If the message template is enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.createdTime",
+            "description": "<p>The time the template was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.updatedTime",
+            "description": "<p>The time the template was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.deletedTime",
+            "description": "<p>The time the template was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages",
+            "description": "<p>The approved message template's available languages.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageCode",
+            "description": "<p>The language code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageName",
+            "description": "<p>The language name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerFormat",
+            "description": "<p>The header format, only if template type is &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextNamed",
+            "description": "<p>The header's text if template type is &quot;text&quot; or file URL if &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextIndexed",
+            "description": "<p>The header's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.headerParamCount",
+            "description": "<p>Number of parameters for the header's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextNamed",
+            "description": "<p>The body's text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextIndexed",
+            "description": "<p>The body's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.bodyParamCount",
+            "description": "<p>Number of parameters for the body's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextNamed",
+            "description": "<p>The footer's text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextIndexed",
+            "description": "<p>The footer's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.footerParamCount",
+            "description": "<p>Number of parameters for the footer's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttonType",
+            "description": "<p>The type of buttons, if any (&quot;call_to_action&quot;, &quot;quick_reply&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.buttonParamCount",
+            "description": "<p>Number of parameters for the buttons component.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.buttons",
+            "description": "<p>The template's list of buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.buttons.index",
+            "description": "<p>The button's position in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.subType",
+            "description": "<p>The button's subtype (&quot;quick_reply&quot;, &quot;phone_number&quot;, &quot;url&quot;, &quot;otp&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.text",
+            "description": "<p>The button's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.otpType",
+            "description": "<p>The button's OTP type (&quot;copy_code&quot;, &quot;one_tap&quot;), if subtype is &quot;otp&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.phoneNumber",
+            "description": "<p>The phone number, if subtype is &quot;phone_number&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.urlNamed",
+            "description": "<p>The URL with named variables, if subtype is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.urlIndexed",
+            "description": "<p>The URL with indexed variables, if subtype is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.createdTime",
+            "description": "<p>The created time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.updatedTime",
+            "description": "<p>The last updated time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages.parameters",
+            "description": "<p>Template parameters for the language.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.header",
+            "description": "<p>List of parameters for header's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.header.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.header.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.header.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.header.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.body",
+            "description": "<p>List of parameters for body's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.body.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.body.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.body.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.body.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.footer",
+            "description": "<p>List of parameters for footer's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.footer.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.footer.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.footer.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.footer.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response (approved):",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Template approved successfully\",\n    \"template\": {\n      \"id\": 1,\n      \"name\": \"greetings_v1\",\n      \"categoryCode\": \"MARKETING\",\n      \"categoryName\": \"Marketing\",\n      \"templateType\": \"text\",\n      \"isEnabled\": true,\n      \"createdTime\": 1611496973940,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    },\n    \"languages\": [\n      {\n        \"languageCode\": \"en\",\n        \"languageName\": \"English\",\n        \"headerFormat\": \"text\",\n        \"headerTextNamed\": \"\",\n        \"headerTextIndexed\": \"\",\n        \"headerParamCount\": 0,\n        \"bodyText\": \"Hi, {{name}}! It looks like you have contacted us outside office hours ({{office_hours}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyTextIndexed\": \"Hi, {{1}}! It looks like you have contacted us outside office hours ({{2}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyParamCount\": 2,\n        \"footerTextNamed\": \"\",\n        \"footerTextIndexed\": \"\",\n        \"footerParamCount\": 0,\n        \"buttonType\": \"\",\n        \"buttonParamCount\": 0,\n        \"buttons\": [],\n        \"createdTime\": 1611496973940,\n        \"updatedTime\": 0,\n        \"parameters\": {\n          \"header\": [],\n          \"body\": [\n            {\n              \"number\": 1,\n              \"name\": \"name\",\n              \"isPredefined\": false,\n              \"type\": \"text\"\n            },\n            {\n              \"number\": 2,\n              \"name\": \"office_hours\",\n              \"isPredefined\": false,\n              \"type\": \"text\"\n            }\n          ],\n          \"footer\": []\n        }\n      }\n    ]\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Template request ID is required\",\n    \"field\": \"requestID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-template-update-request-status.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/template/update_request_status",
+    "title": "Channel - WhatsApp BA - Template - Update Request Status",
+    "version": "1.37.0",
+    "name": "Channel_WhatsAppBA_Template_UpdateRequestStatus",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Update status of a WhatsApp Business API message template request.</p> <p>The response data <code>template</code> and <code>languages</code> are returned only if the template request is approved.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "requestID",
+            "description": "<p>The message template request ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The ID of the WhatsApp Business API channel which the message template request belongs to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The ID of the organization which the message template request and channel belongs to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "status",
+            "description": "<p>New status of the template request.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"requestID\": 1,\n  \"channelID\": 1,\n  \"organizationID\": 1,\n  \"status\": \"approved\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the status is updated successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "template",
+            "description": "<p>The approved message template's details (only if approved).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "template.id",
+            "description": "<p>The template ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.name",
+            "description": "<p>The template name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryCode",
+            "description": "<p>The category code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryName",
+            "description": "<p>The category name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.templateType",
+            "description": "<p>The template type (&quot;text&quot; or &quot;media&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "template.isEnabled",
+            "description": "<p>If the message template is enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.createdTime",
+            "description": "<p>The time the template was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.updatedTime",
+            "description": "<p>The time the template was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.deletedTime",
+            "description": "<p>The time the template was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages",
+            "description": "<p>The approved message template's available languages.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageCode",
+            "description": "<p>The language code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageName",
+            "description": "<p>The language name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerFormat",
+            "description": "<p>The header format, only if template type is &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextNamed",
+            "description": "<p>The header's text if template type is &quot;text&quot; or file URL if &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextIndexed",
+            "description": "<p>The header's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.headerParamCount",
+            "description": "<p>Number of parameters for the header's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextNamed",
+            "description": "<p>The body's text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextIndexed",
+            "description": "<p>The body's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.bodyParamCount",
+            "description": "<p>Number of parameters for the body's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextNamed",
+            "description": "<p>The footer's text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextIndexed",
+            "description": "<p>The footer's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.footerParamCount",
+            "description": "<p>Number of parameters for the footer's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttonType",
+            "description": "<p>The type of buttons, if any (&quot;call_to_action&quot;, &quot;quick_reply&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.buttonParamCount",
+            "description": "<p>Number of parameters for the buttons component.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.buttons",
+            "description": "<p>The template's list of buttons.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.buttons.index",
+            "description": "<p>The button's position in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.subType",
+            "description": "<p>The button's subtype (&quot;quick_reply&quot;, &quot;phone_number&quot;, &quot;url&quot;, &quot;otp&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.text",
+            "description": "<p>The button's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.otpType",
+            "description": "<p>The button's OTP type (&quot;copy_code&quot;, &quot;one_tap&quot;), if subtype is &quot;otp&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.phoneNumber",
+            "description": "<p>The phone number, if subtype is &quot;phone_number&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.urlNamed",
+            "description": "<p>The URL with named variables, if subtype is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.buttons.urlIndexed",
+            "description": "<p>The URL with indexed variables, if subtype is &quot;url&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.createdTime",
+            "description": "<p>The created time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.updatedTime",
+            "description": "<p>The last updated time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages.parameters",
+            "description": "<p>Template parameters for the language.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.header",
+            "description": "<p>List of parameters for header's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.header.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.header.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.header.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.header.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.body",
+            "description": "<p>List of parameters for body's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.body.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.body.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.body.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.body.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.footer",
+            "description": "<p>List of parameters for footer's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.footer.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.footer.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.footer.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.footer.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response (approved):",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Template approved successfully\",\n    \"template\": {\n      \"id\": 1,\n      \"name\": \"greetings_v1\",\n      \"categoryCode\": \"MARKETING\",\n      \"categoryName\": \"Marketing\",\n      \"templateType\": \"text\",\n      \"isEnabled\": true,\n      \"createdTime\": 1611496973940,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    },\n    \"languages\": [\n      {\n        \"languageCode\": \"en\",\n        \"languageName\": \"English\",\n        \"headerFormat\": \"text\",\n        \"headerTextNamed\": \"\",\n        \"headerTextIndexed\": \"\",\n        \"headerParamCount\": 0,\n        \"bodyText\": \"Hi, {{name}}! It looks like you have contacted us outside office hours ({{office_hours}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyTextIndexed\": \"Hi, {{1}}! It looks like you have contacted us outside office hours ({{2}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyParamCount\": 2,\n        \"footerTextNamed\": \"\",\n        \"footerTextIndexed\": \"\",\n        \"footerParamCount\": 0,\n        \"buttonType\": \"\",\n        \"buttonParamCount\": 0,\n        \"buttons\": [],\n        \"createdTime\": 1611496973940,\n        \"updatedTime\": 0,\n        \"parameters\": {\n          \"header\": [],\n          \"body\": [\n            {\n              \"number\": 1,\n              \"name\": \"name\",\n              \"isPredefined\": false,\n              \"type\": \"text\"\n            },\n            {\n              \"number\": 2,\n              \"name\": \"office_hours\",\n              \"isPredefined\": false,\n              \"type\": \"text\"\n            }\n          ],\n          \"footer\": []\n        }\n      }\n    ]\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Template request ID is required\",\n    \"field\": \"requestID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-template-update-request-status.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsappba/template/update_request_status",
+    "title": "Channel - WhatsApp BA - Template - Update Request Status",
+    "version": "1.18.0",
+    "name": "Channel_WhatsAppBA_Template_UpdateRequestStatus",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Update status of a WhatsApp Business API message template request.</p> <p>The response data <code>template</code> and <code>languages</code> are returned only if the template request is approved.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "requestID",
+            "description": "<p>The message template request ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The ID of the WhatsApp Business API channel which the message template request belongs to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The ID of the organization which the message template request and channel belongs to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "status",
+            "description": "<p>New status of the template request.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"requestID\": 1,\n  \"channelID\": 1,\n  \"organizationID\": 1,\n  \"status\": \"approved\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the status is updated successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "template",
+            "description": "<p>The approved message template's details (only if approved).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "template.id",
+            "description": "<p>The template ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.name",
+            "description": "<p>The template name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryCode",
+            "description": "<p>The category code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.categoryName",
+            "description": "<p>The category name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "template.templateType",
+            "description": "<p>The template type (&quot;text&quot; or &quot;media&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "template.isEnabled",
+            "description": "<p>If the message template is enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.createdTime",
+            "description": "<p>The time the template was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.updatedTime",
+            "description": "<p>The time the template was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "template.deletedTime",
+            "description": "<p>The time the template was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages",
+            "description": "<p>The approved message template's available languages.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageCode",
+            "description": "<p>The language code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.languageName",
+            "description": "<p>The language name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerFormat",
+            "description": "<p>The header format, only if template type is &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextNamed",
+            "description": "<p>The header's text if template type is &quot;text&quot; or file URL if &quot;media&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.headerTextIndexed",
+            "description": "<p>The header's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.headerParamCount",
+            "description": "<p>Number of parameters for the header's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextNamed",
+            "description": "<p>The body's text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.bodyTextIndexed",
+            "description": "<p>The body's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.bodyParamCount",
+            "description": "<p>Number of parameters for the body's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextNamed",
+            "description": "<p>The footer's text, with named variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.footerTextIndexed",
+            "description": "<p>The footer's text, with indexed variables.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.footerParamCount",
+            "description": "<p>Number of parameters for the footer's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.createdTime",
+            "description": "<p>The created time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "languages.updatedTime",
+            "description": "<p>The last updated time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "languages.parameters",
+            "description": "<p>Template parameters for the language.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.header",
+            "description": "<p>List of parameters for header's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.header.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.header.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.header.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.header.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.body",
+            "description": "<p>List of parameters for body's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.body.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.body.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.body.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.body.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "languages.parameters.footer",
+            "description": "<p>List of parameters for footer's text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "languages.parameters.footer.number",
+            "description": "<p>The parameter number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.footer.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "languages.parameters.footer.isPredefined",
+            "description": "<p>If the parameter is predefined.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "languages.parameters.footer.type",
+            "description": "<p>The parameter type (&quot;text&quot; or &quot;image&quot;).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response (approved):",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Template approved successfully\",\n    \"template\": {\n      \"id\": 1,\n      \"name\": \"greetings_v1\",\n      \"categoryCode\": \"MARKETING\",\n      \"categoryName\": \"Marketing\",\n      \"templateType\": \"text\",\n      \"isEnabled\": true,\n      \"createdTime\": 1611496973940,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    },\n    \"languages\": [\n      {\n        \"languageCode\": \"en\",\n        \"languageName\": \"English\",\n        \"headerFormat\": \"text\",\n        \"headerTextNamed\": \"\",\n        \"headerTextIndexed\": \"\",\n        \"headerParamCount\": 0,\n        \"bodyText\": \"Hi, {{name}}! It looks like you have contacted us outside office hours ({{office_hours}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyTextIndexed\": \"Hi, {{1}}! It looks like you have contacted us outside office hours ({{2}}). Please respond to this message and we will get back to you as soon as possible.\",\n        \"bodyParamCount\": 2,\n        \"footerTextNamed\": \"\",\n        \"footerTextIndexed\": \"\",\n        \"footerParamCount\": 0,\n        \"createdTime\": 1611496973940,\n        \"updatedTime\": 0,\n        \"parameters\": {\n          \"header\": [],\n          \"body\": [\n            {\n              \"number\": 1,\n              \"name\": \"name\",\n              \"isPredefined\": false,\n              \"type\": \"text\"\n            },\n            {\n              \"number\": 2,\n              \"name\": \"office_hours\",\n              \"isPredefined\": false,\n              \"type\": \"text\"\n            }\n          ],\n          \"footer\": []\n        }\n      }\n    ]\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Template request ID is required\",\n    \"field\": \"requestID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsappba-template-update-request-status.apidoc.js",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsapp/chatapicom/payment/insert",
+    "title": "Channel - WhatsApp Chat-API.com - Insert Payment",
+    "version": "1.0.0",
+    "name": "Channel_WhatsAppChatAPIComPayment_Insert",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "deprecated": true,
+    "description": "<p>Insert payment record for WhatsApp chat-api.com channel.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID to be approved.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "instanceID",
+            "description": "<p>The instance ID from chat-api.com, must be unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "currency",
+            "description": "<p>The currency code.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "amount",
+            "description": "<p>The payment amount.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "status",
+            "description": "<p>The payment status.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "method",
+            "description": "<p>The payment method.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "paymentTime",
+            "description": "<p>The payment time, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "validUntilTime",
+            "description": "<p>The time the instance is valid until, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "validDays",
+            "description": "<p>Number of days the instance is valid for.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"organizationID\": 1,\n  \"channelID\": 4,\n  \"instanceID\": \"107186\",\n  \"currency\": \"IDR\",\n  \"amount\": 499000,\n  \"status\": \"success\",\n  \"method\": \"transfer\",\n  \"paymentTime\": 1590296919208,\n  \"validUntilTime\": 1592975319208,\n  \"validDays\": 31\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the payment is inserted successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "paymentID",
+            "description": "<p>The inserted payment ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Payment inserted successfully\",\n    \"paymentID\": \"5fcdf2ec-b09e-433a-b6ff-152f692ceca4\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Instance ID is required\",\n    \"field\": \"instanceID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsapp-chatapicom-payment-insert.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsapp/chatapicom/approve",
+    "title": "Channel - WhatsApp Chat-API.com - Approve Channel",
+    "version": "1.16.0",
+    "name": "Channel_WhatsAppChatAPICom_Approve",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Approve a new WhatsApp chat-api.com channel and set the instance's details.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID to be approved.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "instanceID",
+            "description": "<p>The instance ID from chat-api.com, must be unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "apiToken",
+            "description": "<p>The API token from chat-api.com.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "instanceCreatedTime",
+            "description": "<p>The instance created time, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"organizationID\": 1,\n  \"channelID\": 4,\n  \"instanceID\": \"107186\",\n  \"apiToken\": \"p60oy1159rvdkoj9\",\n  \"instanceCreatedTime\": 1590684108168\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel is approved successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "channel",
+            "description": "<p>The channel's details, if successful.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel approved successfully\",\n    \"channel\": {\n      \"id\": 1,\n      \"stringID\": \"2011785873\",\n      \"accountName\": \"Customer Order\",\n      \"phone\": \"\",\n      \"topicID\": 1,\n      \"topicName\": \"Finance\",\n      \"channelStatus\": \"got_qr_code\",\n      \"channelStatusText\": \"Got QR code\",\n      \"firstPaymentTime\": 0,\n      \"lastPaymentTime\": 0,\n      \"nextPaymentTime\": 0,\n      \"isEnabled\": true,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"suspendedReason\": \"\",\n      \"createdTime\": 1589622673346,\n      \"updatedTime\": 1590685908259,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InstanceIDAlreadyExists",
+            "description": "<p>The specified instance ID already exists.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InstanceTokenInvalid",
+            "description": "<p>The specified API token is invalid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Instance ID is required\",\n    \"field\": \"instanceID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "InstanceIDAlreadyExists:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Instance ID '107186' already exists\",\n    \"field\": \"instanceID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "InstanceTokenInvalid:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Wrong token \\\"p60oy1159rvdkoj9\\\" for instance \\\"107186\\\". Please provide token as a GET parameter.\",\n    \"field\": \"apiToken\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsapp-chatapicom-approve.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsapp/chatapicom/approve",
+    "title": "Channel - WhatsApp Chat-API.com - Approve Channel",
+    "version": "1.13.0",
+    "name": "Channel_WhatsAppChatAPICom_Approve",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Approve a new WhatsApp chat-api.com channel and set the instance's details.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID to be approved.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "instanceID",
+            "description": "<p>The instance ID from chat-api.com, must be unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "apiToken",
+            "description": "<p>The API token from chat-api.com.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "instanceCreatedTime",
+            "description": "<p>The instance created time, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"organizationID\": 1,\n  \"channelID\": 4,\n  \"instanceID\": \"107186\",\n  \"apiToken\": \"p60oy1159rvdkoj9\",\n  \"instanceCreatedTime\": 1590684108168\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel is approved successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "channel",
+            "description": "<p>The channel's details, if successful.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel approved successfully\",\n    \"channel\": {\n      \"id\": 1,\n      \"stringID\": \"2011785873\",\n      \"accountName\": \"Customer Order\",\n      \"phone\": \"\",\n      \"topicID\": 1,\n      \"topicName\": \"Finance\",\n      \"instanceStatus\": \"got qr code\",\n      \"instanceStatusText\": \"Got QR code\",\n      \"instanceCreatedTime\": 1590684108168,\n      \"firstPaymentTime\": 0,\n      \"lastPaymentTime\": 0,\n      \"nextPaymentTime\": 0,\n      \"isEnabled\": true,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"suspendedReason\": \"\",\n      \"createdTime\": 1589622673346,\n      \"updatedTime\": 1590685908259,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InstanceIDAlreadyExists",
+            "description": "<p>The specified instance ID already exists.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InstanceTokenInvalid",
+            "description": "<p>The specified API token is invalid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Instance ID is required\",\n    \"field\": \"instanceID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "InstanceIDAlreadyExists:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Instance ID '107186' already exists\",\n    \"field\": \"instanceID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "InstanceTokenInvalid:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Wrong token \\\"p60oy1159rvdkoj9\\\" for instance \\\"107186\\\". Please provide token as a GET parameter.\",\n    \"field\": \"apiToken\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsapp-chatapicom-approve.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsapp/chatapicom/approve",
+    "title": "Channel - WhatsApp Chat-API.com - Approve Channel",
+    "version": "1.0.0",
+    "name": "Channel_WhatsAppChatAPICom_Approve",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Approve a new WhatsApp chat-api.com channel and set the instance's details.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID to be approved.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "instanceID",
+            "description": "<p>The instance ID from chat-api.com, must be unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "apiToken",
+            "description": "<p>The API token from chat-api.com.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "instanceCreatedTime",
+            "description": "<p>The instance created time, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"organizationID\": 1,\n  \"channelID\": 4,\n  \"instanceID\": \"107186\",\n  \"apiToken\": \"p60oy1159rvdkoj9\",\n  \"instanceCreatedTime\": 1590684108168\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel is approved successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel approved successfully\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InstanceIDAlreadyExists",
+            "description": "<p>The specified instance ID already exists.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InstanceTokenInvalid",
+            "description": "<p>The specified API token is invalid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Instance ID is required\",\n    \"field\": \"instanceID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "InstanceIDAlreadyExists:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Instance ID '107186' already exists\",\n    \"field\": \"instanceID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "InstanceTokenInvalid:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Wrong token \\\"p60oy1159rvdkoj9\\\" for instance \\\"107186\\\". Please provide token as a GET parameter.\",\n    \"field\": \"apiToken\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsapp-chatapicom-approve.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/channel/whatsapp/chatapicom/create",
+    "title": "Channel - WhatsApp Chat-API.com - Create Channel",
+    "version": "1.0.0",
+    "name": "Channel_WhatsAppChatAPICom_Create",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Create a new channel for WhatsApp chat-api.com on behalf of a customer organization.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The customer organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "accountName",
+            "description": "<p>The account name for the instance.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "topicID",
+            "description": "<p>The topic ID for chats sent to this channel.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"organizationID\": 1,\n  \"accountName\": \"Customer Order\",\n  \"topicID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel is created successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "channel",
+            "description": "<p>The newly created channel's details, if successful.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "channel.id",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.stringID",
+            "description": "<p>The channel's string ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.accountName",
+            "description": "<p>The channel's account name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.phone",
+            "description": "<p>The channel's WhatsApp phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "channel.topicID",
+            "description": "<p>The channel's assigned topic ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.topicName",
+            "description": "<p>The channel's assigned topic name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.instanceStatus",
+            "description": "<p>The channel's instance status.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.instanceStatusText",
+            "description": "<p>The channel's instance status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.instanceCreatedTime",
+            "description": "<p>The channel's instance created time.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.firstPaymentTime",
+            "description": "<p>The channel's first payment time.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.lastPaymentTime",
+            "description": "<p>The channel's last payment time.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.nextPaymentTime",
+            "description": "<p>The channel's next payment time.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isEnabled",
+            "description": "<p>If the channel is currently enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channel.isSuspended",
+            "description": "<p>If the channel is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.suspendedTime",
+            "description": "<p>The time the channel was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channel.suspendedReason",
+            "description": "<p>The reason of suspension.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.createdTime",
+            "description": "<p>The time the channel was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.updatedTime",
+            "description": "<p>The time the channel was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channel.deletedTime",
+            "description": "<p>The time the channel was deleted, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel created successfully\",\n    \"channel\": {\n      \"id\": 1,\n      \"stringID\": \"2011785873\",\n      \"accountName\": \"Customer Order\",\n      \"phone\": \"\",\n      \"topicID\": 1,\n      \"topicName\": \"Finance\",\n      \"instanceStatus\": \"not_paid\",\n      \"instanceStatusText\": \"Not paid\",\n      \"instanceCreatedTime\": 0,\n      \"firstPaymentTime\": 0,\n      \"lastPaymentTime\": 0,\n      \"nextPaymentTime\": 0,\n      \"isEnabled\": true,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"suspendedReason\": \"\",\n      \"createdTime\": 1589622673346,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MaxChannelReached",
+            "description": "<p>The organization's maximum number of allowed channels has been reached.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"The selected topic is not found\",\n    \"field\": \"topicID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "MaxChannelReached:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49902\",\n    \"message\": \"Maximum number of allowed channels has been reached\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/channel-whatsapp-chatapicom-create.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/onpremise/generate_certificate",
+    "title": "On-Premise - Generate Certificate",
+    "version": "1.26.4",
+    "name": "OnPremise_GenerateCertificate",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Generate an on-premise certificate. The system does not save the certificate.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "customerName",
+            "description": "<p>The customer's name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "tierCode",
+            "description": "<p>The tier code.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "datetime",
+            "optional": false,
+            "field": "validUntil",
+            "description": "<p>The time the certificate is valid until, in RFC3339 format (example: &quot;2021-12-31T23:59:59+07:00&quot;).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"customerName\": \"PT Tap Talk Teknologi\",\n  \"tierCode\": \"c-u10k-1\",\n  \"validUntil\": \"2021-12-31T23:59:59+07:00\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "certificate",
+            "description": "<p>The generated certificate.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"certificate\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDAxMzEyMDAsImp0aSI6IjgwYTY4N2ZiMGRmMzA0Nzg5MDhiNWIxZTUwYWJkYjE1ZWM2MTZjNzE1MzNiMzAxMGE1Nzg0ZThiZDMyZmYxZDczYmI2ZDMzNzYyNzJhZjM0ZDFkZjlmNzA4MmZhZDMyNj...\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "PermissionDenied",
+            "description": "<p>The account does not have permission .</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Customer name is required\",\n    \"field\": \"customerName\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "PermissionDenied:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 403,\n  \"error\": {\n    \"code\": \"40301\",\n    \"message\": \"Unsupported operation\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/onpremise-generate-certificate.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/organization/get_details",
+    "title": "Organization - Get Details",
+    "version": "1.13.2",
+    "name": "Organization_GetDetails",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Get an organization's details.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The customer organization ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"id\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "organization",
+            "description": "<p>The organization's profile.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "selectedTier",
+            "description": "<p>The organization's selected tier.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "selectedTier.id",
+            "description": "<p>The tier ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "selectedTier.code",
+            "description": "<p>The tier code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "selectedTier.name",
+            "description": "<p>The tier name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "selectedTier.endTime",
+            "description": "<p>The time the tier will end, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "selectedTier.isFreeTrial",
+            "description": "<p>If it is free trial.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "selectedTier.isActive",
+            "description": "<p>If the tier is currently active.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "selectedTier.isPending",
+            "description": "<p>If the tier subscription is currently pending.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "selectedTier.isSuspended",
+            "description": "<p>If the tier subscription is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "selectedTier.statusText",
+            "description": "<p>The selected tier's status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "paymentSettings",
+            "description": "<p>The organization's payment settings.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "paymentSettings.isSet",
+            "description": "<p>If the payment settings have been set.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "paymentSettings.isAutomaticPayment",
+            "description": "<p>The automatic payment state.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "paymentSettings.primaryCardID",
+            "description": "<p>The primary card ID, for automatic payments.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "paymentSettings.updatedTime",
+            "description": "<p>The time the payment settings was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "unpaidInvoices",
+            "description": "<p>Summary of the organization's unpaid invoices.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "unpaidInvoices.countAll",
+            "description": "<p>Number of all unpaid invoices.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "unpaidInvoices.countOverdue",
+            "description": "<p>Number of overdue unpaid invoices.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "unpaidInvoices.countFailed",
+            "description": "<p>Number of unpaid invoices with failed payment.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "unpaidInvoices.minDueTime",
+            "description": "<p>The earliest due time of the unpaid invoices, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.id",
+            "description": "<p>The organization ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.name",
+            "description": "<p>The organization's name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.timeZone",
+            "description": "<p>The organization's time zone.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "organization.countryID",
+            "description": "<p>The organization's country ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.regionName",
+            "description": "<p>The organization's region name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.cityName",
+            "description": "<p>The organization's city name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.fullAddress",
+            "description": "<p>The organization's full address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.postalCode",
+            "description": "<p>The organization's postal code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.prefCurrency",
+            "description": "<p>The organization's preferred currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organization.isActive",
+            "description": "<p>If the organization is currently active.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "organization.use2FA",
+            "description": "<p>If 2-FA is required to access the organization.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "organization.isSuspended",
+            "description": "<p>If the organization is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.suspendedTime",
+            "description": "<p>The time the organization was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.createdTime",
+            "description": "<p>The time the organization was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.updatedTime",
+            "description": "<p>The time the organization was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organization.deletedTime",
+            "description": "<p>The time the organization was deleted, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"organization\": {\n      \"id\": 1,\n      \"name\": \"TapTalk.io\",\n      \"timeZone\": \"Asia/Jakarta\",\n      \"countryID\": 0,\n      \"regionName\": \"\",\n      \"cityName\": \"\",\n      \"fullAddress\": \"\",\n      \"postalCode\": \"\",\n      \"prefCurrency\": \"IDR\",\n      \"isActive\": true,\n      \"use2FA\": false,\n      \"isSuspended\": false,\n      \"suspendedTime\": 0,\n      \"createdTime\": 1566452967522,\n      \"updatedTime\": 0,\n      \"deletedTime\": 0\n    },\n    \"selectedTier\": {\n      \"id\": 1,\n      \"code\": \"r-silver-1\",\n      \"name\": \"Silver\",\n      \"endTime\": 0,\n      \"isFreeTrial\": false,\n      \"isActive\": true,\n      \"isPending\": false,\n      \"isSuspended\": false,\n      \"statusText\": \"Active\"\n    },\n    \"paymentSettings\": {\n      \"isSet\": true,\n      \"isAutomaticPayment\": true,\n      \"primaryCardID\": \"0002202285441503\",\n      \"updatedTime\": 1602958067032\n    },\n    \"unpaidInvoices\": {\n      \"countAll\": 1,\n      \"countOverdue\": 0,\n      \"minDueTime\": 1604344270000\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ItemNotFound",
+            "description": "<p>The organization ID is not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"ID is required\",\n    \"field\": \"id\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "ItemNotFound:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 404,\n  \"error\": {\n    \"code\": \"40401\",\n    \"message\": \"Organization is not found\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/organization-get-details.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/organization/get_list",
+    "title": "Organization - Get List",
+    "version": "1.25.0",
+    "name": "Organization_GetList",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Get the list of customer organizations.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "search",
+            "description": "<p>The search term.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "pageNumber",
+            "description": "<p>The page number.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "pageSize",
+            "defaultValue": "50",
+            "description": "<p>Number of organizations to be retrieved per page.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"search\": \"\",\n  \"pageNumber\": 1,\n  \"pageSize\": 50\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "organizations",
+            "description": "<p>The list of organizations.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "hasMore",
+            "description": "<p>If there are more organizations.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "totalItems",
+            "description": "<p>Total number of organizations found.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "totalPages",
+            "description": "<p>Total number of pages.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organizations.id",
+            "description": "<p>The organization ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.name",
+            "description": "<p>The organization's name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.billingTimeZone",
+            "description": "<p>The organization's billing time zone.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.timeZone",
+            "description": "<p>The organization's time zone.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "organizations.countryID",
+            "description": "<p>The organization's country ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.regionName",
+            "description": "<p>The organization's region name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.cityName",
+            "description": "<p>The organization's city name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.fullAddress",
+            "description": "<p>The organization's full address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.postalCode",
+            "description": "<p>The organization's postal code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.prefCurrency",
+            "description": "<p>The organization's preferred currency.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.internalNote",
+            "description": "<p>Internal note for the organization.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.isActive",
+            "description": "<p>If the organization is currently active.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organizations.deactivatedTime",
+            "description": "<p>The time the organization was deactivated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.deactivatedReason",
+            "description": "<p>The reason for deactivation.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "organizations.use2FA",
+            "description": "<p>If 2-FA is required to access the organization.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "organizations.isSuspended",
+            "description": "<p>If the organization is currently suspended.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organizations.suspendedTime",
+            "description": "<p>The time the organization was suspended, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organizations.createdTime",
+            "description": "<p>The time the organization was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organizations.updatedTime",
+            "description": "<p>The time the organization was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organizations.deletedTime",
+            "description": "<p>The time the organization was deleted, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "organizations.creatorAccount",
+            "description": "<p>The creator account's profile.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "organizations.creatorAccount.id",
+            "description": "<p>The account ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.creatorAccount.fullName",
+            "description": "<p>The account's full name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.creatorAccount.email",
+            "description": "<p>The email address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "organizations.creatorAccount.phoneWithCode",
+            "description": "<p>The phone number with country calling code.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"organizations\": [\n      {\n        \"id\": 1,\n        \"name\": \"TapTalk.io\",\n        \"timeZone\": \"Asia/Jakarta\",\n        \"countryID\": 0,\n        \"regionName\": \"\",\n        \"cityName\": \"\",\n        \"fullAddress\": \"\",\n        \"postalCode\": \"\",\n        \"prefCurrency\": \"IDR\",\n        \"isActive\": true,\n        \"deactivatedTime\": 0,\n        \"deactivatedReason\": \"\",\n        \"use2FA\": false,\n        \"isSuspended\": false,\n        \"suspendedTime\": 0,\n        \"createdTime\": 1566452967522,\n        \"updatedTime\": 0,\n        \"deletedTime\": 0,\n        \"creatorAccount\": {\n          \"id\": 8,\n          \"fullName\": \"Jony\",\n          \"email\": \"jony@taptalk.io\",\n          \"phoneWithCode\": \"\"\n        }\n      },\n      ...\n    ],\n    \"hasMore\": false,\n    \"totalItems\": 100,\n    \"totalPages\": 2\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Page number is required\",\n    \"field\": \"pageNumber\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/organization-get-list.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/customer/organization/insert_channel_link",
+    "title": "Organization - Insert Channel Link",
+    "version": "1.15.1",
+    "name": "Organization_InsertChannelLink",
+    "group": "CustomerAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Insert a channel link for a customer organization.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "organizationID",
+            "description": "<p>The organization ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channel",
+            "description": "<p>The channel type (&quot;whatsapp&quot;, &quot;telegram&quot;, etc.).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "url",
+            "description": "<p>The URL.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"organizationID\": 1,\n  \"channel\": \"whatsapp\",\n  \"url\": \"https://wa.me/6281234567890?text=Hello\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the channel link is inserted successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "channelLinks",
+            "description": "<p>The organization's list of channel links.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "channelLinks.id",
+            "description": "<p>The channel link ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "channelLinks.sequence",
+            "description": "<p>The item's sequence in the list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channelLinks.channel",
+            "description": "<p>The channel type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channelLinks.url",
+            "description": "<p>The URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "channelLinks.sendPageURL",
+            "description": "<p>If should include the page URL.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Channel button inserted successfully\",\n    \"channelLinks\": [\n      {\n        \"id\": 4,\n        \"sequence\": 1,\n        \"channel\": \"whatsapp\",\n        \"url\": \"https://wa.me/6281234567890?text=Hello\",\n        \"sendPageURL\": false\n      },\n      ...\n    ]\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Organization ID is required\",\n    \"field\": \"organizationID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/customerapi/organization-insert-channel-link.go",
+    "groupTitle": "Customer API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">499</td> <td>The request to an organization's resource is restricted due to its registered tier.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">49900</td> <td>The organization has not selected a tier.</td> </tr> <tr> <td style=\"text-align:center\">49901</td> <td>The requested feature is not available due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49902</td> <td>The requested feature's quota has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">49903</td> <td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  }
+] });

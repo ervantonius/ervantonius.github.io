@@ -1,0 +1,65 @@
+{
+  "name": "TapLive Internal Dashboard API",
+  "version": "1.64.0",
+  "description": "TapLive Internal Dashboard API Documentation",
+  "title": "TapLive Internal Dashboard API",
+  "url": "",
+  "header": {
+    "title": "",
+    "filename": ""
+  },
+  "footer": {
+    "title": "",
+    "filename": ""
+  },
+  "sampleUrl": null,
+  "order": [
+    "ClientAPI",
+    "ServerTime",
+    "AuthAPI",
+    "AccessToken_Request",
+    "AccessToken_Refresh",
+    "AccountAPI",
+    "Profile_Get",
+    "Security_ChangePassword",
+    "Logout",
+    "AdminAPI",
+    "System_BuildConfig",
+    "EmailDomainBlacklist_GetList",
+    "EmailDomainBlacklist_Add",
+    "EmailDomainBlacklist_Delete",
+    "WhatsAppChatAPICom_InsertInstances",
+    "WhatsAppMaytapi_InsertInstances",
+    "WhatsAppWhatsTalk_InsertInstances",
+    "CustomerAPI",
+    "Organization_GetList",
+    "Organization_GetDetails",
+    "Organization_InsertChannelLink",
+    "Billing_Balance_Add",
+    "Billing_Subscription_GetListByOrganizationID",
+    "Billing_Invoice_GetUnpaidListByOrganizationID",
+    "Billing_Invoice_GetDetails",
+    "Billing_Invoice_InsertManualPayment",
+    "Channel_WhatsAppChatAPICom_Create",
+    "Channel_WhatsAppChatAPICom_Approve",
+    "Channel_WhatsAppChatAPIComPayment_Insert",
+    "Channel_WhatsAppBA_CreateSubscription",
+    "Channel_WhatsAppBA_MigrateToWappinV2",
+    "Channel_WhatsAppBA_Template_GetRequestDetails",
+    "Channel_WhatsAppBA_Template_UpdateRequestStatus",
+    "Channel_Tokopedia_UpdateChannelStatus",
+    "OnPremise_GenerateCertificate"
+  ],
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  },
+  "defaultVersion": "0.0.0",
+  "apidoc": "0.3.0",
+  "generator": {
+    "name": "apidoc",
+    "time": "2025-03-31T05:58:53.926Z",
+    "url": "https://apidocjs.com",
+    "version": "0.26.0"
+  }
+}

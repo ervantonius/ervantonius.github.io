@@ -1,0 +1,36 @@
+define({
+  "name": "TapLive Public API",
+  "version": "1.64.0",
+  "description": "TapLive Public API Documentation",
+  "title": "TapLive Public API",
+  "url": "",
+  "header": {
+    "title": "",
+    "filename": ""
+  },
+  "footer": {
+    "title": "",
+    "filename": ""
+  },
+  "sampleUrl": null,
+  "order": [
+    "PublicAPI",
+    "RequestInfo",
+    "QuickReplyMedia",
+    "WABATemplateMedia",
+    "WhatsAppEmbeddedSignup_Apps",
+    "WhatsAppEmbeddedSignup_ExchangeCode"
+  ],
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  },
+  "defaultVersion": "0.0.0",
+  "apidoc": "0.3.0",
+  "generator": {
+    "name": "apidoc",
+    "time": "2025-03-31T05:58:57.069Z",
+    "url": "https://apidocjs.com",
+    "version": "0.26.0"
+  }
+});

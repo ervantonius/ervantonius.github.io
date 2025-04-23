@@ -1,0 +1,53 @@
+{
+  "name": "TapLive Integration API",
+  "version": "1.64.0",
+  "description": "TapLive Integration API Documentation",
+  "title": "TapLive Integration API",
+  "url": "",
+  "header": {
+    "title": "Introduction",
+    "content": "<h4>HTTP Request Headers</h4>\n<table>\n<thead>\n<tr>\n<th><strong>Header Name</strong></th>\n<th style=\"text-align:center\"><strong>Required</strong></th>\n<th><strong>Description</strong></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>API-Key</td>\n<td style=\"text-align:center\">✓</td>\n<td>API key for accessing the API.</td>\n</tr>\n<tr>\n<td>Content-Type</td>\n<td style=\"text-align:center\"></td>\n<td>Content type of the request body.</td>\n</tr>\n<tr>\n<td>User-Agent</td>\n<td style=\"text-align:center\"></td>\n<td>The user agent of the client accessing the API.</td>\n</tr>\n</tbody>\n</table>\n<h4>HTTP Response Status Codes</h4>\n<table>\n<thead>\n<tr>\n<th style=\"text-align:center\"><strong>Code</strong></th>\n<th><strong>Description</strong></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style=\"text-align:center\">200</td>\n<td>OK, request proceed without error.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">204</td>\n<td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">400</td>\n<td>Bad request, either the request header or the API parameter validation failed.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">403</td>\n<td>Forbidden, the user does not have access to the requested resource.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">404</td>\n<td>Not found, requested resource does not exist.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">429</td>\n<td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">491</td>\n<td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">499</td>\n<td>The organization's request to a resource is restricted due to its registered tier.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">500</td>\n<td>Internal server error while processing the request.</td>\n</tr>\n</tbody>\n</table>\n<h4>API Error Codes</h4>\n<table>\n<thead>\n<tr>\n<th style=\"text-align:center\"><strong>Code</strong></th>\n<th><strong>Description</strong></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td style=\"text-align:center\">40001</td>\n<td>HTTP request header validation failed.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">40002</td>\n<td>API request parameter validation failed.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">40301</td>\n<td>The user does not have access to the requested resource or action.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">40401</td>\n<td>The requested resource is not found.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">49101</td>\n<td>The API key is not provided.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">49102</td>\n<td>Failed to parse the API key, or the API key is invalid.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">49103</td>\n<td>The provided API key is not found.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">49104</td>\n<td>The provided API key is not intended to be used with the client's platform.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">49106</td>\n<td>The API key has expired.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">49107</td>\n<td>The API key is disabled.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">49900</td>\n<td>The organization has not selected a tier.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">49903</td>\n<td>The requested feature's monthly limit has been reached due to the organization's registered tier.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">50001</td>\n<td>An error occurred while validating the API key.</td>\n</tr>\n<tr>\n<td style=\"text-align:center\">99999</td>\n<td>Other errors, usually without specific reason or action.</td>\n</tr>\n</tbody>\n</table>\n"
+  },
+  "footer": {
+    "title": "",
+    "filename": ""
+  },
+  "sampleUrl": null,
+  "order": [
+    "InboxAPI",
+    "Case_GetUpdatedList",
+    "Case_GetMessageList",
+    "Case_Update",
+    "Case_AddOrRemoveLabels",
+    "Case_Handover",
+    "Case_Close",
+    "GetMessageStatus",
+    "SendMessage_Telegram",
+    "SendMessage_WhatsApp",
+    "SendTemplatedMessage_WhatsAppBA",
+    "UserAPI",
+    "SyncContact",
+    "RequestAuthTicket",
+    "OrganizationAPI",
+    "OfficeHours_Get",
+    "Topic_Create",
+    "Topic_Delete",
+    "Topic_AddAgents",
+    "Topic_RemoveAgents",
+    "Chatbot_ChatGPTSetup_AddKnowledgeBaseTexts",
+    "Chatbot_ChatGPTSetup_RemoveAllKnowledgeBase",
+    "Chatbot_ChatGPTSetup_SubmitBuild"
+  ],
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  },
+  "defaultVersion": "0.0.0",
+  "apidoc": "0.3.0",
+  "generator": {
+    "name": "apidoc",
+    "time": "2025-03-31T05:58:55.509Z",
+    "url": "https://apidocjs.com",
+    "version": "0.26.0"
+  }
+}

@@ -1,0 +1,5284 @@
+define({ "api": [
+  {
+    "type": "post",
+    "url": "/v1/inbox/case/add_or_remove_labels",
+    "title": "Case - Add or Remove Labels",
+    "version": "1.56.0",
+    "name": "Case_AddOrRemoveLabels",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Add labels to a case or remove labels from a case.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The case ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string[]",
+            "optional": true,
+            "field": "addCaseLabels",
+            "description": "<p>Name of the case labels to be added.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string[]",
+            "optional": true,
+            "field": "removeCaseLabels",
+            "description": "<p>Name of the case labels to be removed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"caseID\": \"00C49D438C\",\n  \"addCaseLabels\": [ \"vancouver\", \"oxford\" ],\n  \"removeCaseLabels\": [ \"savannah\" ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If updated successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Case labels updated successfully\",\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Case ID is required\",\n    \"field\": \"caseID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/case-add-or-remove-labels.go",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/case/close",
+    "title": "Case - Close",
+    "version": "1.57.2",
+    "name": "Case_Close",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Close a case.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The case ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "sendClosingMessage",
+            "description": "<p>If closing message should be sent, if available.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "sendUserRating",
+            "defaultValue": "true",
+            "description": "<p>If user rating should be sent, if available.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"caseID\": \"00C49D438C\",\n  \"sendClosingMessage\": true,\n  \"sendUserRating\": false\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the case is closed successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Case closed successfully\",\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Case ID is required\",\n    \"field\": \"caseID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/case-close.go",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/case/close",
+    "title": "Case - Close",
+    "version": "1.54.1",
+    "name": "Case_Close",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Close a case.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The case ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "sendClosingMessage",
+            "description": "<p>If closing message should be sent, if available.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"caseID\": \"00C49D438C\",\n  \"sendClosingMessage\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the case is closed successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Case closed successfully\",\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Case ID is required\",\n    \"field\": \"caseID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/case-close.apidoc.js",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "get",
+    "url": "/v1/inbox/case/get_message_list",
+    "title": "Case - Get Message List",
+    "version": "1.56.0",
+    "name": "Case_GetMessageList",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Get message list of given case ID.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "case_id",
+            "description": "<p>The case ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (Query):",
+          "content": "?case_id=00C49D438C",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The case ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "channelType",
+            "description": "<p>The channel type (&quot;whatsapp&quot;, &quot;whatsappba&quot;, &quot;telegram&quot;, etc.).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "messages",
+            "description": "<p>The message list.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "messages.id",
+            "description": "<p>The message ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "messages.sender",
+            "description": "<p>The sender.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "messages.sender.id",
+            "description": "<p>The sender's user ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "messages.sender.name",
+            "description": "<p>The sender's name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "messages.type",
+            "description": "<p>The type of the message (e.g., &quot;text&quot;, &quot;image&quot;, &quot;video&quot;, &quot;document&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "messages.text",
+            "description": "<p>Details for message type &quot;text&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "messages.text.body",
+            "description": "<p>Body of the text message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "messages.image",
+            "description": "<p>Details for message type &quot;image&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "messages.image.url",
+            "description": "<p>The URL of the image.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "messages.image.caption",
+            "description": "<p>The caption of the image.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "messages.video",
+            "description": "<p>Details for message type &quot;video&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "messages.video.url",
+            "description": "<p>The URL of the video.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "messages.video.caption",
+            "description": "<p>The caption of the video.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "messages.document",
+            "description": "<p>Details for message type &quot;document&quot;.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "messages.document.url",
+            "description": "<p>The document's file URL.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "messages.document.filename",
+            "description": "<p>The document's file name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "messages.document.caption",
+            "description": "<p>The document's caption.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "messages.timestamp",
+            "description": "<p>The message's timestamp, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"caseID\": \"00C49D438C\",\n    \"channelType\": \"whatsappba\",\n    \"messages\": [\n      {\n        \"id\": \"msg.123...\",\n        \"sender\": {\n          \"id\": \"362fc835...\",\n          \"name\": \"John Doe\"\n        },\n        \"type\": \"text\",\n        \"text\": {\n          \"body\": \"Halo\"\n        },\n        \"timestamp\": 1721142004000\n      },\n      {\n        \"id\": \"msg.456...\",\n        \"sender\": {\n          \"id\": \"362fc835...\",\n          \"contactName\": \"John Doe\"\n        },\n        \"type\": \"image\",\n        \"image\": {\n          \"url\": \"https://...\",\n          \"caption\": \"This is image caption\"\n        },\n        \"timestamp\": 1721142057000\n      },\n      {\n        \"id\": \"msg.789...\",\n        \"sender\": {\n          \"id\": \"362fc835...\",\n          \"contactName\": \"John Doe\"\n        },\n        \"type\": \"video\",\n        \"video\": {\n          \"url\": \"https://...\",\n          \"caption\": \"This is video caption\"\n        },\n        \"timestamp\": 1721142064000\n      },\n      {\n        \"id\": \"msg.xyz...\",\n        \"sender\": {\n          \"id\": \"362fc835...\",\n          \"contactName\": \"John Doe\"\n        },\n        \"type\": \"document\",\n        \"document\": {\n          \"url\": \"https://...\",\n          \"filename\": \"Receipt.pdf\",\n          \"caption\": \"This is file caption\"\n        },\n        \"timestamp\": 1721142073000\n      }\n    ]\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Case ID is required\",\n    \"field\": \"case_id\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/case-get-message-list.go",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "get",
+    "url": "/v1/inbox/case/get_updated_list",
+    "title": "Case - Get Updated List",
+    "version": "1.41.0",
+    "name": "Case_GetUpdatedList",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Get the list of new and updated cases since <code>since_timestamp</code>.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "since_timestamp",
+            "description": "<p>Timestamp in Unix milliseconds to start getting the updates from.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "size": "1..100",
+            "optional": true,
+            "field": "limit",
+            "defaultValue": "100",
+            "description": "<p>Maximum number of items to retrieve.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (Query):",
+          "content": "?since_timestamp=1640367001000&limit=100",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "cases",
+            "description": "<p>The list of new and updated cases.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.id",
+            "description": "<p>The case ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "cases.contact",
+            "description": "<p>The contact's details.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.contact.id",
+            "description": "<p>The contact's user ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.contact.fullName",
+            "description": "<p>The contact's full name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.contact.alias",
+            "description": "<p>The contact's alias.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.contact.email",
+            "description": "<p>The contact's email address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.contact.phone",
+            "description": "<p>The contact's phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.contact.agentRemark",
+            "description": "<p>Remark by agent for the contact.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "cases.contact.createdTime",
+            "description": "<p>The time the contact was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "cases.contact.updatedTime",
+            "description": "<p>The time the contact was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "cases.agent",
+            "description": "<p>The agent handling the case.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.agent.email",
+            "description": "<p>The agent's email address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.agent.fullName",
+            "description": "<p>The agent's full name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.firstMessage",
+            "description": "<p>The case's first message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "cases.isClosed",
+            "description": "<p>If the case is closed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "cases.isJunk",
+            "description": "<p>If the case is marked as junk.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.agentRemark",
+            "description": "<p>Remark by agent for the case.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "cases.createdTime",
+            "description": "<p>The time the case was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "cases.updatedTime",
+            "description": "<p>The time the case was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "hasMore",
+            "description": "<p>If there are more cases after <code>lastTimestamp</code>.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastTimestamp",
+            "description": "<p>The latest timestamp in the returned list, to be used as next request's <code>since_timestamp</code>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"cases\": [\n      {\n        \"id\": \"00C49D438C\",\n        \"contact\": {\n          \"id\": \"76379c2a-14b7-4c88-88c7-17244be50acf\",\n          \"fullName\": \"Jony XL\",\n          \"alias\": \"\",\n          \"email\": \"\",\n          \"phone\": \"6287776325008\",\n          \"agentRemark\": \"\",\n          \"createdTime\": 1587352926788,\n          \"updatedTime\": 0\n        },\n        \"agent\": {\n          \"email\": \"jony@taptalk.io\",\n          \"fullName\": \"Jony\"\n        },\n        \"firstMessage\": \"1\",\n        \"isClosed\": false,\n        \"isJunk\": false,\n        \"agentRemark\": \"\",\n        \"createdTime\": 1587352928385,\n        \"updatedTime\": 1640367746510\n      }\n    ],\n    \"hasMore\": false,\n    \"lastTimestamp\": 1640367746510\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Since timestamp is invalid\",\n    \"field\": \"since_timestamp\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/get-updated-case-list.go",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "get",
+    "url": "/v1/inbox/case/get_updated_list",
+    "title": "Case - Get Updated List",
+    "version": "1.26.5",
+    "name": "Case_GetUpdatedList",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Get the list of new and updated cases since <code>since_timestamp</code>.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "since_timestamp",
+            "description": "<p>Timestamp in Unix milliseconds to start getting the updates from.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "size": "1..100",
+            "optional": true,
+            "field": "limit",
+            "defaultValue": "100",
+            "description": "<p>Maximum number of items to retrieve.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (Query):",
+          "content": "?since_timestamp=1640367001000&limit=100",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "cases",
+            "description": "<p>The list of new and updated cases.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.id",
+            "description": "<p>The case ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "cases.contact",
+            "description": "<p>The contact's details.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.contact.id",
+            "description": "<p>The contact's user ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.contact.fullName",
+            "description": "<p>The contact's full name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.contact.alias",
+            "description": "<p>The contact's alias.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.contact.email",
+            "description": "<p>The contact's email address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.contact.phone",
+            "description": "<p>The contact's phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.contact.agentRemark",
+            "description": "<p>Remark by agent for the contact.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "cases.contact.createdTime",
+            "description": "<p>The time the contact was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "cases.contact.updatedTime",
+            "description": "<p>The time the contact was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "cases.agent",
+            "description": "<p>The agent handling the case.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.agent.email",
+            "description": "<p>The agent's email address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.agent.fullName",
+            "description": "<p>The agent's full name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.firstMessage",
+            "description": "<p>The case's first message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "cases.isClosed",
+            "description": "<p>If the case is closed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "cases.isJunk",
+            "description": "<p>If the case is marked as junk.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "cases.agentRemark",
+            "description": "<p>Remark by agent for the case.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "cases.createdTime",
+            "description": "<p>The time the case was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "cases.updatedTime",
+            "description": "<p>The time the case was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "hasMore",
+            "description": "<p>If there are more cases after <code>lastTimestamp</code>.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "lastTimestamp",
+            "description": "<p>The latest timestamp in the returned list, to be used as next request's <code>since_timestamp</code>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"cases\": [\n      {\n        \"id\": \"00C49D438C\",\n        \"contact\": {\n          \"id\": \"76379c2a-14b7-4c88-88c7-17244be50acf\",\n          \"fullName\": \"Jony XL\",\n          \"alias\": \"\",\n          \"email\": \"\",\n          \"phone\": \"6287776325008\",\n          \"agentRemark\": \"\",\n          \"createdTime\": 1587352926788,\n          \"updatedTime\": 0\n        },\n        \"agent\": {\n          \"email\": \"jony@taptalk.io\",\n          \"fullName\": \"Jony\"\n        },\n        \"firstMessage\": \"1\",\n        \"isClosed\": false,\n        \"isJunk\": false,\n        \"agentRemark\": \"\",\n        \"createdTime\": 1587352928385,\n        \"updatedTime\": 1640367746510\n      }\n    ],\n    \"hasMore\": false,\n    \"lastTimestamp\": 1640367746510\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Since timestamp is invalid\",\n    \"field\": \"since_timestamp\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/get-updated-case-list.apidoc.js",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/case/handover",
+    "title": "Case - Handover",
+    "version": "1.54.1",
+    "name": "Case_Handover",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Hand over an open case to an agent.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The case ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "agentEmail",
+            "description": "<p>The email address of agent to hand over to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "topicID",
+            "description": "<p>The new topic ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"caseID\": \"00C49D438C\",\n  \"agentEmail\": \"john.doe@example.com\",\n  \"topicID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If updated successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Case handover successful\",\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Case ID is required\",\n    \"field\": \"caseID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/case-handover.go",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/case/update",
+    "title": "Case - Update",
+    "version": "1.52.1",
+    "name": "Case_Update",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Update a case.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The case ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "agentRemark",
+            "description": "<p>Agent remark for the case, may be empty.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "isJunk",
+            "description": "<p>If the case is junk.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (text):",
+          "content": "{\n  \"caseID\": \"00C49D438C\",\n  \"agentRemark\": \"...\",\n  \"isJunk\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If updated successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Case updated successfully\",\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Case ID is required\",\n    \"field\": \"caseID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/update-case.go",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "get",
+    "url": "/v1/inbox/get_message_status",
+    "title": "Get Message Status",
+    "version": "1.56.0",
+    "name": "GetMessageStatus",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Get status of a sent message.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "trx_id",
+            "description": "<p>ID of the send message transaction.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (Query):",
+          "content": "?trx_id=7f1007bf-d04b-4e83-9b2e-e193d3833ba1",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message.trxID",
+            "description": "<p>The transaction ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message.status",
+            "description": "<p>The status.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message.statusText",
+            "description": "<p>The status text.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message.reason",
+            "description": "<p>The reason for failure.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "message.isSent",
+            "description": "<p>If the message has been sent to the channel.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "message.sentTime",
+            "description": "<p>The time the message was sent, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "message.isAcknowledged",
+            "description": "<p>If the message has been acknowledged by the channel.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "message.acknowledgedTime",
+            "description": "<p>The time the message was acknowledged, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "message.isDelivered",
+            "description": "<p>If the message has been delivered to the recipient.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "message.deliveredTime",
+            "description": "<p>The time the message was delivered, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "message.isRead",
+            "description": "<p>If the message has been read by the recipient.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "message.readTime",
+            "description": "<p>The time the message was read, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "message.createdTime",
+            "description": "<p>The time the message was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "message.updatedTime",
+            "description": "<p>The time the message was updated, in Unix milliseconds.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"message\": {\n      \"trxID\": \"7f1007bf-d04b-4e83-9b2e-e193d3833ba1\",\n      \"status\": \"pending\",\n      \"statusText\": \"Pending\",\n      \"reason\": \"\",\n      \"isSent\": false,\n      \"sentTime\": 0,\n      \"isAcknowledged\": false,\n      \"acknowledgedTime\": 0,\n      \"isDelivered\": false,\n      \"deliveredTime\": 0,\n      \"isRead\": false,\n      \"readTime\": 0,\n      \"createdTime\": 1688912570989,\n      \"updatedTime\": 0\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Trx ID is required\",\n    \"field\": \"trx_id\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/get-message-status.go",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/send_message_telegram",
+    "title": "Send Message via Telegram",
+    "version": "1.56.1",
+    "name": "SendMessage_Telegram",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Send a message to the specified chat ID via a Telegram channel.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "chatID",
+            "description": "<p>The chat ID to send the message to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "\"text\"",
+              "\"image\""
+            ],
+            "optional": false,
+            "field": "messageType",
+            "description": "<p>The message type.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "body",
+            "description": "<p>The message body (text message or file URL).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "filename",
+            "description": "<p>The name of the file (required for message type other than &quot;text&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "caption",
+            "description": "<p>The caption, if any (for message type &quot;image&quot;).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (text):",
+          "content": "{\n  \"channelID\": \"2101081881\",\n  \"chatID\": \"6281212345678\",\n  \"messageType\": \"text\",\n  \"body\": \"Hi, this is a message.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (image):",
+          "content": "{\n  \"channelID\": \"2101081881\",\n  \"chatID\": \"6281212345678\",\n  \"messageType\": \"image\",\n  \"body\": \"http://www.example.com/chat/file/image/008dce72-06c0?token=802714\",\n  \"filename\": \"my-photo.jpg\",\n  \"caption\": \"This is the photo.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If message sent successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The success/error message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "reason",
+            "description": "<p>Failure reason (&quot;invalid_recipient&quot;, &quot;insufficient_balance&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "trxID",
+            "description": "<p>The ID of send message transaction.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"The message has been added to queue\",\n    \"reason\": \"\",\n    \"trxID\": \"7f1007bf-d04b-4e83-9b2e-e193d3833ba1\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Channel ID is required\",\n    \"field\": \"channelID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/send-message-telegram.go",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/send_message_whatsapp",
+    "title": "Send Message via WhatsApp",
+    "version": "1.42.1",
+    "name": "SendMessage_WhatsApp",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Send a message to the specified phone number via a WhatsApp channel.</p> <p>The phone number must be registered in WhatsApp.</p> <p>If parameter <code>withCase</code> is true, the message will always be sent to an open case. If the user already has an open case, the message will be sent to that case. Otherwise, a new case will be created for the user.</p> <p>If parameter <code>topicID</code> is not specified and new case should be created, then the channel's first topic will be used as default.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>The phone number to send the message to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "\"text\"",
+              "\"image\""
+            ],
+            "optional": false,
+            "field": "messageType",
+            "description": "<p>The message type.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "body",
+            "description": "<p>The message body (text message or file URL).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "filename",
+            "description": "<p>The name of the file (required for message type other than &quot;text&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "caption",
+            "description": "<p>The caption, if any (for message type &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": true,
+            "field": "withCase",
+            "description": "<p>If true, the message will be sent to the recipient's existing open case or a new case will be created.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "topicID",
+            "description": "<p>The topic ID for new case.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (text):",
+          "content": "{\n  \"channelID\": \"2101081881\",\n  \"phone\": \"6281212345678\",\n  \"messageType\": \"text\",\n  \"body\": \"Hi, this is a message.\",\n  \"withCase\": true,\n  \"topicID\": 1\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (image):",
+          "content": "{\n  \"channelID\": \"2101081881\",\n  \"phone\": \"6281212345678\",\n  \"messageType\": \"image\",\n  \"body\": \"http://www.example.com/chat/file/image/008dce72-06c0?token=802714\",\n  \"filename\": \"my-photo.jpg\",\n  \"caption\": \"This is the photo.\",\n  \"withCase\": true,\n  \"topicID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If message sent successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The success/error message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "reason",
+            "description": "<p>Failure reason (&quot;invalid_recipient&quot;, &quot;insufficient_balance&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The ID of the case which the message was sent to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "trxID",
+            "description": "<p>The ID of send message transaction.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"The message has been added to queue\",\n    \"reason\": \"\",\n    \"caseID\": \"96212160DF\",\n    \"trxID\": \"7f1007bf-d04b-4e83-9b2e-e193d3833ba1\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Channel ID is required\",\n    \"field\": \"channelID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/send-message-whatsapp.go",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/send_message_whatsapp",
+    "title": "Send Message via WhatsApp",
+    "version": "1.40.2",
+    "name": "SendMessage_WhatsApp",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Send a message to the specified phone number via a WhatsApp channel.</p> <p>The phone number must be registered in WhatsApp.</p> <p>If parameter <code>withCase</code> is true, the message will always be sent to an open case. If the user already has an open case, the message will be sent to that case. Otherwise, a new case will be created for the user.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>The phone number to send the message to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "\"text\"",
+              "\"image\""
+            ],
+            "optional": false,
+            "field": "messageType",
+            "description": "<p>The message type.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "body",
+            "description": "<p>The message body (text message or file URL).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "filename",
+            "description": "<p>The name of the file (required for message type other than &quot;text&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "caption",
+            "description": "<p>The caption, if any (for message type &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": true,
+            "field": "withCase",
+            "description": "<p>If true, the message will be sent to the recipient's existing open case or a new case will be created.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (text):",
+          "content": "{\n  \"channelID\": \"2101081881\",\n  \"phone\": \"6281212345678\",\n  \"messageType\": \"text\",\n  \"body\": \"Hi, this is a message.\",\n  \"withCase\": true\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (image):",
+          "content": "{\n  \"channelID\": \"2101081881\",\n  \"phone\": \"6281212345678\",\n  \"messageType\": \"image\",\n  \"body\": \"http://www.example.com/chat/file/image/008dce72-06c0?token=802714\",\n  \"filename\": \"my-photo.jpg\",\n  \"caption\": \"This is the photo.\",\n  \"withCase\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If message sent successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The success/error message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "reason",
+            "description": "<p>Failure reason (&quot;invalid_recipient&quot;, &quot;insufficient_balance&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The ID of the case which the message was sent to.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"The message has been added to queue\",\n    \"reason\": \"\",\n    \"caseID\": \"96212160DF\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Channel ID is required\",\n    \"field\": \"channelID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/send-message-whatsapp.apidoc.js",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/send_message_whatsapp",
+    "title": "Send Message via WhatsApp",
+    "version": "1.23.0",
+    "name": "SendMessage_WhatsApp",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Send a message to the specified phone number via a WhatsApp channel.</p> <p>The phone number must be registered in WhatsApp.</p> <p>If parameter <code>withCase</code> is true, the message will always be sent to an open case. If the user already has an open case, the message will be sent to that case. Otherwise, a new case will be created for the user.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>The phone number to send the message to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "\"text\"",
+              "\"image\""
+            ],
+            "optional": false,
+            "field": "messageType",
+            "description": "<p>The message type.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "body",
+            "description": "<p>The message body (text message or file URL).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "filename",
+            "description": "<p>The name of the file (required for message type other than &quot;text&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "caption",
+            "description": "<p>The caption, if any (for message type &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": true,
+            "field": "withCase",
+            "description": "<p>If true, the message will be sent to the recipient's existing open case or a new case will be created.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (text):",
+          "content": "{\n  \"channelID\": \"2101081881\",\n  \"phone\": \"6281212345678\",\n  \"messageType\": \"text\",\n  \"body\": \"Hi, this is a message.\",\n  \"withCase\": true\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (image):",
+          "content": "{\n  \"channelID\": \"2101081881\",\n  \"phone\": \"6281212345678\",\n  \"messageType\": \"image\",\n  \"body\": \"http://www.example.com/chat/file/image/008dce72-06c0?token=802714\",\n  \"filename\": \"my-photo.jpg\",\n  \"caption\": \"This is the photo.\",\n  \"withCase\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If message sent successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The success/error message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "reason",
+            "description": "<p>Failure reason (&quot;invalid_recipient&quot;, &quot;insufficient_balance&quot;).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The ID of the case which the message was sent to.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"The message has been added to queue\",\n    \"reason\": \"\",\n    \"caseID\": \"96212160DF\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Channel ID is required\",\n    \"field\": \"channelID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/send-message-whatsapp.apidoc.js",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/send_message_whatsapp",
+    "title": "Send Message via WhatsApp",
+    "version": "1.17.0",
+    "name": "SendMessage_WhatsApp",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Send a message to the specified phone number via a WhatsApp channel.</p> <p>The phone number must be registered in WhatsApp.</p> <p>If parameter <code>withCase</code> is true, the message will always be sent to an open case. If the user already has an open case, the message will be sent to that case. Otherwise, a new case will be created for the user.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>The phone number to send the message to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "\"text\"",
+              "\"image\""
+            ],
+            "optional": false,
+            "field": "messageType",
+            "description": "<p>The message type.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "body",
+            "description": "<p>The message body (text message or file URL).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "filename",
+            "description": "<p>The name of the file (required for message type other than &quot;text&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "caption",
+            "description": "<p>The caption, if any (for message type &quot;image&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": true,
+            "field": "withCase",
+            "description": "<p>If true, the message will be sent to the recipient's existing open case or a new case will be created.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (text):",
+          "content": "{\n  \"channelID\": \"2101081881\",\n  \"phone\": \"6281212345678\",\n  \"messageType\": \"text\",\n  \"body\": \"Hi, this is a message.\",\n  \"withCase\": true\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (image):",
+          "content": "{\n  \"channelID\": \"2101081881\",\n  \"phone\": \"6281212345678\",\n  \"messageType\": \"image\",\n  \"body\": \"http://www.example.com/chat/file/image/008dce72-06c0?token=802714\",\n  \"filename\": \"my-photo.jpg\",\n  \"caption\": \"This is the photo.\",\n  \"withCase\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If message sent successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The success/error message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The ID of the case which the message was sent to.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"The message has been added to queue\",\n    \"caseID\": \"96212160DF\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Channel ID is required\",\n    \"field\": \"channelID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/send-message-whatsapp.apidoc.js",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/send_templated_message_whatsappba",
+    "title": "Send Templated Message via WhatsApp Business API",
+    "version": "1.63.0",
+    "name": "SendTemplatedMessage_WhatsAppBA",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Send a templated message to the specified phone number via a WhatsApp Business API channel.</p> <p>The phone number must be registered in WhatsApp.</p> <p>If parameter <code>withCase</code> is true, the message will always be sent to an open case. If the user already has an open case, the message will be sent to that case. Otherwise, a new case will be created for the user.</p> <p>If parameter <code>topicID</code> is not specified and new case should be created, then the channel's first topic will be used as default.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "phoneNumberID",
+            "description": "<p>The phone number ID to send the message from (required if vendor is &quot;meta&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>The phone number to send the message to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "templateName",
+            "description": "<p>The message template name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "languageCode",
+            "description": "<p>The language code of the message template.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "parameters",
+            "description": "<p>Parameters for the message template.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.header",
+            "description": "<p>Parameters for template header.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.header.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.header.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.body",
+            "description": "<p>Parameters for template body.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.body.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.body.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.footer",
+            "description": "<p>Parameters for template footer.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.footer.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.footer.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.buttons",
+            "description": "<p>Parameters for template buttons.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.buttons.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.buttons.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "cardParameters",
+            "description": "<p>Parameters for the cards.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "cardParameters.headerFileURL",
+            "description": "<p>The card's header file URL.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "cardParameters.body",
+            "description": "<p>Parameters for card's body.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "cardParameters.body.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "cardParameters.body.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "cardParameters.buttons",
+            "description": "<p>Parameters for card's buttons.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "cardParameters.buttons.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "cardParameters.buttons.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": true,
+            "field": "withCase",
+            "description": "<p>If true, the message will be sent to the recipient's existing open case or a new case will be created.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "topicID",
+            "description": "<p>The topic ID for new case.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (On-Premises):",
+          "content": "{\n  \"channelID\": \"2100480937\",\n  \"phone\": \"6281212345678\",\n  \"templateName\": \"greetings_v1\",\n  \"languageCode\": \"en\",\n  \"parameters\": {\n    \"header\": [],\n    \"body\": [\n      {\n        \"name\": \"name\",\n        \"value\": \"John\"\n      },\n      {\n        \"name\": \"office_hours\",\n        \"value\": \"09:00 - 17:00\"\n      }\n    ],\n    \"footer\": [],\n    \"buttons\": []\n  },\n  \"withCase\": true,\n  \"topicID\": 1\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Cloud):",
+          "content": "{\n  \"channelID\": \"2100480937\",\n  \"phoneNumberID\": \"103011859190563\",\n  \"phone\": \"6281212345678\",\n  \"templateName\": \"greetings_v1\",\n  \"languageCode\": \"en\",\n  \"parameters\": {\n    \"header\": [],\n    \"body\": [\n      {\n        \"name\": \"name\",\n        \"value\": \"John\"\n      },\n      {\n        \"name\": \"office_hours\",\n        \"value\": \"09:00 - 17:00\"\n      }\n    ],\n    \"footer\": [],\n    \"buttons\": []\n  },\n  \"withCase\": true,\n  \"topicID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If message sent successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The success/error message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The ID of the case which the message was sent to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "trxID",
+            "description": "<p>The ID of send message transaction.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"The message has been added to queue\",\n    \"caseID\": \"8CF60CFF1F\",\n    \"trxID\": \"7f1007bf-d04b-4e83-9b2e-e193d3833ba1\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Channel ID is required\",\n    \"field\": \"channelID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/send-templated-message-whatsappba.go",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/send_templated_message_whatsappba",
+    "title": "Send Templated Message via WhatsApp Business API",
+    "version": "1.40.2",
+    "name": "SendTemplatedMessage_WhatsAppBA",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Send a templated message to the specified phone number via a WhatsApp Business API channel.</p> <p>The phone number must be registered in WhatsApp.</p> <p>If parameter <code>withCase</code> is true, the message will always be sent to an open case. If the user already has an open case, the message will be sent to that case. Otherwise, a new case will be created for the user.</p> <p>If parameter <code>topicID</code> is not specified and new case should be created, then the channel's first topic will be used as default.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "phoneNumberID",
+            "description": "<p>The phone number ID to send the message from (required if vendor is &quot;meta&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>The phone number to send the message to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "templateName",
+            "description": "<p>The message template name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "languageCode",
+            "description": "<p>The language code of the message template.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "parameters",
+            "description": "<p>Parameters for the message template.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.header",
+            "description": "<p>Parameters for template header.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.header.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.header.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.body",
+            "description": "<p>Parameters for template body.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.body.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.body.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.footer",
+            "description": "<p>Parameters for template footer.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.footer.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.footer.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.buttons",
+            "description": "<p>Parameters for template buttons.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.buttons.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.buttons.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": true,
+            "field": "withCase",
+            "description": "<p>If true, the message will be sent to the recipient's existing open case or a new case will be created.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "topicID",
+            "description": "<p>The topic ID for new case.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (On-Premises):",
+          "content": "{\n  \"channelID\": \"2100480937\",\n  \"phone\": \"6281212345678\",\n  \"templateName\": \"greetings_v1\",\n  \"languageCode\": \"en\",\n  \"parameters\": {\n    \"header\": [],\n    \"body\": [\n      {\n        \"name\": \"name\",\n        \"value\": \"John\"\n      },\n      {\n        \"name\": \"office_hours\",\n        \"value\": \"09:00 - 17:00\"\n      }\n    ],\n    \"footer\": [],\n    \"buttons\": []\n  },\n  \"withCase\": true,\n  \"topicID\": 1\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Cloud):",
+          "content": "{\n  \"channelID\": \"2100480937\",\n  \"phoneNumberID\": \"103011859190563\",\n  \"phone\": \"6281212345678\",\n  \"templateName\": \"greetings_v1\",\n  \"languageCode\": \"en\",\n  \"parameters\": {\n    \"header\": [],\n    \"body\": [\n      {\n        \"name\": \"name\",\n        \"value\": \"John\"\n      },\n      {\n        \"name\": \"office_hours\",\n        \"value\": \"09:00 - 17:00\"\n      }\n    ],\n    \"footer\": [],\n    \"buttons\": []\n  },\n  \"withCase\": true,\n  \"topicID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If message sent successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The success/error message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The ID of the case which the message was sent to.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "trxID",
+            "description": "<p>The ID of send message transaction.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"The message has been added to queue\",\n    \"caseID\": \"8CF60CFF1F\",\n    \"trxID\": \"7f1007bf-d04b-4e83-9b2e-e193d3833ba1\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Channel ID is required\",\n    \"field\": \"channelID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/send-templated-message-whatsappba.apidoc.js",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/send_templated_message_whatsappba",
+    "title": "Send Templated Message via WhatsApp Business API",
+    "version": "1.37.0",
+    "name": "SendTemplatedMessage_WhatsAppBA",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Send a templated message to the specified phone number via a WhatsApp Business API channel.</p> <p>The phone number must be registered in WhatsApp.</p> <p>If parameter <code>withCase</code> is true, the message will always be sent to an open case. If the user already has an open case, the message will be sent to that case. Otherwise, a new case will be created for the user.</p> <p>If parameter <code>topicID</code> is not specified and new case should be created, then the channel's first topic will be used as default.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "phoneNumberID",
+            "description": "<p>The phone number ID to send the message from (required if vendor is &quot;meta&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>The phone number to send the message to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "templateName",
+            "description": "<p>The message template name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "languageCode",
+            "description": "<p>The language code of the message template.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "parameters",
+            "description": "<p>Parameters for the message template.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.header",
+            "description": "<p>Parameters for template header.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.header.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.header.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.body",
+            "description": "<p>Parameters for template body.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.body.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.body.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.footer",
+            "description": "<p>Parameters for template footer.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.footer.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.footer.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.buttons",
+            "description": "<p>Parameters for template buttons.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.buttons.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.buttons.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": true,
+            "field": "withCase",
+            "description": "<p>If true, the message will be sent to the recipient's existing open case or a new case will be created.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "topicID",
+            "description": "<p>The topic ID for new case.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (On-Premises):",
+          "content": "{\n  \"channelID\": \"2100480937\",\n  \"phone\": \"6281212345678\",\n  \"templateName\": \"greetings_v1\",\n  \"languageCode\": \"en\",\n  \"parameters\": {\n    \"header\": [],\n    \"body\": [\n      {\n        \"name\": \"name\",\n        \"value\": \"John\"\n      },\n      {\n        \"name\": \"office_hours\",\n        \"value\": \"09:00 - 17:00\"\n      }\n    ],\n    \"footer\": [],\n    \"buttons\": []\n  },\n  \"withCase\": true,\n  \"topicID\": 1\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Cloud):",
+          "content": "{\n  \"channelID\": \"2100480937\",\n  \"phoneNumberID\": \"103011859190563\",\n  \"phone\": \"6281212345678\",\n  \"templateName\": \"greetings_v1\",\n  \"languageCode\": \"en\",\n  \"parameters\": {\n    \"header\": [],\n    \"body\": [\n      {\n        \"name\": \"name\",\n        \"value\": \"John\"\n      },\n      {\n        \"name\": \"office_hours\",\n        \"value\": \"09:00 - 17:00\"\n      }\n    ],\n    \"footer\": [],\n    \"buttons\": []\n  },\n  \"withCase\": true,\n  \"topicID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If message sent successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The success/error message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The ID of the case which the message was sent to.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"The message has been added to queue\",\n    \"caseID\": \"8CF60CFF1F\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Channel ID is required\",\n    \"field\": \"channelID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/send-templated-message-whatsappba.apidoc.js",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/send_templated_message_whatsappba",
+    "title": "Send Templated Message via WhatsApp Business API",
+    "version": "1.30.0",
+    "name": "SendTemplatedMessage_WhatsAppBA",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Send a templated message to the specified phone number via a WhatsApp Business API channel.</p> <p>The phone number must be registered in WhatsApp.</p> <p>If parameter <code>withCase</code> is true, the message will always be sent to an open case. If the user already has an open case, the message will be sent to that case. Otherwise, a new case will be created for the user.</p> <p>If parameter <code>topicID</code> is not specified and new case should be created, then the channel's first topic will be used as default.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "phoneNumberID",
+            "description": "<p>The phone number ID to send the message from (required if vendor is &quot;meta&quot;).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>The phone number to send the message to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "templateName",
+            "description": "<p>The message template name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "languageCode",
+            "description": "<p>The language code of the message template.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "parameters",
+            "description": "<p>Parameters for the message template.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.header",
+            "description": "<p>Parameters for template header.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.header.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.header.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.body",
+            "description": "<p>Parameters for template body.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.body.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.body.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.footer",
+            "description": "<p>Parameters for template footer.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.footer.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.footer.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": true,
+            "field": "withCase",
+            "description": "<p>If true, the message will be sent to the recipient's existing open case or a new case will be created.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": true,
+            "field": "topicID",
+            "description": "<p>The topic ID for new case.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (On-Premises):",
+          "content": "{\n  \"channelID\": \"2100480937\",\n  \"phone\": \"6281212345678\",\n  \"templateName\": \"greetings_v1\",\n  \"languageCode\": \"en\",\n  \"parameters\": {\n    \"header\": [],\n    \"body\": [\n      {\n        \"name\": \"name\",\n        \"value\": \"John\"\n      },\n      {\n        \"name\": \"office_hours\",\n        \"value\": \"09:00 - 17:00\"\n      }\n    ],\n    \"footer\": []\n  },\n  \"withCase\": true,\n  \"topicID\": 1\n}",
+          "type": "json"
+        },
+        {
+          "title": "Request Example (Cloud):",
+          "content": "{\n  \"channelID\": \"2100480937\",\n  \"phoneNumberID\": \"103011859190563\",\n  \"phone\": \"6281212345678\",\n  \"templateName\": \"greetings_v1\",\n  \"languageCode\": \"en\",\n  \"parameters\": {\n    \"header\": [],\n    \"body\": [\n      {\n        \"name\": \"name\",\n        \"value\": \"John\"\n      },\n      {\n        \"name\": \"office_hours\",\n        \"value\": \"09:00 - 17:00\"\n      }\n    ],\n    \"footer\": []\n  },\n  \"withCase\": true,\n  \"topicID\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If message sent successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The success/error message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The ID of the case which the message was sent to.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"The message has been added to queue\",\n    \"caseID\": \"8CF60CFF1F\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Channel ID is required\",\n    \"field\": \"channelID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/send-templated-message-whatsappba.apidoc.js",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/inbox/send_templated_message_whatsappba",
+    "title": "Send Templated Message via WhatsApp Business API",
+    "version": "1.18.0",
+    "name": "SendTemplatedMessage_WhatsAppBA",
+    "group": "InboxAPI",
+    "permission": [
+      {
+        "name": "inbox"
+      }
+    ],
+    "description": "<p>Send a templated message to the specified phone number via a WhatsApp Business API channel.</p> <p>The phone number must be registered in WhatsApp.</p> <p>If parameter <code>withCase</code> is true, the message will always be sent to an open case. If the user already has an open case, the message will be sent to that case. Otherwise, a new case will be created for the user.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channelID",
+            "description": "<p>The channel ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>The phone number to send the message to.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "templateName",
+            "description": "<p>The message template name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "languageCode",
+            "description": "<p>The language code of the message template.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object",
+            "optional": false,
+            "field": "parameters",
+            "description": "<p>Parameters for the message template.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.header",
+            "description": "<p>Parameters for template header.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.header.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.header.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.body",
+            "description": "<p>Parameters for template body.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.body.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.body.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "parameters.footer",
+            "description": "<p>Parameters for template footer.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.footer.name",
+            "description": "<p>Name of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "parameters.footer.value",
+            "description": "<p>Value of the parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "bool",
+            "optional": true,
+            "field": "withCase",
+            "description": "<p>If true, the message will be sent to the recipient's existing open case or a new case will be created.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"channelID\": \"2100480937\",\n  \"phone\": \"6281212345678\",\n  \"templateName\": \"greetings_v1\",\n  \"languageCode\": \"en\",\n  \"parameters\": {\n    \"header\": [],\n    \"body\": [\n      {\n        \"name\": \"name\",\n        \"value\": \"John\"\n      },\n      {\n        \"name\": \"office_hours\",\n        \"value\": \"09:00 - 17:00\"\n      }\n    ],\n    \"footer\": []\n  },\n  \"withCase\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If message sent successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The success/error message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "caseID",
+            "description": "<p>The ID of the case which the message was sent to.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"The message has been added to queue\",\n    \"caseID\": \"8CF60CFF1F\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Channel ID is required\",\n    \"field\": \"channelID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/inboxapi/send-templated-message-whatsappba.apidoc.js",
+    "groupTitle": "Inbox API",
+    "groupDescription": "<p>Manages inbox and messages.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/organization/chatbot/chatgpt_setup/add_knowledge_base_texts",
+    "title": "Chatbot - ChatGPT Setup - Add Knowledge Base Texts",
+    "version": "1.62.0",
+    "name": "Chatbot_ChatGPTSetup_AddKnowledgeBaseTexts",
+    "group": "OrganizationAPI",
+    "permission": [
+      {
+        "name": "organization"
+      }
+    ],
+    "description": "<p>Add one or more knowledge base text items to a chatbot's ChatGPT setup.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "chatbotID",
+            "description": "<p>The chatbot ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": false,
+            "field": "texts",
+            "description": "<p>The knowledge base items.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "texts.name",
+            "description": "<p>Name of the item.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "texts.content",
+            "description": "<p>The content.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (text):",
+          "content": "{\n  \"chatbotID\": \"2424325...\",\n  \"texts\": [\n    {\n      \"name\": \"About TapTalk.io\",\n      \"content\": \"TapTalk.io adalah...\",\n    },\n    {\n      \"name\": \"Seputar OneTalk\",\n      \"content\": \"OneTalk adalah...\",\n    },\n    ...\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If added successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Texts added successfully\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Chatbot ID is required\",\n    \"field\": \"chatbotID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/organizationapi/chatbot-chatgpt-setup-add-knowledge-base-texts.go",
+    "groupTitle": "Organization API",
+    "groupDescription": "<p>Manages organization's data.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/organization/chatbot/chatgpt_setup/remove_all_knowledge_base",
+    "title": "Chatbot - ChatGPT Setup - Remove All Knowledge Base",
+    "version": "1.62.0",
+    "name": "Chatbot_ChatGPTSetup_RemoveAllKnowledgeBase",
+    "group": "OrganizationAPI",
+    "permission": [
+      {
+        "name": "organization"
+      }
+    ],
+    "description": "<p>Remove all trained sources and pending changes from a chatbot's knowledge base.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "chatbotID",
+            "description": "<p>The chatbot ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example (text):",
+          "content": "{\n  \"chatbotID\": \"2424325...\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If removed successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"All trained sources and pending changes removed successfully\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Chatbot ID is required\",\n    \"field\": \"chatbotID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/organizationapi/chatbot-chatgpt-setup-remove-all-knowledge-base.go",
+    "groupTitle": "Organization API",
+    "groupDescription": "<p>Manages organization's data.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/organization/chatbot/chatgpt_setup/submit_build",
+    "title": "Chatbot - ChatGPT Setup - Submit & Build",
+    "version": "1.62.0",
+    "name": "Chatbot_ChatGPTSetup_SubmitBuild",
+    "group": "OrganizationAPI",
+    "permission": [
+      {
+        "name": "organization"
+      }
+    ],
+    "description": "<p>Submit and build a ChatGPT chatbot's setup.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "long",
+            "optional": false,
+            "field": "chatbotID",
+            "description": "<p>The chatbot ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "versionDescription",
+            "description": "<p>Description for the new version, default to current date &amp; time if empty.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"chatbotID\": 1,\n  \"versionDescription\": \"First build\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If submitted successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Chatbot setup submitted successfully and build will run soon\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Chatbot ID is required\",\n    \"field\": \"chatbotID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/organizationapi/chatbot-chatgpt-setup-submit-build.go",
+    "groupTitle": "Organization API",
+    "groupDescription": "<p>Manages organization's data.</p>"
+  },
+  {
+    "type": "get",
+    "url": "/v1/organization/office_hours/get",
+    "title": "Office Hours - Get",
+    "version": "1.57.2",
+    "name": "OfficeHours_Get",
+    "group": "OrganizationAPI",
+    "permission": [
+      {
+        "name": "organization"
+      }
+    ],
+    "description": "<p>Get the organization's list of office hours.</p> <table> <thead> <tr> <th style=\"text-align:left\"><strong>Day of Week</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:left\">10</td> <td>Sunday</td> </tr> <tr> <td style=\"text-align:left\">11</td> <td>Monday</td> </tr> <tr> <td style=\"text-align:left\">12</td> <td>Tuesday</td> </tr> <tr> <td style=\"text-align:left\">13</td> <td>Wednesday</td> </tr> <tr> <td style=\"text-align:left\">14</td> <td>Thursday</td> </tr> <tr> <td style=\"text-align:left\">15</td> <td>Friday</td> </tr> <tr> <td style=\"text-align:left\">16</td> <td>Saturday</td> </tr> <tr> <td style=\"text-align:left\">90</td> <td>Everyday</td> </tr> <tr> <td style=\"text-align:left\">91</td> <td>Weekdays (Monday until Friday)</td> </tr> <tr> <td style=\"text-align:left\">92</td> <td>Weekends (Saturday and Sunday)</td> </tr> </tbody> </table> <p>The time format is <code>&quot;HH:mm&quot;</code>, in 24-hours format.</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "officeHours",
+            "description": "<p>The list of all active office hours.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "officeHours.id",
+            "description": "<p>The record ID.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "officeHours.dayOfWeek",
+            "description": "<p>The day of week, see description above.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "officeHours.startTime",
+            "description": "<p>The office hours' start time.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "officeHours.endTime",
+            "description": "<p>The office hours' end time.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "officeHours.createdTime",
+            "description": "<p>The time the record was created, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "long",
+            "optional": false,
+            "field": "officeHours.updatedTime",
+            "description": "<p>The time the record was last updated, in Unix milliseconds.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "timeZone",
+            "description": "<p>The organization's time zone.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"officeHours\": [\n      {\n        \"id\": 1,\n        \"dayOfWeek\": 91,\n        \"startTime\": \"09:00\",\n        \"endTime\": \"17:00\",\n        \"createdTime\": 1571586059660,\n        \"updatedTime\": 0\n      },\n      {\n        \"id\": 2,\n        \"dayOfWeek\": 92,\n        \"startTime\": \"10:00\",\n        \"endTime\": \"18:00\",\n        \"createdTime\": 1571586059660,\n        \"updatedTime\": 0\n      }\n    ],\n    \"timeZone\": \"Asia/Jakarta\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/organizationapi/office-hours-get.go",
+    "groupTitle": "Organization API",
+    "groupDescription": "<p>Manages organization's data.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/organization/topic/add_agents",
+    "title": "Topic - Add Agents",
+    "version": "1.54.1",
+    "name": "Topic_AddAgents",
+    "group": "OrganizationAPI",
+    "permission": [
+      {
+        "name": "organization"
+      }
+    ],
+    "description": "<p>Add agents to a topic.</p> <p>Each customer organization can have maximum number of agents based on its registered tier. The maximum number of agents is calculated distinctly by account from all existing topics. For example, if an agent is assigned to more than 1 topic, it counts as 1 agent.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The topic ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string[]",
+            "optional": false,
+            "field": "accountEmails",
+            "description": "<p>Email addresses of the accounts to be added as the topic's agent.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"id\": 1,\n  \"accountEmails\": [ \"john.doe@example.com\" ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the agents are added successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string[]",
+            "optional": false,
+            "field": "addedMemberEmails",
+            "description": "<p>Email addresses of the agents successfully added to the topic.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Agents added successfully\",\n    \"addedMemberEmails\": [ \"john.doe@example.com\" ]\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MaxAgentReached",
+            "description": "<p>The organization's maximum number of agents has been reached.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 401,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"The selected topic is not found\",\n    \"field\": \"id\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "MaxAgentReached:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49902\",\n    \"message\": \"Maximum number of unique agents has been reached\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/organizationapi/topic-agent-add.go",
+    "groupTitle": "Organization API",
+    "groupDescription": "<p>Manages organization's data.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/organization/topic/create",
+    "title": "Topic - Create",
+    "version": "1.57.2",
+    "name": "Topic_Create",
+    "group": "OrganizationAPI",
+    "permission": [
+      {
+        "name": "organization"
+      }
+    ],
+    "description": "<p>Create a new topic.</p> <p>Each customer organization can have maximum number of topics based on its registered tier.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The topic's name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "object[]",
+            "optional": true,
+            "field": "channels",
+            "description": "<p>Channels to be added to the topic.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channels.type",
+            "description": "<p>The channel type (&quot;whatsapp&quot;, &quot;whatsappba&quot;, &quot;telegram&quot;, etc.).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "channels.id",
+            "description": "<p>The channel ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"name\": \"Technical\",\n  \"channels\": [\n    {\n      \"type\": \"whatsappba\",\n      \"id\": \"24081901\"\n    }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the topic is created successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "topicID",
+            "description": "<p>The created topic's ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Topic created successfully\",\n    \"topicID\": 1\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MaxTopicReached",
+            "description": "<p>The organization's maximum number of topics has been reached.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Topic name is required\",\n    \"field\": \"name\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "MaxTopicReached:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49902\",\n    \"message\": \"Maximum number of topics has been reached\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/organizationapi/topic-create.go",
+    "groupTitle": "Organization API",
+    "groupDescription": "<p>Manages organization's data.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/organization/topic/create",
+    "title": "Topic - Create",
+    "version": "1.54.1",
+    "name": "Topic_Create",
+    "group": "OrganizationAPI",
+    "permission": [
+      {
+        "name": "organization"
+      }
+    ],
+    "description": "<p>Create a new topic.</p> <p>Each customer organization can have maximum number of topics based on its registered tier.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The topic's name.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"name\": \"Technical\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the topic is created successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "integer",
+            "optional": false,
+            "field": "topicID",
+            "description": "<p>The created topic's ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Topic created successfully\",\n    \"topicID\": 1\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MaxTopicReached",
+            "description": "<p>The organization's maximum number of topics has been reached.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Topic name is required\",\n    \"field\": \"name\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "MaxTopicReached:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49902\",\n    \"message\": \"Maximum number of topics has been reached\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/organizationapi/topic-create.apidoc.js",
+    "groupTitle": "Organization API",
+    "groupDescription": "<p>Manages organization's data.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/organization/topic/delete",
+    "title": "Topic - Delete",
+    "version": "1.54.1",
+    "name": "Topic_Delete",
+    "group": "OrganizationAPI",
+    "permission": [
+      {
+        "name": "organization"
+      }
+    ],
+    "description": "<p>Delete an existing topic.</p> <p>Nb.: A topic can't be deleted if it is being assigned to a channel.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The ID of the topic to delete.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"id\": 1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the topic is deleted successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Topic deleted successfully\"\n  }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Success Response (Topic in Use):",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"The topic is assigned to a channel and can't be deleted\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"The selected topic is not found\",\n    \"field\": \"id\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/organizationapi/topic-delete.go",
+    "groupTitle": "Organization API",
+    "groupDescription": "<p>Manages organization's data.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/organization/topic/remove_agents",
+    "title": "Topic - Remove Agents",
+    "version": "1.54.1",
+    "name": "Topic_RemoveAgents",
+    "group": "OrganizationAPI",
+    "permission": [
+      {
+        "name": "organization"
+      }
+    ],
+    "description": "<p>Remove agents from a topic.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The topic ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string[]",
+            "optional": false,
+            "field": "accountEmails",
+            "description": "<p>The account email addresses of the agents to be removed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"id\": 1,\n  \"accountEmails\": [ \"john.doe@example.com\" ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the agents are removed successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message, if failed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string[]",
+            "optional": false,
+            "field": "removedMemberEmails",
+            "description": "<p>Email addresses of the agents successfully removed from the topic.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Agents removed successfully\",\n    \"removedMemberEmails\": [ \"john.doe@example.com\" ]\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 401,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"The selected topic is not found\",\n    \"field\": \"id\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/organizationapi/topic-agent-remove.go",
+    "groupTitle": "Organization API",
+    "groupDescription": "<p>Manages organization's data.</p>"
+  },
+  {
+    "type": "post",
+    "url": "/v1/user/request_auth_ticket",
+    "title": "Request Auth Ticket",
+    "version": "1.26.1",
+    "name": "RequestAuthTicket",
+    "group": "UserAPI",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Request auth ticket for Live Chat on behalf of the specified user/contact, passing along the user's data to be saved to contacts. The auth ticket can be used to request an access token for Live Chat. An auth ticket is valid for 1 hour before it expires.</p> <p>See <a href=\"#api-UserAPI-SyncContact\">User API - Sync Contact</a> for explanation on user/contact sync.</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If successful.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "userID",
+            "description": "<p>The user ID from OneTalk.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "ticket",
+            "description": "<p>The auth ticket to request an access token.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Contact updated successfully\",\n    \"userID\": \"354c63e1-2485-4380-b307-4f2ea1ff69d0\",\n    \"ticket\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Customer user ID is required\",\n    \"field\": \"customerUserID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/userapi/request-auth-ticket.go",
+    "groupTitle": "User API",
+    "groupDescription": "<p>Manages customer's users/contacts.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "size": "1..100",
+            "optional": false,
+            "field": "customerUserID",
+            "description": "<p>User ID from customer's server.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "size": "1..250",
+            "optional": false,
+            "field": "fullName",
+            "description": "<p>The user's full name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "size": "1..100",
+            "optional": true,
+            "field": "alias",
+            "description": "<p>The user's alias.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "size": "1..250",
+            "optional": true,
+            "field": "email",
+            "description": "<p>The user's email address.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "size": "1..20",
+            "optional": true,
+            "field": "phone",
+            "description": "<p>The user's phone, must start with country code.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "photoURL",
+            "description": "<p>The user's picture image URL.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"customerUserID\": \"company:123\",\n  \"fullName\": \"John Doe\",\n  \"alias\": \"\",\n  \"email\": \"john_doe@example.com\",\n  \"phone\": \"6281234567890\",\n  \"photoURL\": \"http://www.example.com/photo/john_doe.jpg\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/v1/user/sync_contact",
+    "title": "Sync Contact",
+    "version": "1.26.1",
+    "name": "SyncContact",
+    "group": "UserAPI",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Sync a user from customer's server to OneTalk contacts.</p> <p>The sync process will check for existing contacts using all the following keys:</p> <ul> <li><code>customerUserID</code> (required)</li> <li><code>phone</code> (optional)</li> </ul> <p>If no contact is found, a new contact will be created. If exactly one contact is found using the sync keys, the contact will be updated. If more than one contacts are found, the sync will be rejected because duplicate keys are not allowed.</p> <p>Customer user ID can't be changed for existing contacts. So, if the existing contact is already tied to a different customer user ID, the sync will be rejected. However, if the existing contact is not tied to any customer user ID yet, it will be updated to the specified <code>customerUserID</code>.</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If saved successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "userID",
+            "description": "<p>The user ID from OneTalk.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Contact updated successfully\",\n    \"userID\": \"354c63e1-2485-4380-b307-4f2ea1ff69d0\"\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TierNotSelected",
+            "description": "<p>The organization has not selected a tier.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FeatureNotAvailable",
+            "description": "<p>The feature is not available due to the organization's current tier.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Customer user ID is required\",\n    \"field\": \"customerUserID\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "TierNotSelected:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49900\",\n    \"message\": \"Please select a tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "FeatureNotAvailable:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 499,\n  \"error\": {\n    \"code\": \"49901\",\n    \"message\": \"This feature is not available for your current tier\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/integration/v1/endpoint/userapi/sync-contact.go",
+    "groupTitle": "User API",
+    "groupDescription": "<p>Manages customer's users/contacts.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "size": "1..100",
+            "optional": false,
+            "field": "customerUserID",
+            "description": "<p>User ID from customer's server.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "size": "1..250",
+            "optional": false,
+            "field": "fullName",
+            "description": "<p>The user's full name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "size": "1..100",
+            "optional": true,
+            "field": "alias",
+            "description": "<p>The user's alias.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "size": "1..250",
+            "optional": true,
+            "field": "email",
+            "description": "<p>The user's email address.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "size": "1..20",
+            "optional": true,
+            "field": "phone",
+            "description": "<p>The user's phone, must start with country code.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "photoURL",
+            "description": "<p>The user's picture image URL.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"customerUserID\": \"company:123\",\n  \"fullName\": \"John Doe\",\n  \"alias\": \"\",\n  \"email\": \"john_doe@example.com\",\n  \"phone\": \"6281234567890\",\n  \"photoURL\": \"http://www.example.com/photo/john_doe.jpg\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  }
+] });
