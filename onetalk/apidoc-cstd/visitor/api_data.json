@@ -7989,6 +7989,50 @@
   },
   {
     "type": "post",
+    "url": "/v1/webhook/fb_comment/:appID",
+    "title": "Facebook Comment",
+    "version": "1.65.0",
+    "name": "FacebookComment",
+    "group": "Webhook",
+    "permission": [
+      {
+        "name": "webhook"
+      }
+    ],
+    "description": "<p>Webhook for receiving notifications from Facebook.</p>",
+    "success": {
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\nok",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/visitor/v1/endpoint/webhook/facebook-comment.go",
+    "groupTitle": "Webhook",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TokenValidationFailed",
+            "description": "<p>The webhook token validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "TokenValidationFailed:",
+          "content": "HTTP/1.1 401 Unauthorized\ntoken is invalid",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
     "url": "/v1/webhook/google_business_messages",
     "title": "Google Business Messages",
     "version": "1.35.0",

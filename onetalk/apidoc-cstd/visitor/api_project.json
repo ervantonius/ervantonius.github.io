@@ -1,6 +1,6 @@
 {
   "name": "TapLive Visitor API",
-  "version": "1.64.0",
+  "version": "1.65.0",
   "description": "TapLive Visitor API Documentation",
   "title": "TapLive Visitor API",
   "url": "",
@@ -43,6 +43,7 @@
     "WhatsAppBusinessAPIKataAI",
     "Instagram",
     "Facebook",
+    "FacebookComment",
     "GoogleBusinessMessages",
     "Tokopedia_Chat",
     "KataAI",
@@ -58,7 +59,7 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2025-03-31T05:58:51.822Z",
+    "time": "2025-04-25T18:06:35.579Z",
     "url": "https://apidocjs.com",
     "version": "0.26.0"
   }

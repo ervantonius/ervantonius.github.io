@@ -747,6 +747,128 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/v1/admin/system/set_maintenance_mode",
+    "title": "System - Set Maintenance Mode",
+    "version": "1.63.1",
+    "name": "System_SetMaintenanceMode",
+    "group": "AdminAPI",
+    "permission": [
+      {
+        "name": "account"
+      }
+    ],
+    "description": "<p>Set the system into maintenance mode.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "isEnabled",
+            "description": "<p>If the maintenance mode is enabled or not.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "displayMessage",
+            "description": "<p>The message to be displayed during maintenance mode, required if maintenance is enabled.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request Example:",
+          "content": "{\n  \"isEnabled\": true,\n  \"displayMessage\": \"Sorry, we're currently undergoing maintenance\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>If the maintenance mode was set successfully.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "maintenanceMode",
+            "description": "<p>The current maintenance mode settings.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "maintenanceMode.isEnabled",
+            "description": "<p>If the maintenance mode is enabled.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "maintenanceMode.displayMessage",
+            "description": "<p>The message to be displayed during maintenance mode.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 200,\n  \"error\": {\n    \"code\": \"\",\n    \"message\": \"\",\n    \"field\": \"\"\n  },\n  \"data\": {\n    \"success\": true,\n    \"message\": \"Maintenance mode enabled successfully\",\n    \"maintenanceMode\": {\n      \"isEnabled\": true,\n      \"displayMessage\": \"Sorry, we're currently undergoing maintenance\"\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamValidationFailed",
+            "description": "<p>The parameter validation failed.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "HeaderValidationFailed",
+            "description": "<p>The request header validation failed.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "ParamValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40002\",\n    \"message\": \"Please enter display message\",\n    \"field\": \"displayMessage\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        },
+        {
+          "title": "HeaderValidationFailed:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"status\": 400,\n  \"error\": {\n    \"code\": \"40001\",\n    \"message\": \"Request headers are required (API-Key, Authorization, Device-Platform)\",\n    \"field\": \"\"\n  },\n  \"data\": {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "internal/app/cstd/internald/v1/endpoint/adminapi/system-set-maintenance-mode.go",
+    "groupTitle": "Admin API",
+    "groupDescription": "<h4>HTTP Request Headers</h4> <table> <thead> <tr> <th><strong>Header Name</strong></th> <th style=\"text-align:center\"><strong>Required</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td>API-Key</td> <td style=\"text-align:center\">✓</td> <td>API key for accessing the API.</td> </tr> <tr> <td>Authorization</td> <td style=\"text-align:center\">✓</td> <td>Access token to validate the user session.<br>Format: <code>Bearer <i>&lt;access_token&gt;</i></code></td> </tr> <tr> <td>Content-Type</td> <td style=\"text-align:center\"></td> <td>Content type of the request body.</td> </tr> <tr> <td>Device-Identifier</td> <td style=\"text-align:center\">✓</td> <td>The device ID (optional for web).</td> </tr> <tr> <td>Device-Model</td> <td style=\"text-align:center\">✓</td> <td>Model name of the device (optional for web).</td> </tr> <tr> <td>Device-Platform</td> <td style=\"text-align:center\">✓</td> <td>The device's platform. Values are <code>android</code>, <code>ios</code>, or <code>web</code>.</td> </tr> <tr> <td>User-Agent</td> <td style=\"text-align:center\"></td> <td>The user agent of the client accessing the API.</td> </tr> </tbody> </table> <h4>HTTP Response Status Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">200</td> <td>OK, request proceed without error.</td> </tr> <tr> <td style=\"text-align:center\">204</td> <td>Request proceed successfully and is not returning any content (empty <code>data</code>).</td> </tr> <tr> <td style=\"text-align:center\">400</td> <td>Bad request, either the request header or the API parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">401</td> <td>Unauthorized access, either the HTTP request header <code>Authorization</code> is missing or invalid.</td> </tr> <tr> <td style=\"text-align:center\">403</td> <td>Forbidden, the user does not have access to the requested resource.</td> </tr> <tr> <td style=\"text-align:center\">404</td> <td>Not found, requested resource does not exist.</td> </tr> <tr> <td style=\"text-align:center\">429</td> <td>Too many requests sent in a given amount of time, intended for use with rate-limiting schemes.</td> </tr> <tr> <td style=\"text-align:center\">491</td> <td>The API key specified in HTTP request header <code>API-Key</code> is invalid.</td> </tr> <tr> <td style=\"text-align:center\">500</td> <td>Internal server error while processing the request.</td> </tr> </tbody> </table> <h4>API Error Codes</h4> <table> <thead> <tr> <th style=\"text-align:center\"><strong>Code</strong></th> <th><strong>Description</strong></th> </tr> </thead> <tbody> <tr> <td style=\"text-align:center\">40001</td> <td>HTTP request header validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40002</td> <td>API request parameter validation failed.</td> </tr> <tr> <td style=\"text-align:center\">40101</td> <td>HTTP request header <code>Authorization</code> is not provided when required.</td> </tr> <tr> <td style=\"text-align:center\">40102</td> <td>HTTP request header <code>Authorization</code> format is invalid.</td> </tr> <tr> <td style=\"text-align:center\">40103</td> <td>Failed to parse the token or the token is not found or invalid. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40104</td> <td>The token has expired. Client should refresh the access token or get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40105</td> <td>The token owner does not belong to the client's info. Client should get a new token.</td> </tr> <tr> <td style=\"text-align:center\">40106</td> <td>User is not found for the specified token.</td> </tr> <tr> <td style=\"text-align:center\">40301</td> <td>The user does not have access to the requested resource or action.</td> </tr> <tr> <td style=\"text-align:center\">40401</td> <td>The requested resource is not found.</td> </tr> <tr> <td style=\"text-align:center\">49101</td> <td>The API key is not provided.</td> </tr> <tr> <td style=\"text-align:center\">49102</td> <td>Failed to parse the API key, or the API key is invalid.</td> </tr> <tr> <td style=\"text-align:center\">49103</td> <td>The provided API key is not found.</td> </tr> <tr> <td style=\"text-align:center\">49104</td> <td>The provided API key is not intended to be used with the client's platform.</td> </tr> <tr> <td style=\"text-align:center\">49106</td> <td>The API key has expired.</td> </tr> <tr> <td style=\"text-align:center\">49107</td> <td>The API key is disabled.</td> </tr> <tr> <td style=\"text-align:center\">50001</td> <td>An error occurred while validating the API key.</td> </tr> <tr> <td style=\"text-align:center\">99999</td> <td>Other errors, usually without specific reason or action.</td> </tr> </tbody> </table>"
+  },
+  {
+    "type": "post",
     "url": "/v1/admin/whatsapp/chatapicom/insert_instances",
     "title": "WhatsApp - Chat-API.com - Insert Instances",
     "version": "1.15.0",

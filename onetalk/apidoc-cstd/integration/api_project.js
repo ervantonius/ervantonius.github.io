@@ -1,6 +1,6 @@
 define({
   "name": "TapLive Integration API",
-  "version": "1.64.0",
+  "version": "1.65.0",
   "description": "TapLive Integration API Documentation",
   "title": "TapLive Integration API",
   "url": "",
@@ -46,7 +46,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2025-03-31T05:58:55.509Z",
+    "time": "2025-04-25T18:06:40.449Z",
     "url": "https://apidocjs.com",
     "version": "0.26.0"
   }

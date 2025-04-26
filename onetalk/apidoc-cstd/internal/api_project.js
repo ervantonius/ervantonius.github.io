@@ -1,6 +1,6 @@
 define({
   "name": "TapLive Internal Dashboard API",
-  "version": "1.64.0",
+  "version": "1.65.0",
   "description": "TapLive Internal Dashboard API Documentation",
   "title": "TapLive Internal Dashboard API",
   "url": "",
@@ -25,6 +25,7 @@ define({
     "Logout",
     "AdminAPI",
     "System_BuildConfig",
+    "System_SetMaintenanceMode",
     "EmailDomainBlacklist_GetList",
     "EmailDomainBlacklist_Add",
     "EmailDomainBlacklist_Delete",
@@ -58,7 +59,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2025-03-31T05:58:53.926Z",
+    "time": "2025-04-25T18:06:38.628Z",
     "url": "https://apidocjs.com",
     "version": "0.26.0"
   }
